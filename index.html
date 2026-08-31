@@ -4,37 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#03060f">
-
-<title>Grind Hub</title>
+<title>Grind Hub — Dashboard</title>
 
 <style>
-
-/* =========================================================
-   GRIND HUB
-   Simple, clean, beginner-friendly task manager
-   ========================================================= */
-
 :root {
   --bg: #03060f;
+  --bg-soft: #070b14;
   --panel: #0b0f19;
   --panel-2: #10172a;
+  --panel-3: #131c32;
+
   --line: #1c2943;
-  --line-light: #263654;
+  --line-light: #2a3b5f;
 
   --text: #f4f7ff;
   --muted: #7889a8;
 
   --cyan: #00f0ff;
   --purple: #bd00ff;
+  --green: #00ff87;
+  --yellow: #ffbd00;
   --red: #ff2d63;
 
-  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --radius: 18px;
+  --shadow: 0 18px 50px rgba(0,0,0,.45);
 }
-
-
-/* =========================================================
-   GENERAL
-   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -47,8 +41,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-
-  padding-bottom: 60px;
+  padding-bottom: 70px;
 
   font-family:
     Inter,
@@ -64,12 +57,12 @@ body {
   background:
     radial-gradient(
       circle at 15% -10%,
-      rgba(90, 0, 180, 0.35),
+      rgba(90,0,180,.35),
       transparent 38%
     ),
     radial-gradient(
       circle at 90% 20%,
-      rgba(0, 180, 255, 0.12),
+      rgba(0,180,255,.12),
       transparent 30%
     ),
     linear-gradient(
@@ -80,18 +73,14 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
 button {
   cursor: pointer;
 }
-
-
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -111,58 +100,75 @@ button {
 }
 
 
-/* =========================================================
+/* =========================
    APP
-   ========================================================= */
+========================= */
 
 .app {
-  width: min(1000px, calc(100% - 32px));
-
+  width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
 }
 
 
-/* =========================================================
-   LIVE CLOCK
-   ========================================================= */
+/* =========================
+   CLOCK
+========================= */
 
-.top-clock {
-  position: fixed;
-
-  top: 18px;
+.top-center-clock {
+  position: absolute;
+  top: 16px;
   left: 50%;
-
   transform: translateX(-50%);
 
-  padding: 8px 16px;
+  text-align: center;
+
+  z-index: 100;
+  pointer-events: none;
+}
+
+.time-text {
+  display: inline-block;
+
+  padding: 5px 15px;
 
   color: var(--cyan);
-
-  background:
-    rgba(0, 240, 255, 0.05);
-
-  border:
-    1px solid rgba(0, 240, 255, 0.15);
-
-  border-radius: 10px;
 
   font-size: 20px;
   font-weight: 900;
 
-  letter-spacing: 0.5px;
+  letter-spacing: .6px;
+
+  background: rgba(0,240,255,.045);
+
+  border: 1px solid rgba(0,240,255,.14);
+
+  border-radius: 10px;
 
   box-shadow:
-    0 0 25px rgba(0, 240, 255, 0.08);
+    0 0 25px rgba(0,240,255,.07),
+    inset 0 0 20px rgba(0,240,255,.02);
+}
 
-  z-index: 100;
+.date-text {
+  margin-top: 5px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
 }
 
 
-/* =========================================================
+/* =========================
    HEADER
-   ========================================================= */
+========================= */
 
 header {
+  position: relative;
+
   display: flex;
 
   align-items: center;
@@ -170,45 +176,41 @@ header {
 
   gap: 20px;
 
-  padding: 85px 0 25px;
+  padding: 82px 0 22px;
 
-  margin-bottom: 25px;
+  margin-bottom: 24px;
 
-  border-bottom:
-    1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .brand h1 {
   margin: 0;
 
-  font-size:
-    clamp(28px, 5vw, 38px);
+  font-size: clamp(25px,4vw,32px);
 
   font-weight: 950;
 
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 
   color: #fff;
 
   text-shadow:
-    0 0 20px
-    rgba(0, 240, 255, 0.18);
+    0 0 20px rgba(0,240,255,.18);
 }
 
 .brand p {
-  margin: 7px 0 0;
+  margin: 5px 0 0;
 
   color: var(--muted);
 
-  font-size: 14px;
-
+  font-size: 13px;
   font-weight: 600;
 }
 
 
-/* =========================================================
+/* =========================
    BUTTONS
-   ========================================================= */
+========================= */
 
 .btn {
   display: inline-flex;
@@ -218,46 +220,39 @@ header {
 
   gap: 8px;
 
-  min-height: 44px;
+  min-height: 42px;
 
   padding: 10px 17px;
 
   color: var(--text);
 
-  background:
-    var(--panel-2);
+  background: var(--panel-2);
 
-  border:
-    1px solid var(--line);
+  border: 1px solid var(--line);
 
   border-radius: 11px;
 
   font-size: 13px;
-
   font-weight: 800;
 
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
 }
 
 .btn:hover {
-  transform:
-    translateY(-2px);
+  transform: translateY(-2px);
 
-  border-color:
-    var(--cyan);
+  border-color: var(--cyan);
 
   box-shadow:
-    0 8px 25px
-    rgba(0, 240, 255, 0.12);
+    0 8px 25px rgba(0,240,255,.12);
 }
 
 .btn:active {
-  transform:
-    translateY(0);
+  transform: translateY(0);
 }
 
 .btn.primary {
@@ -274,16 +269,14 @@ header {
     );
 
   box-shadow:
-    0 8px 30px
-    rgba(0, 240, 255, 0.12);
+    0 8px 30px rgba(0,240,255,.12);
 }
 
 .btn.primary:hover {
   color: #02040a;
 
   box-shadow:
-    0 10px 35px
-    rgba(189, 0, 255, 0.28);
+    0 10px 35px rgba(189,0,255,.28);
 }
 
 .btn.danger {
@@ -293,11 +286,10 @@ header {
 
   color: var(--red);
 
-  background:
-    rgba(255, 45, 99, 0.07);
+  background: rgba(255,45,99,.07);
 
   border-color:
-    rgba(255, 45, 99, 0.35);
+    rgba(255,45,99,.35);
 
   font-size: 11px;
 }
@@ -305,50 +297,247 @@ header {
 .btn.danger:hover {
   color: white;
 
-  background:
-    var(--red);
+  background: var(--red);
+
+  border-color: var(--red);
+}
+
+.btn.green {
+  color: var(--green);
+
+  background: rgba(0,255,135,.06);
 
   border-color:
-    var(--red);
+    rgba(0,255,135,.22);
+}
+
+.btn.green:hover {
+  color: #00140b;
+
+  background: var(--green);
 }
 
 
-/* =========================================================
-   WELCOME
-   ========================================================= */
+/* =========================
+   HUB CARDS
+========================= */
 
-.welcome {
-  margin-bottom: 22px;
+.hub-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 16px;
+
+  margin-bottom: 28px;
 }
 
-.welcome h2 {
-  margin: 0 0 7px;
+.hub-card {
+  position: relative;
 
-  font-size: 21px;
+  overflow: hidden;
 
+  min-height: 155px;
+
+  padding: 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  text-decoration: none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,25,46,.96),
+      rgba(6,10,20,.98)
+    );
+
+  border: 1px solid var(--line);
+
+  border-radius: 20px;
+
+  box-shadow: var(--shadow);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.hub-card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(0,240,255,.55);
+
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.55),
+    0 0 25px rgba(0,240,255,.08);
+}
+
+.hub-card h3 {
+  margin: 0 0 9px;
+
+  color: #fff;
+
+  font-size: 20px;
   font-weight: 900;
 }
 
-.welcome p {
+.hub-card p {
   margin: 0;
+
+  max-width: 290px;
 
   color: var(--muted);
 
   font-size: 13px;
 
-  line-height: 1.5;
+  line-height: 1.55;
+}
+
+.badge {
+  align-self: flex-start;
+
+  margin-top: 18px;
+
+  padding: 7px 12px;
+
+  color: var(--cyan);
+
+  background:
+    rgba(0,240,255,.055);
+
+  border:
+    1px solid rgba(0,240,255,.16);
+
+  border-radius: 8px;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  text-transform: uppercase;
 }
 
 
-/* =========================================================
+/* =========================
+   TABS
+========================= */
+
+.tabs {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 8px;
+
+  padding: 6px;
+
+  margin-bottom: 20px;
+
+  background:
+    rgba(7,11,20,.9);
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 14px;
+}
+
+.tab {
+  min-height: 42px;
+
+  color: var(--muted);
+
+  background: transparent;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+
+  transition: .2s ease;
+}
+
+.tab:hover {
+  color: #fff;
+
+  background:
+    rgba(255,255,255,.035);
+}
+
+.tab.active {
+  color: #02040a;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      #52eaff
+    );
+
+  box-shadow:
+    0 4px 20px rgba(0,240,255,.16);
+}
+
+
+/* =========================
+   VIEW HEADER
+========================= */
+
+.view-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 15px;
+}
+
+.view-header h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 18px;
+  font-weight: 900;
+
+  letter-spacing: .4px;
+}
+
+.view-subtitle {
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+/* =========================
    LIST DASHBOARD
-   ========================================================= */
+========================= */
 
 .list-container {
   display: grid;
 
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    repeat(2,minmax(0,1fr));
 
   gap: 20px;
 }
@@ -367,28 +556,22 @@ header {
   background:
     linear-gradient(
       145deg,
-      rgba(10, 16, 29, 0.98),
-      rgba(5, 9, 17, 0.98)
+      rgba(10,16,29,.98),
+      rgba(5,9,17,.98)
     );
 
-  border:
-    1px solid var(--line);
+  border: 1px solid var(--line);
 
   border-radius: 20px;
 
-  box-shadow:
-    var(--shadow);
+  box-shadow: var(--shadow);
 }
-
-
-/* =========================================================
-   LIST HEADER
-   ========================================================= */
 
 .list-header {
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
   gap: 12px;
@@ -411,8 +594,9 @@ header {
   color: #fff;
 
   font-size: 17px;
-
   font-weight: 900;
+
+  text-transform: uppercase;
 
   text-overflow: ellipsis;
 
@@ -425,18 +609,10 @@ header {
   color: var(--muted);
 
   font-size: 10px;
-
   font-weight: 800;
 
   text-transform: uppercase;
-
-  letter-spacing: 0.7px;
 }
-
-
-/* =========================================================
-   TASK CONTAINER
-   ========================================================= */
 
 .item-box {
   display: flex;
@@ -445,7 +621,7 @@ header {
 
   gap: 9px;
 
-  max-height: 450px;
+  max-height: 390px;
 
   overflow-y: auto;
 
@@ -453,15 +629,15 @@ header {
 }
 
 
-/* =========================================================
+/* =========================
    TASK ROW
-   ========================================================= */
+========================= */
 
 .todo-row {
   display: grid;
 
   grid-template-columns:
-    auto minmax(0, 1fr) auto auto;
+    auto minmax(0,1fr) auto auto;
 
   align-items: center;
 
@@ -470,64 +646,56 @@ header {
   padding: 12px;
 
   background:
-    rgba(11, 16, 28, 0.92);
+    rgba(11,16,28,.92);
 
-  border:
-    1px solid var(--line);
+  border: 1px solid var(--line);
 
   border-radius: 13px;
 
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+  transition: .2s ease;
 }
 
 .todo-row:hover {
-  background:
-    #0d1423;
+  background: #0d1423;
 
   border-color:
     var(--line-light);
 }
 
-.todo-row.done {
-  opacity: 0.48;
-
+.todo-row.overdue {
   background:
-    #04070d !important;
+    linear-gradient(
+      90deg,
+      rgba(255,45,99,.15),
+      rgba(255,45,99,.035)
+    );
 
   border-color:
-    rgba(30, 41, 66, 0.45) !important;
+    rgba(255,45,99,.5);
 }
 
+.todo-row.done {
+  opacity: .48;
 
-/* =========================================================
-   CHECKBOX
-   ========================================================= */
+  background: #04070d !important;
+
+  border-color:
+    rgba(30,41,66,.45) !important;
+}
 
 .todo-row input[type="checkbox"] {
   width: 18px;
-
   height: 18px;
 
   margin: 0;
 
-  cursor: pointer;
-
-  accent-color:
-    var(--cyan);
+  accent-color: var(--cyan);
 }
-
-
-/* =========================================================
-   TASK TEXT
-   ========================================================= */
 
 .todo-row label {
   min-width: 0;
 
-  color:
-    #e9eef9;
+  color: #e9eef9;
 
   font-size: 13px;
 
@@ -541,21 +709,116 @@ header {
 }
 
 .todo-row.done label {
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  text-decoration:
-    line-through;
+  text-decoration: line-through;
 }
 
 
-/* =========================================================
-   TASK ACTION BUTTONS
-   ========================================================= */
+/* =========================
+   TASK META
+========================= */
+
+.todo-meta {
+  min-width: 105px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 5px;
+}
+
+.meta-target {
+  display: inline-block;
+
+  padding: 4px 7px;
+
+  color: var(--cyan);
+
+  background:
+    rgba(0,240,255,.05);
+
+  border:
+    1px solid rgba(0,240,255,.13);
+
+  border-radius: 6px;
+
+  font-size: 11px;
+  font-weight: 850;
+
+  white-space: nowrap;
+}
+
+.meta-date {
+  display: inline-block;
+
+  padding: 4px 7px;
+
+  color: var(--purple);
+
+  background:
+    rgba(189,0,255,.06);
+
+  border:
+    1px solid rgba(189,0,255,.16);
+
+  border-radius: 6px;
+
+  font-size: 10px;
+  font-weight: 850;
+
+  white-space: nowrap;
+}
+
+.todo-row.overdue .meta-target {
+  color: white;
+
+  background: var(--red);
+
+  border-color: transparent;
+}
+
+.days-badge-row {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+
+  gap: 2px;
+}
+
+.mini-day-pill {
+  padding: 2px 4px;
+
+  color: #657695;
+
+  background: #111b31;
+
+  border-radius: 4px;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.mini-day-pill.active {
+  color: white;
+
+  background: var(--purple);
+}
+
+
+/* =========================
+   ACTION BUTTONS
+========================= */
 
 .action-icon-btn {
   width: 30px;
-
   height: 30px;
 
   display: grid;
@@ -564,77 +827,71 @@ header {
 
   padding: 0;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  background:
-    transparent;
+  background: transparent;
 
   border:
     1px solid transparent;
 
   border-radius: 8px;
 
-  font-size: 13px;
-
-  transition:
-    0.2s ease;
+  transition: .2s ease;
 }
 
 .action-icon-btn:hover {
-  color:
-    var(--cyan);
+  color: var(--cyan);
 
   background:
-    rgba(0, 240, 255, 0.06);
+    rgba(0,240,255,.06);
 
   border-color:
-    rgba(0, 240, 255, 0.12);
+    rgba(0,240,255,.12);
 }
 
 .action-icon-btn.delete:hover {
-  color:
-    var(--red);
+  color: var(--red);
 
   background:
-    rgba(255, 45, 99, 0.08);
+    rgba(255,45,99,.08);
 
   border-color:
-    rgba(255, 45, 99, 0.14);
+    rgba(255,45,99,.14);
 }
 
 
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
+/* =========================
+   EMPTY
+========================= */
 
 .empty {
-  padding: 35px 20px;
+  padding: 30px 18px;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
   background:
-    rgba(7, 11, 20, 0.8);
+    rgba(7,11,20,.8);
 
   border:
     1px dashed var(--line);
 
-  border-radius: 14px;
+  border-radius: 12px;
 
-  font-size: 13px;
+  font-size: 12px;
 
   font-weight: 600;
-
-  line-height: 1.6;
 
   text-align: center;
 }
 
+.empty strong {
+  color: #fff;
+}
 
-/* =========================================================
-   MODAL
-   ========================================================= */
+
+/* =========================
+   MODALS
+========================= */
 
 .modal {
   position: fixed;
@@ -651,22 +908,19 @@ header {
   padding: 18px;
 
   background:
-    rgba(1, 2, 6, 0.82);
+    rgba(1,2,6,.82);
 
-  backdrop-filter:
-    blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .modal.open {
   display: flex;
 
-  animation:
-    fadeIn 0.18s ease;
+  animation: fadeIn .18s ease;
 }
 
 .modal-box {
-  width:
-    min(450px, 100%);
+  width: min(520px,100%);
 
   max-height:
     calc(100vh - 36px);
@@ -688,25 +942,17 @@ header {
   border-radius: 22px;
 
   box-shadow:
-    0 30px 90px
-    rgba(0, 0, 0, 0.8),
+    0 30px 90px rgba(0,0,0,.8),
+    0 0 40px rgba(0,240,255,.04);
 
-    0 0 40px
-    rgba(0, 240, 255, 0.04);
-
-  animation:
-    modalIn 0.22s ease;
+  animation: modalIn .22s ease;
 }
-
-
-/* =========================================================
-   MODAL HEADER
-   ========================================================= */
 
 .modal-head {
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
   gap: 15px;
@@ -720,46 +966,38 @@ header {
   color: #fff;
 
   font-size: 19px;
-
   font-weight: 900;
 }
 
 .close {
   width: 34px;
-
   height: 34px;
 
   display: grid;
 
   place-items: center;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  background:
-    #121a2c;
+  background: #121a2c;
 
   border: 0;
 
   border-radius: 9px;
 
   font-weight: 900;
-
-  transition:
-    0.2s ease;
 }
 
 .close:hover {
   color: #fff;
 
-  background:
-    var(--red);
+  background: var(--red);
 }
 
 
-/* =========================================================
+/* =========================
    FORMS
-   ========================================================= */
+========================= */
 
 form {
   display: flex;
@@ -774,27 +1012,25 @@ form label {
 
   margin-bottom: 7px;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
   font-size: 10px;
-
   font-weight: 900;
 
   text-transform: uppercase;
 
-  letter-spacing: 0.6px;
+  letter-spacing: .6px;
 }
 
-input {
+input,
+select {
   width: 100%;
 
   padding: 12px;
 
   color: white;
 
-  background:
-    #03060f;
+  background: #03060f;
 
   border:
     1px solid var(--line);
@@ -803,28 +1039,137 @@ input {
 
   outline: none;
 
-  transition:
-    0.2s ease;
+  transition: .2s ease;
 }
 
 input::placeholder {
-  color:
-    #465675;
+  color: #465675;
 }
 
-input:focus {
-  border-color:
-    var(--cyan);
+input:focus,
+select:focus {
+  border-color: var(--cyan);
 
   box-shadow:
-    0 0 0 3px
-    rgba(0, 240, 255, 0.07);
+    0 0 0 3px rgba(0,240,255,.07);
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+.time-input-container {
+  display: grid;
+
+  grid-template-columns:
+    1fr auto 1fr 1fr;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.time-input-container span {
+  color: var(--muted);
+
+  font-weight: 900;
+}
+
+.macro-row {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 5px;
+
+  margin-bottom: 7px;
+}
+
+.macro-row .btn {
+  min-height: 30px;
+
+  padding: 5px 9px;
+
+  font-size: 10px;
 }
 
 
-/* =========================================================
+/* =========================
+   DAYS
+========================= */
+
+.weekday-selector {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7,1fr);
+
+  gap: 6px;
+}
+
+.day-checkbox-label {
+  position: relative;
+
+  display: block;
+
+  text-align: center;
+}
+
+.day-checkbox-label input {
+  position: absolute;
+
+  width: 0;
+  height: 0;
+
+  opacity: 0;
+}
+
+.day-checkbox-label span {
+  display: block;
+
+  padding: 9px 2px;
+
+  color: var(--muted);
+
+  background: #03060f;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 8px;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.day-checkbox-label span:hover {
+  border-color:
+    var(--line-light);
+
+  color: #fff;
+}
+
+.day-checkbox-label input:checked + span {
+  color: #fff;
+
+  background: var(--purple);
+
+  border-color: transparent;
+
+  box-shadow:
+    0 0 14px rgba(189,0,255,.25);
+}
+
+
+/* =========================
    FORM ACTIONS
-   ========================================================= */
+========================= */
 
 .form-actions {
   display: flex;
@@ -837,226 +1182,349 @@ input:focus {
 }
 
 
-/* =========================================================
+/* =========================
    ANIMATIONS
-   ========================================================= */
+========================= */
+
+@keyframes pulse {
+  0% { opacity: .86; }
+  50% {
+    opacity: 1;
+    filter: brightness(1.18);
+  }
+  100% { opacity: .86; }
+}
 
 @keyframes fadeIn {
-
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes modalIn {
-
   from {
     opacity: 0;
-
     transform:
       translateY(10px)
-      scale(0.98);
+      scale(.98);
   }
 
   to {
     opacity: 1;
-
     transform:
       translateY(0)
       scale(1);
   }
-
 }
 
 
-/* =========================================================
+/* =========================
    RESPONSIVE
-   ========================================================= */
+========================= */
 
-@media (max-width: 750px) {
+@media (max-width:850px) {
 
-  .list-container {
-    grid-template-columns:
-      1fr;
+  .hub-grid {
+    grid-template-columns: 1fr;
   }
 
+  .list-container {
+    grid-template-columns: 1fr;
+  }
 }
 
-
-@media (max-width: 550px) {
+@media (max-width:600px) {
 
   .app {
     width:
       min(
         100% - 20px,
-        1000px
+        1120px
       );
   }
 
+  .top-center-clock {
+    position: relative;
+
+    top: auto;
+    left: auto;
+
+    transform: none;
+
+    padding-top: 14px;
+  }
+
   header {
-    padding-top: 85px;
+    padding-top: 25px;
+
+    margin-bottom: 20px;
   }
 
   .brand h1 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .brand p {
     font-size: 11px;
   }
 
-  .header-actions .btn {
-    padding:
-      10px 12px;
-  }
-
   .todo-row {
     grid-template-columns:
-      auto minmax(0, 1fr) auto;
+      auto minmax(0,1fr) auto;
+  }
+
+  .todo-meta {
+    grid-column: 2 / -1;
+
+    align-items: flex-start;
+
+    min-width: 0;
+  }
+
+  .days-badge-row {
+    justify-content: flex-start;
+  }
+
+  .action-icon-btn {
+    grid-row: 1;
+  }
+
+  .tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .time-input-container {
+    grid-template-columns:
+      1fr auto 1fr 1fr;
   }
 
   .modal-box {
     padding: 20px;
   }
-
 }
 
+@media (max-width:400px) {
 
-@media (max-width: 400px) {
-
-  .header-actions .btn {
-    font-size: 0;
+  .weekday-selector {
+    gap: 3px;
   }
 
-  .header-actions .btn::before {
-    content: "+";
-
-    font-size: 18px;
+  .day-checkbox-label span {
+    font-size: 8px;
   }
-
-  .top-clock {
-    font-size: 17px;
-
-    padding:
-      7px 12px;
-  }
-
 }
-
 </style>
 </head>
 
-
 <body>
 
+<!-- CLOCK -->
 
-<!-- =======================================================
-     LIVE CLOCK
-     ======================================================= -->
+<div class="top-center-clock">
 
-<div
-  class="top-clock"
-  id="liveClock"
->
-  12:00:00 AM
+  <div
+    class="time-text"
+    id="masterLiveClock"
+  >
+    00:00:00 AM
+  </div>
+
+  <div
+    class="date-text"
+    id="masterLiveDate"
+  >
+    Loading System Time...
+  </div>
+
 </div>
 
 
 <div class="app">
 
-
-  <!-- =====================================================
-       HEADER
-       ===================================================== -->
+  <!-- HEADER -->
 
   <header>
 
     <div class="brand">
 
-      <h1>
-        GRIND HUB
-      </h1>
+      <h1>GRIND HUB</h1>
 
       <p>
-        Simple task and checklist manager
+        Central Operations Portal
       </p>
 
     </div>
 
-
-    <div class="header-actions">
-
-      <button
-        class="btn primary"
-        onclick="openHubModal()"
-      >
-        ＋ New List
-      </button>
-
-    </div>
+    <button
+      class="btn primary"
+      onclick="openHubModal()"
+    >
+      ＋ New List
+    </button>
 
   </header>
 
 
-  <!-- =====================================================
-       WELCOME
-       ===================================================== -->
 
-  <section class="welcome">
+  <!-- TABS -->
 
-    <h2>
-      Your Lists
-    </h2>
+  <div class="tabs">
 
-    <p>
-      Create a list, add tasks, and check them off when you're done.
-    </p>
+    <button
+      class="tab active"
+      id="dashboardTab"
+      onclick="switchTab('dashboard')"
+    >
+      Dashboard
+    </button>
+
+    <button
+      class="tab"
+      id="upcomingTab"
+      onclick="switchTab('upcoming')"
+    >
+      Upcoming
+    </button>
+
+    <button
+      class="tab"
+      id="completedTab"
+      onclick="switchTab('completed')"
+    >
+      Completed
+    </button>
+
+  </div>
+
+
+  <!-- VIEW -->
+
+  <section id="dashboardView">
+
+    <div class="view-header">
+
+      <div>
+
+        <h2 id="todayTitle">
+          TODAY'S TASKS
+        </h2>
+
+        <div
+          class="view-subtitle"
+          id="todaySubtitle"
+        >
+          Loading today's tasks...
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- IMPORTANT:
+         THERE IS NO ADD TASK BUTTON HERE.
+         TASKS ARE ONLY ADDED FROM INSIDE THEIR LIST. -->
+
+    <main
+      class="list-container"
+      id="hubListsWrapper"
+    ></main>
 
   </section>
 
 
-  <!-- =====================================================
-       LISTS
-       ===================================================== -->
+  <section
+    id="upcomingView"
+    style="display:none;"
+  >
 
-  <main
-    class="list-container"
-    id="hubListsWrapper"
-  ></main>
+    <div class="view-header">
 
+      <div>
+
+        <h2>
+          UPCOMING TASKS
+        </h2>
+
+        <div class="view-subtitle">
+          Tasks scheduled for future dates
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      id="upcomingContainer"
+      class="list-container"
+    ></div>
+
+  </section>
+
+
+  <section
+    id="completedView"
+    style="display:none;"
+  >
+
+    <div class="view-header">
+
+      <div>
+
+        <h2>
+          COMPLETED TASKS
+        </h2>
+
+        <div class="view-subtitle">
+          Finished tasks
+        </div>
+
+      </div>
+
+      <button
+        class="btn danger"
+        onclick="clearCompletedTasks()"
+      >
+        Clear Completed
+      </button>
+
+    </div>
+
+    <div
+      id="completedContainer"
+      class="list-container"
+    ></div>
+
+  </section>
 
 </div>
 
 
-<!-- =======================================================
+<!-- =========================
      NEW LIST MODAL
-     ======================================================= -->
+========================= -->
 
 <div
   id="hubListModal"
   class="modal"
-  onclick="closeModalFromBackground(event, 'hubListModal')"
+  onclick="
+    closeModalFromBackground(
+      event,
+      'hubListModal'
+    )
+  "
 >
 
   <div class="modal-box">
 
-
     <div class="modal-head">
 
       <h2>
-        Create a New List
+        Create Tracking List
       </h2>
-
 
       <button
         class="close"
         onclick="closeHubModal()"
-        aria-label="Close"
       >
         ✕
       </button>
@@ -1065,27 +1533,23 @@ input:focus {
 
 
     <form
-      onsubmit="handleCreateHubList(event)"
+      onsubmit="
+        handleCreateHubList(event)
+      "
     >
 
       <div>
 
-        <label
-          for="listTitleInput"
-        >
+        <label for="listTitleInput">
           List Name
         </label>
-
 
         <input
           type="text"
           id="listTitleInput"
-
           required
-
           maxlength="60"
-
-          placeholder="Example: Things to Do"
+          placeholder="e.g. Morning Routine"
         >
 
       </div>
@@ -1100,7 +1564,6 @@ input:focus {
         >
           Cancel
         </button>
-
 
         <button
           type="submit"
@@ -1118,32 +1581,32 @@ input:focus {
 </div>
 
 
-<!-- =======================================================
+<!-- =========================
      TASK MODAL
-     ======================================================= -->
+========================= -->
 
 <div
   id="taskEditModal"
   class="modal"
-  onclick="closeModalFromBackground(event, 'taskEditModal')"
+  onclick="
+    closeModalFromBackground(
+      event,
+      'taskEditModal'
+    )
+  "
 >
 
   <div class="modal-box">
 
-
     <div class="modal-head">
 
-      <h2
-        id="taskModalHeader"
-      >
-        Add a Task
+      <h2 id="taskModalHeader">
+        Add Checklist Item
       </h2>
-
 
       <button
         class="close"
         onclick="closeTaskModal()"
-        aria-label="Close"
       >
         ✕
       </button>
@@ -1153,11 +1616,10 @@ input:focus {
 
     <form
       id="taskModalForm"
-      onsubmit="handleTaskModalSubmit(event)"
+      onsubmit="
+        handleTaskModalSubmit(event)
+      "
     >
-
-
-      <!-- Hidden information used by the app -->
 
       <input
         type="hidden"
@@ -1174,23 +1636,182 @@ input:focus {
 
       <div>
 
-        <label
-          for="taskModalTextInput"
-        >
-          What needs to be done?
+        <label for="taskModalTextInput">
+          Task Description
         </label>
-
 
         <input
           type="text"
           id="taskModalTextInput"
-
           required
-
           maxlength="120"
-
-          placeholder="Example: Call the doctor"
+          placeholder="e.g. Review homework"
         >
+
+      </div>
+
+
+      <!-- START DATE -->
+
+      <div>
+
+        <label for="taskStartDate">
+          Start Date
+        </label>
+
+        <input
+          type="date"
+          id="taskStartDate"
+          required
+        >
+
+      </div>
+
+
+      <!-- TIME -->
+
+      <div>
+
+        <label>
+          Target Time
+        </label>
+
+        <div class="time-input-container">
+
+          <input
+            type="number"
+            id="timeHour"
+            min="1"
+            max="12"
+            placeholder="12"
+          >
+
+          <span>:</span>
+
+          <input
+            type="number"
+            id="timeMinute"
+            min="0"
+            max="59"
+            placeholder="00"
+          >
+
+          <select id="timeAmpm">
+
+            <option value="AM">
+              AM
+            </option>
+
+            <option value="PM">
+              PM
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- DAYS -->
+
+      <div>
+
+        <label>
+          Active Days
+        </label>
+
+        <div class="macro-row">
+
+          <button
+            type="button"
+            class="btn"
+            onclick="
+              toggleAllModalDays(true)
+            "
+          >
+            Everyday
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="
+              toggleAllModalDays(false)
+            "
+          >
+            Clear
+          </button>
+
+        </div>
+
+
+        <div class="weekday-selector">
+
+          <label class="day-checkbox-label">
+            <input
+              type="checkbox"
+              class="modal-day"
+              value="Mon"
+            >
+            <span>Mon</span>
+          </label>
+
+          <label class="day-checkbox-label">
+            <input
+              type="checkbox"
+              class="modal-day"
+              value="Tue"
+            >
+            <span>Tue</span>
+          </label>
+
+          <label class="day-checkbox-label">
+            <input
+              type="checkbox"
+              class="modal-day"
+              value="Wed"
+            >
+            <span>Wed</span>
+          </label>
+
+          <label class="day-checkbox-label">
+            <input
+              type="checkbox"
+              class="modal-day"
+              value="Thu"
+            >
+            <span>Thu</span>
+          </label>
+
+          <label class="day-checkbox-label">
+            <input
+              type="checkbox"
+              class="modal-day"
+              value="Fri"
+            >
+            <span>Fri</span>
+          </label>
+
+          <label class="day-checkbox-label">
+            <input
+              type="checkbox"
+              class="modal-day"
+              value="Sat"
+            >
+            <span>Sat</span>
+          </label>
+
+          <label class="day-checkbox-label">
+            <input
+              type="checkbox"
+              class="modal-day"
+              value="Sun"
+            >
+            <span>Sun</span>
+          </label>
+
+        </div>
 
       </div>
 
@@ -1207,17 +1828,15 @@ input:focus {
           Cancel
         </button>
 
-
         <button
           type="submit"
           class="btn primary"
           id="taskModalSubmitBtn"
         >
-          Add Task
+          Create Task
         </button>
 
       </div>
-
 
     </form>
 
@@ -1230,14 +1849,13 @@ input:focus {
 
 /* =========================================================
    STORAGE
-   ========================================================= */
+========================================================= */
 
-const STORAGE_KEY =
-  "grind_hub_simple_v1";
+const STORAGE_KEY = "gh_hub_lists_v6";
 
+const RESET_KEY = "gh_last_reset_date_v6";
 
-let hubLists =
-  loadLists();
+let hubLists = loadLists();
 
 
 function loadLists() {
@@ -1245,16 +1863,12 @@ function loadLists() {
   try {
 
     const saved =
-      localStorage.getItem(
-        STORAGE_KEY
-      );
-
+      localStorage.getItem(STORAGE_KEY);
 
     if (saved) {
 
       const parsed =
         JSON.parse(saved);
-
 
       if (Array.isArray(parsed)) {
 
@@ -1264,23 +1878,81 @@ function loadLists() {
 
     }
 
-  } catch (error) {
+  } catch(error) {
 
     console.error(
-      "Could not load saved data:",
+      "Could not load data:",
       error
     );
 
   }
 
 
-  /*
-   * Start empty.
-   * The person using the app
-   * creates their own lists.
-   */
+  return [
 
-  return [];
+    {
+      id: Date.now(),
+      title: "Daily Tasks",
+
+      items: [
+
+        {
+          id: Date.now() + 1,
+
+          text:
+            "Check water and food setups",
+
+          startDate:
+            getTodayISO(),
+
+          targetTime:
+            "8:00 AM",
+
+          days: [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+          ],
+
+          done: false,
+
+          completedAt: null,
+
+          isOverdue: false
+        },
+
+        {
+          id: Date.now() + 2,
+
+          text:
+            "Review homework backlog",
+
+          startDate:
+            getTodayISO(),
+
+          targetTime:
+            "3:30 PM",
+
+          days: [
+            "Tue",
+            "Wed"
+          ],
+
+          done: false,
+
+          completedAt: null,
+
+          isOverdue: false
+        }
+
+      ]
+    }
+
+  ];
 
 }
 
@@ -1291,12 +1963,10 @@ function saveStateToStorage() {
 
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify(
-        hubLists
-      )
+      JSON.stringify(hubLists)
     );
 
-  } catch (error) {
+  } catch(error) {
 
     console.error(
       "Could not save data:",
@@ -1309,75 +1979,244 @@ function saveStateToStorage() {
 
 
 /* =========================================================
-   LIVE CLOCK
-   ========================================================= */
+   DATE HELPERS
+========================================================= */
 
-function updateClock() {
+function getTodayISO() {
+
+  const now = new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(2,"0");
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(2,"0");
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+function parseLocalDate(dateString) {
+
+  if (!dateString) {
+    return null;
+  }
+
+  const parts =
+    dateString.split("-");
+
+  if (parts.length !== 3) {
+    return null;
+  }
+
+  return new Date(
+    Number(parts[0]),
+    Number(parts[1]) - 1,
+    Number(parts[2])
+  );
+
+}
+
+
+function formatDate(dateString) {
+
+  const date =
+    parseLocalDate(dateString);
+
+  if (!date) {
+    return "No date";
+  }
+
+  return new Intl.DateTimeFormat(
+    undefined,
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }
+  ).format(date);
+
+}
+
+
+function formatShortDate(dateString) {
+
+  const date =
+    parseLocalDate(dateString);
+
+  if (!date) {
+    return "No date";
+  }
+
+  return new Intl.DateTimeFormat(
+    undefined,
+    {
+      month: "short",
+      day: "numeric"
+    }
+  ).format(date);
+
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function runLiveSystemClock() {
+
+  const clockEl =
+    document.getElementById(
+      "masterLiveClock"
+    );
+
+  const dateEl =
+    document.getElementById(
+      "masterLiveDate"
+    );
+
+  if (!clockEl || !dateEl) {
+    return;
+  }
 
   const now =
     new Date();
 
-
   let hours =
     now.getHours();
-
 
   const minutes =
     String(
       now.getMinutes()
-    ).padStart(
-      2,
-      "0"
-    );
-
+    ).padStart(2,"0");
 
   const seconds =
     String(
       now.getSeconds()
-    ).padStart(
-      2,
-      "0"
-    );
-
+    ).padStart(2,"0");
 
   const ampm =
     hours >= 12
       ? "PM"
       : "AM";
 
-
   hours =
     hours % 12 || 12;
 
+  clockEl.textContent =
+    `${hours}:${minutes}:${seconds} ${ampm}`;
 
-  const clock =
+  dateEl.textContent =
+    new Intl.DateTimeFormat(
+      undefined,
+      {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      }
+    ).format(now);
+
+  evaluateMidnightReset();
+
+  checkOverdueTaskStates();
+
+  updateTodayStats();
+
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+let currentTab = "dashboard";
+
+
+function switchTab(tab) {
+
+  currentTab = tab;
+
+  const dashboardView =
     document.getElementById(
-      "liveClock"
+      "dashboardView"
+    );
+
+  const upcomingView =
+    document.getElementById(
+      "upcomingView"
+    );
+
+  const completedView =
+    document.getElementById(
+      "completedView"
     );
 
 
-  if (clock) {
+  dashboardView.style.display =
+    tab === "dashboard"
+      ? ""
+      : "none";
 
-    clock.textContent =
-      `${hours}:${minutes}:${seconds} ${ampm}`;
+  upcomingView.style.display =
+    tab === "upcoming"
+      ? ""
+      : "none";
 
+  completedView.style.display =
+    tab === "completed"
+      ? ""
+      : "none";
+
+
+  document
+    .getElementById("dashboardTab")
+    .classList.toggle(
+      "active",
+      tab === "dashboard"
+    );
+
+  document
+    .getElementById("upcomingTab")
+    .classList.toggle(
+      "active",
+      tab === "upcoming"
+    );
+
+  document
+    .getElementById("completedTab")
+    .classList.toggle(
+      "active",
+      tab === "completed"
+    );
+
+
+  if (tab === "dashboard") {
+    renderDashboard();
+  }
+
+  if (tab === "upcoming") {
+    renderUpcoming();
+  }
+
+  if (tab === "completed") {
+    renderCompleted();
   }
 
 }
 
 
-updateClock();
-
-
-setInterval(
-  updateClock,
-  1000
-);
-
-
 /* =========================================================
    MODALS
-   ========================================================= */
+========================================================= */
 
 function openHubModal() {
 
@@ -1386,11 +2225,7 @@ function openHubModal() {
       "hubListModal"
     );
 
-
-  modal.classList.add(
-    "open"
-  );
-
+  modal.classList.add("open");
 
   setTimeout(() => {
 
@@ -1400,7 +2235,7 @@ function openHubModal() {
       )
       .focus();
 
-  }, 50);
+  },50);
 
 }
 
@@ -1411,10 +2246,7 @@ function closeHubModal() {
     .getElementById(
       "hubListModal"
     )
-    .classList.remove(
-      "open"
-    );
-
+    .classList.remove("open");
 
   document
     .getElementById(
@@ -1431,10 +2263,7 @@ function closeTaskModal() {
     .getElementById(
       "taskEditModal"
     )
-    .classList.remove(
-      "open"
-    );
-
+    .classList.remove("open");
 
   document
     .getElementById(
@@ -1453,35 +2282,23 @@ function closeModalFromBackground(
   if (
     event.target.id !== modalId
   ) {
-
     return;
-
   }
-
 
   if (
     modalId === "hubListModal"
   ) {
-
     closeHubModal();
-
   }
-
 
   if (
     modalId === "taskEditModal"
   ) {
-
     closeTaskModal();
-
   }
 
 }
 
-
-/* =========================================================
-   ESCAPE KEY
-   ========================================================= */
 
 document.addEventListener(
   "keydown",
@@ -1490,44 +2307,12 @@ document.addEventListener(
     if (
       event.key !== "Escape"
     ) {
-
       return;
-
     }
 
+    closeHubModal();
 
-    const hubModal =
-      document.getElementById(
-        "hubListModal"
-      );
-
-
-    const taskModal =
-      document.getElementById(
-        "taskEditModal"
-      );
-
-
-    if (
-      hubModal.classList.contains(
-        "open"
-      )
-    ) {
-
-      closeHubModal();
-
-    }
-
-
-    if (
-      taskModal.classList.contains(
-        "open"
-      )
-    ) {
-
-      closeTaskModal();
-
-    }
+    closeTaskModal();
 
   }
 );
@@ -1535,7 +2320,7 @@ document.addEventListener(
 
 /* =========================================================
    CREATE LIST
-   ========================================================= */
+========================================================= */
 
 function handleCreateHubList(
   event
@@ -1543,52 +2328,40 @@ function handleCreateHubList(
 
   event.preventDefault();
 
-
   const input =
     document.getElementById(
       "listTitleInput"
     );
 
-
   const title =
     input.value.trim();
 
-
   if (!title) {
-
     return;
-
   }
-
 
   hubLists.push({
 
-    id:
-      Date.now(),
+    id: Date.now(),
 
-    title:
-      title,
+    title: title,
 
-    items:
-      []
+    items: []
 
   });
 
-
   saveStateToStorage();
-
 
   closeHubModal();
 
-
-  renderAllHubLists();
+  renderAll();
 
 }
 
 
 /* =========================================================
    DELETE LIST
-   ========================================================= */
+========================================================= */
 
 function deleteHubListTrack(
   listId
@@ -1600,26 +2373,17 @@ function deleteHubListTrack(
         item.id === listId
     );
 
-
   if (!list) {
-
     return;
-
   }
 
-
-  const confirmed =
-    confirm(
+  if (
+    !confirm(
       `Delete "${list.title}" and all of its tasks?`
-    );
-
-
-  if (!confirmed) {
-
+    )
+  ) {
     return;
-
   }
-
 
   hubLists =
     hubLists.filter(
@@ -1627,18 +2391,16 @@ function deleteHubListTrack(
         item.id !== listId
     );
 
-
   saveStateToStorage();
 
-
-  renderAllHubLists();
+  renderAll();
 
 }
 
 
 /* =========================================================
    OPEN TASK MODAL
-   ========================================================= */
+========================================================= */
 
 function openTaskModal(
   listId,
@@ -1650,27 +2412,50 @@ function openTaskModal(
       "taskEditModal"
     );
 
-
-  document
-    .getElementById(
+  const listIdInput =
+    document.getElementById(
       "taskModalListId"
-    )
-    .value =
-    listId;
+    );
 
-
-  document
-    .getElementById(
+  const itemIdInput =
+    document.getElementById(
       "taskModalItemId"
-    )
-    .value =
-    itemId || "";
-
+    );
 
   const textInput =
     document.getElementById(
       "taskModalTextInput"
     );
+
+  const dateInput =
+    document.getElementById(
+      "taskStartDate"
+    );
+
+  const hourInput =
+    document.getElementById(
+      "timeHour"
+    );
+
+  const minuteInput =
+    document.getElementById(
+      "timeMinute"
+    );
+
+  const ampmInput =
+    document.getElementById(
+      "timeAmpm"
+    );
+
+
+  listIdInput.value =
+    listId;
+
+  itemIdInput.value =
+    itemId || "";
+
+
+  toggleAllModalDays(false);
 
 
   if (itemId) {
@@ -1680,8 +2465,7 @@ function openTaskModal(
         "taskModalHeader"
       )
       .textContent =
-      "Edit Task";
-
+      "Edit Checklist Item";
 
     document
       .getElementById(
@@ -1697,7 +2481,6 @@ function openTaskModal(
           item.id === listId
       );
 
-
     const task =
       list?.items.find(
         item =>
@@ -1710,6 +2493,67 @@ function openTaskModal(
       textInput.value =
         task.text || "";
 
+
+      dateInput.value =
+        task.startDate ||
+        getTodayISO();
+
+
+      if (
+        task.targetTime &&
+        task.targetTime !== "—"
+      ) {
+
+        const parts =
+          task.targetTime
+            .split(" ");
+
+        const time =
+          parts[0]
+            .split(":");
+
+        hourInput.value =
+          parseInt(
+            time[0],
+            10
+          );
+
+        minuteInput.value =
+          time[1];
+
+        ampmInput.value =
+          parts[1] || "AM";
+
+      } else {
+
+        hourInput.value = "";
+
+        minuteInput.value = "";
+
+        ampmInput.value = "AM";
+
+      }
+
+
+      const activeDays =
+        task.days || [];
+
+
+      document
+        .querySelectorAll(
+          ".modal-day"
+        )
+        .forEach(
+          checkbox => {
+
+            checkbox.checked =
+              activeDays.includes(
+                checkbox.value
+              );
+
+          }
+        );
+
     }
 
   } else {
@@ -1719,40 +2563,70 @@ function openTaskModal(
         "taskModalHeader"
       )
       .textContent =
-      "Add a Task";
-
+      "Add Checklist Item";
 
     document
       .getElementById(
         "taskModalSubmitBtn"
       )
       .textContent =
-      "Add Task";
+      "Create Task";
 
 
-    textInput.value =
-      "";
+    textInput.value = "";
+
+    dateInput.value =
+      getTodayISO();
+
+    hourInput.value = "";
+
+    minuteInput.value = "";
+
+    ampmInput.value = "AM";
+
+    toggleAllModalDays(true);
 
   }
 
 
-  modal.classList.add(
-    "open"
-  );
-
+  modal.classList.add("open");
 
   setTimeout(() => {
 
     textInput.focus();
 
-  }, 50);
+  },50);
+
+}
+
+
+/* =========================================================
+   DAY SELECTOR
+========================================================= */
+
+function toggleAllModalDays(
+  status
+) {
+
+  document
+    .querySelectorAll(
+      ".modal-day"
+    )
+    .forEach(
+      checkbox => {
+
+        checkbox.checked =
+          status;
+
+      }
+    );
 
 }
 
 
 /* =========================================================
    SAVE TASK
-   ========================================================= */
+========================================================= */
 
 function handleTaskModalSubmit(
   event
@@ -1777,19 +2651,82 @@ function handleTaskModalSubmit(
 
 
   const text =
-    document
-      .getElementById(
-        "taskModalTextInput"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "taskModalTextInput"
+    ).value.trim();
 
 
-  if (!text) {
+  const startDate =
+    document.getElementById(
+      "taskStartDate"
+    ).value;
 
+
+  if (!text || !startDate) {
     return;
+  }
+
+
+  const hour =
+    document.getElementById(
+      "timeHour"
+    ).value;
+
+
+  const minute =
+    document.getElementById(
+      "timeMinute"
+    ).value;
+
+
+  const ampm =
+    document.getElementById(
+      "timeAmpm"
+    ).value;
+
+
+  let targetTime = "—";
+
+
+  if (
+    hour &&
+    minute !== ""
+  ) {
+
+    const cleanMinute =
+      String(
+        minute
+      ).padStart(2,"0");
+
+
+    targetTime =
+      `${hour}:${cleanMinute} ${ampm}`;
 
   }
+
+
+  const selectedDays = [];
+
+
+  document
+    .querySelectorAll(
+      ".modal-day"
+    )
+    .forEach(
+      checkbox => {
+
+        if (
+          checkbox.checked
+        ) {
+
+          selectedDays.push(
+            checkbox.value
+          );
+
+        }
+
+      }
+    );
 
 
   const list =
@@ -1800,15 +2737,9 @@ function handleTaskModalSubmit(
 
 
   if (!list) {
-
     return;
-
   }
 
-
-  /*
-   * EDIT EXISTING TASK
-   */
 
   if (itemIdString) {
 
@@ -1831,27 +2762,46 @@ function handleTaskModalSubmit(
       task.text =
         text;
 
+      task.startDate =
+        startDate;
+
+      task.targetTime =
+        targetTime;
+
+      task.days =
+        selectedDays;
+
+      /*
+       * Editing a completed task does NOT
+       * automatically un-complete it.
+       */
+
+      task.isOverdue = false;
+
     }
 
-  }
-
-
-  /*
-   * CREATE NEW TASK
-   */
-
-  else {
+  } else {
 
     list.items.push({
 
-      id:
-        Date.now(),
+      id: Date.now(),
 
-      text:
-        text,
+      text: text,
 
-      done:
-        false
+      startDate:
+        startDate,
+
+      targetTime:
+        targetTime,
+
+      days:
+        selectedDays,
+
+      done: false,
+
+      completedAt: null,
+
+      isOverdue: false
 
     });
 
@@ -1860,18 +2810,16 @@ function handleTaskModalSubmit(
 
   saveStateToStorage();
 
-
   closeTaskModal();
 
-
-  renderAllHubLists();
+  renderAll();
 
 }
 
 
 /* =========================================================
    TOGGLE TASK
-   ========================================================= */
+========================================================= */
 
 function toggleChecklistItemState(
   listId,
@@ -1884,11 +2832,8 @@ function toggleChecklistItemState(
         item.id === listId
     );
 
-
   if (!list) {
-
     return;
-
   }
 
 
@@ -1898,11 +2843,8 @@ function toggleChecklistItemState(
         item.id === itemId
     );
 
-
   if (!task) {
-
     return;
-
   }
 
 
@@ -1910,17 +2852,30 @@ function toggleChecklistItemState(
     !task.done;
 
 
+  if (task.done) {
+
+    task.isOverdue = false;
+
+    task.completedAt =
+      new Date().toISOString();
+
+  } else {
+
+    task.completedAt = null;
+
+  }
+
+
   saveStateToStorage();
 
-
-  renderAllHubLists();
+  renderAll();
 
 }
 
 
 /* =========================================================
    DELETE TASK
-   ========================================================= */
+========================================================= */
 
 function deleteSingleChecklistItem(
   listId,
@@ -1933,11 +2888,8 @@ function deleteSingleChecklistItem(
         item.id === listId
     );
 
-
   if (!list) {
-
     return;
-
   }
 
 
@@ -1947,11 +2899,8 @@ function deleteSingleChecklistItem(
         item.id === itemId
     );
 
-
   if (!task) {
-
     return;
-
   }
 
 
@@ -1960,9 +2909,7 @@ function deleteSingleChecklistItem(
       `Delete "${task.text}"?`
     )
   ) {
-
     return;
-
   }
 
 
@@ -1975,19 +2922,522 @@ function deleteSingleChecklistItem(
 
   saveStateToStorage();
 
+  renderAll();
 
-  renderAllHubLists();
+}
+
+
+/* =========================================================
+   CLEAR COMPLETED
+========================================================= */
+
+function clearCompletedTasks() {
+
+  let completedCount = 0;
+
+
+  hubLists.forEach(
+    list => {
+
+      completedCount +=
+        list.items.filter(
+          task =>
+            task.done
+        ).length;
+
+    }
+  );
+
+
+  if (completedCount === 0) {
+
+    alert(
+      "There are no completed tasks to clear."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !confirm(
+      `Clear all ${completedCount} completed task${completedCount === 1 ? "" : "s"}?`
+    )
+  ) {
+    return;
+  }
+
+
+  hubLists.forEach(
+    list => {
+
+      list.items =
+        list.items.filter(
+          task =>
+            !task.done
+        );
+
+    }
+  );
+
+
+  saveStateToStorage();
+
+  renderAll();
+
+}
+
+
+/* =========================================================
+   TIME PARSER
+========================================================= */
+
+function convertTimeToMinutes(
+  timeString
+) {
+
+  if (
+    !timeString ||
+    timeString === "—"
+  ) {
+    return null;
+  }
+
+
+  const parts =
+    timeString
+      .trim()
+      .split(" ");
+
+
+  if (parts.length !== 2) {
+    return null;
+  }
+
+
+  const time =
+    parts[0].split(":");
+
+
+  if (time.length !== 2) {
+    return null;
+  }
+
+
+  let hours =
+    parseInt(
+      time[0],
+      10
+    );
+
+
+  const minutes =
+    parseInt(
+      time[1],
+      10
+    );
+
+
+  const ampm =
+    parts[1].toUpperCase();
+
+
+  if (
+    Number.isNaN(hours) ||
+    Number.isNaN(minutes)
+  ) {
+    return null;
+  }
+
+
+  if (
+    ampm === "PM" &&
+    hours !== 12
+  ) {
+    hours += 12;
+  }
+
+
+  if (
+    ampm === "AM" &&
+    hours === 12
+  ) {
+    hours = 0;
+  }
+
+
+  return (
+    hours * 60 +
+    minutes
+  );
+
+}
+
+
+/* =========================================================
+   DAY CHECK
+========================================================= */
+
+function taskRunsToday(task) {
+
+  const today =
+    getTodayISO();
+
+
+  if (
+    task.startDate &&
+    task.startDate > today
+  ) {
+    return false;
+  }
+
+
+  const days =
+    task.days || [];
+
+
+  if (days.length === 0) {
+    return true;
+  }
+
+
+  const dayNames = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+  ];
+
+
+  const currentDay =
+    dayNames[
+      new Date().getDay()
+    ];
+
+
+  return days.includes(
+    currentDay
+  );
+
+}
+
+
+/* =========================================================
+   UPCOMING CHECK
+========================================================= */
+
+function isUpcomingTask(task) {
+
+  if (task.done) {
+    return false;
+  }
+
+
+  const today =
+    getTodayISO();
+
+
+  if (
+    task.startDate &&
+    task.startDate > today
+  ) {
+    return true;
+  }
+
+
+  return false;
+
+}
+
+
+/* =========================================================
+   OVERDUE ENGINE
+========================================================= */
+
+function checkOverdueTaskStates() {
+
+  const now =
+    new Date();
+
+
+  const today =
+    getTodayISO();
+
+
+  const dayNames = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+  ];
+
+
+  const currentDay =
+    dayNames[
+      now.getDay()
+    ];
+
+
+  const currentMinutes =
+    now.getHours() * 60 +
+    now.getMinutes();
+
+
+  let changed = false;
+
+
+  hubLists.forEach(
+    list => {
+
+      list.items.forEach(
+        task => {
+
+          if (task.done) {
+
+            if (
+              task.isOverdue
+            ) {
+
+              task.isOverdue =
+                false;
+
+              changed = true;
+
+            }
+
+            return;
+
+          }
+
+
+          /*
+           * A future-starting task can NEVER
+           * be overdue yet.
+           */
+
+          if (
+            task.startDate &&
+            task.startDate > today
+          ) {
+
+            if (
+              task.isOverdue
+            ) {
+
+              task.isOverdue =
+                false;
+
+              changed = true;
+
+            }
+
+            return;
+
+          }
+
+
+          const activeDays =
+            task.days || [];
+
+
+          const dayApplies =
+            activeDays.length === 0 ||
+            activeDays.includes(
+              currentDay
+            );
+
+
+          const targetMinutes =
+            convertTimeToMinutes(
+              task.targetTime
+            );
+
+
+          if (
+            targetMinutes === null
+          ) {
+
+            if (
+              task.isOverdue
+            ) {
+
+              task.isOverdue =
+                false;
+
+              changed = true;
+
+            }
+
+            return;
+
+          }
+
+
+          const shouldBeOverdue =
+            dayApplies &&
+            currentMinutes >=
+              targetMinutes;
+
+
+          if (
+            task.isOverdue !==
+            shouldBeOverdue
+          ) {
+
+            task.isOverdue =
+              shouldBeOverdue;
+
+            changed = true;
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  if (changed) {
+
+    saveStateToStorage();
+
+  }
+
+}
+
+
+/* =========================================================
+   MIDNIGHT RESET
+========================================================= */
+
+function evaluateMidnightReset() {
+
+  const today =
+    getTodayISO();
+
+
+  const lastReset =
+    localStorage.getItem(
+      RESET_KEY
+    );
+
+
+  if (
+    lastReset === today
+  ) {
+    return;
+  }
+
+
+  const dayNames = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+  ];
+
+
+  const currentDay =
+    dayNames[
+      new Date().getDay()
+    ];
+
+
+  let changed = false;
+
+
+  hubLists.forEach(
+    list => {
+
+      list.items.forEach(
+        task => {
+
+          const startDate =
+            task.startDate ||
+            today;
+
+
+          const hasStarted =
+            startDate <= today;
+
+
+          const days =
+            task.days || [];
+
+
+          const shouldRunToday =
+            days.length === 0 ||
+            days.includes(
+              currentDay
+            );
+
+
+          if (
+            hasStarted &&
+            shouldRunToday &&
+            task.done
+          ) {
+
+            /*
+             * Only reset recurring tasks.
+             * One-time tasks remain completed.
+             */
+
+            if (
+              days.length > 0
+            ) {
+
+              task.done =
+                false;
+
+              task.completedAt =
+                null;
+
+              task.isOverdue =
+                false;
+
+              changed = true;
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  localStorage.setItem(
+    RESET_KEY,
+    today
+  );
+
+
+  if (changed) {
+    saveStateToStorage();
+  }
 
 }
 
 
 /* =========================================================
    HTML SAFETY
-   ========================================================= */
+========================================================= */
 
-function escapeHTML(
-  value
-) {
+function escapeHTML(value) {
 
   return String(value)
 
@@ -2020,10 +3470,199 @@ function escapeHTML(
 
 
 /* =========================================================
-   RENDER LISTS
-   ========================================================= */
+   TASK HTML
+========================================================= */
 
-function renderAllHubLists() {
+function createTaskHTML(
+  list,
+  task,
+  showStartDate = false
+) {
+
+  const activeDays =
+    task.days || [];
+
+
+  const baseDays = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+  ];
+
+
+  const dayBadges =
+    baseDays.map(
+      day => {
+
+        const active =
+          activeDays.includes(
+            day
+          );
+
+        return `
+
+          <span
+            class="
+              mini-day-pill
+              ${active ? "active" : ""}
+            "
+          >
+            ${day}
+          </span>
+
+        `;
+
+      }
+    ).join("");
+
+
+  const safeText =
+    escapeHTML(
+      task.text
+    );
+
+
+  const timeHTML =
+    task.targetTime !== "—"
+
+      ? `
+
+        <span class="meta-target">
+          ⏰
+          ${escapeHTML(
+            task.targetTime
+          )}
+        </span>
+
+      `
+
+      : "";
+
+
+  const dateHTML =
+    showStartDate &&
+    task.startDate
+
+      ? `
+
+        <span class="meta-date">
+          📅
+          ${escapeHTML(
+            formatShortDate(
+              task.startDate
+            )
+          )}
+        </span>
+
+      `
+
+      : "";
+
+
+  return `
+
+    <div
+      class="
+        todo-row
+        ${task.done ? "done" : ""}
+        ${task.isOverdue ? "overdue" : ""}
+      "
+    >
+
+      <input
+        type="checkbox"
+
+        id="
+          task-${list.id}-${task.id}
+        "
+
+        ${task.done ? "checked" : ""}
+
+        onchange="
+          toggleChecklistItemState(
+            ${list.id},
+            ${task.id}
+          )
+        "
+      >
+
+
+      <label
+        for="
+          task-${list.id}-${task.id}
+        "
+      >
+        ${safeText}
+      </label>
+
+
+      <div class="todo-meta">
+
+        ${dateHTML}
+
+        ${timeHTML}
+
+        <div class="days-badge-row">
+          ${dayBadges}
+        </div>
+
+      </div>
+
+
+      <button
+        class="action-icon-btn"
+
+        title="Edit Task"
+
+        aria-label="Edit Task"
+
+        onclick="
+          openTaskModal(
+            ${list.id},
+            ${task.id}
+          )
+        "
+      >
+        ✏️
+      </button>
+
+
+      <button
+        class="
+          action-icon-btn
+          delete
+        "
+
+        title="Delete Task"
+
+        aria-label="Delete Task"
+
+        onclick="
+          deleteSingleChecklistItem(
+            ${list.id},
+            ${task.id}
+          )
+        "
+      >
+        ✕
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function renderDashboard() {
 
   const container =
     document.getElementById(
@@ -2031,16 +3670,53 @@ function renderAllHubLists() {
     );
 
 
-  if (!container) {
-
-    return;
-
-  }
+  const today =
+    getTodayISO();
 
 
-  /*
-   * NO LISTS YET
-   */
+  let totalToday = 0;
+
+  let completedToday = 0;
+
+
+  hubLists.forEach(
+    list => {
+
+      list.items.forEach(
+        task => {
+
+          if (
+            task.startDate &&
+            task.startDate > today
+          ) {
+            return;
+          }
+
+
+          if (
+            taskRunsToday(task)
+          ) {
+
+            totalToday++;
+
+            if (task.done) {
+              completedToday++;
+            }
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  document.getElementById(
+    "todaySubtitle"
+  ).textContent =
+    `${totalToday} active today • ${completedToday} completed`;
+
 
   if (
     hubLists.length === 0
@@ -2053,17 +3729,13 @@ function renderAllHubLists() {
         style="grid-column:1/-1;"
       >
 
-        <strong>
-          No lists yet.
-        </strong>
+        No tracking lists yet.
 
-        <br>
+        <br><br>
 
         Click
-        <strong>
-          ＋ New List
-        </strong>
-        above to get started.
+        <strong>＋ New List</strong>
+        to create your first list.
 
       </div>
 
@@ -2073,10 +3745,6 @@ function renderAllHubLists() {
 
   }
 
-
-  /*
-   * RENDER EVERY LIST
-   */
 
   container.innerHTML =
     hubLists.map(
@@ -2090,120 +3758,30 @@ function renderAllHubLists() {
             : [];
 
 
-        const completed =
+        const todayItems =
           items.filter(
+            task =>
+              taskRunsToday(task)
+          );
+
+
+        const completed =
+          todayItems.filter(
             task =>
               task.done
           ).length;
 
 
-        /*
-         * RENDER TASKS
-         */
-
         const taskHTML =
-          items.map(
-            task => {
-
-              const safeText =
-                escapeHTML(
-                  task.text
-                );
-
-
-              return `
-
-                <div
-                  class="
-                    todo-row
-                    ${
-                      task.done
-                        ? "done"
-                        : ""
-                    }
-                  "
-                >
-
-                  <input
-                    type="checkbox"
-
-                    id="
-                      task-${list.id}-${task.id}
-                    "
-
-                    ${
-                      task.done
-                        ? "checked"
-                        : ""
-                    }
-
-                    onchange="
-                      toggleChecklistItemState(
-                        ${list.id},
-                        ${task.id}
-                      )
-                    "
-                  >
-
-
-                  <label
-                    for="
-                      task-${list.id}-${task.id}
-                    "
-                  >
-                    ${safeText}
-                  </label>
-
-
-                  <button
-                    class="action-icon-btn"
-
-                    title="Edit task"
-
-                    aria-label="Edit task"
-
-                    onclick="
-                      openTaskModal(
-                        ${list.id},
-                        ${task.id}
-                      )
-                    "
-                  >
-                    ✏️
-                  </button>
-
-
-                  <button
-                    class="
-                      action-icon-btn
-                      delete
-                    "
-
-                    title="Delete task"
-
-                    aria-label="Delete task"
-
-                    onclick="
-                      deleteSingleChecklistItem(
-                        ${list.id},
-                        ${task.id}
-                      )
-                    "
-                  >
-                    ✕
-                  </button>
-
-                </div>
-
-              `;
-
-            }
+          todayItems.map(
+            task =>
+              createTaskHTML(
+                list,
+                task,
+                true
+              )
           ).join("");
 
-
-        /*
-         * RENDER LIST
-         */
 
         return `
 
@@ -2211,14 +3789,9 @@ function renderAllHubLists() {
             class="dynamic-list-card"
           >
 
+            <div class="list-header">
 
-            <div
-              class="list-header"
-            >
-
-              <div
-                class="list-title-wrap"
-              >
+              <div class="list-title-wrap">
 
                 <h2>
                   ${escapeHTML(
@@ -2226,11 +3799,8 @@ function renderAllHubLists() {
                   )}
                 </h2>
 
-
-                <div
-                  class="list-count"
-                >
-                  ${completed}/${items.length}
+                <div class="list-count">
+                  ${completed}/${todayItems.length}
                   completed
                 </div>
 
@@ -2252,25 +3822,22 @@ function renderAllHubLists() {
             </div>
 
 
-            <div
-              class="item-box"
-            >
+            <div class="item-box">
 
               ${
-                items.length === 0
+                todayItems.length === 0
 
                   ? `
 
-                    <div
-                      class="empty"
-                    >
+                    <div class="empty">
 
-                      No tasks yet.
+                      No active tasks for today.
 
-                      <br>
+                      <br><br>
 
-                      Add your first task
-                      below.
+                      Add a task using the
+                      <strong>＋ Add Task</strong>
+                      button below.
 
                     </div>
 
@@ -2282,9 +3849,11 @@ function renderAllHubLists() {
             </div>
 
 
+            <!-- THIS IS THE ONLY PLACE
+                 WHERE A TASK CAN BE ADDED -->
+
             <button
               class="btn"
-
               style="width:100%;"
 
               onclick="
@@ -2295,7 +3864,6 @@ function renderAllHubLists() {
             >
               ＋ Add Task
             </button>
-
 
           </section>
 
@@ -2308,10 +3876,345 @@ function renderAllHubLists() {
 
 
 /* =========================================================
-   START APP
-   ========================================================= */
+   UPCOMING
+========================================================= */
 
-renderAllHubLists();
+function renderUpcoming() {
+
+  const container =
+    document.getElementById(
+      "upcomingContainer"
+    );
+
+
+  const today =
+    getTodayISO();
+
+
+  const upcomingGroups = [];
+
+
+  hubLists.forEach(
+    list => {
+
+      const upcoming =
+        list.items.filter(
+          task =>
+            !task.done &&
+            task.startDate &&
+            task.startDate > today
+        );
+
+
+      if (upcoming.length > 0) {
+
+        upcomingGroups.push({
+          list,
+          items: upcoming
+        });
+
+      }
+
+    }
+  );
+
+
+  if (
+    upcomingGroups.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div
+        class="empty"
+        style="grid-column:1/-1;"
+      >
+
+        No upcoming tasks.
+
+        <br><br>
+
+        Tasks with a future start date
+        will appear here.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /*
+   * Sort each list's tasks by date.
+   */
+
+  upcomingGroups.forEach(
+    group => {
+
+      group.items.sort(
+        (a,b) =>
+          a.startDate.localeCompare(
+            b.startDate
+          )
+      );
+
+    }
+  );
+
+
+  container.innerHTML =
+    upcomingGroups.map(
+      group => {
+
+        const list =
+          group.list;
+
+        const items =
+          group.items;
+
+
+        const taskHTML =
+          items.map(
+            task =>
+              createTaskHTML(
+                list,
+                task,
+                true
+              )
+          ).join("");
+
+
+        return `
+
+          <section
+            class="dynamic-list-card"
+          >
+
+            <div class="list-header">
+
+              <div class="list-title-wrap">
+
+                <h2>
+                  ${escapeHTML(
+                    list.title
+                  )}
+                </h2>
+
+                <div class="list-count">
+                  ${items.length}
+                  upcoming
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="item-box">
+              ${taskHTML}
+            </div>
+
+
+            <button
+              class="btn"
+              style="width:100%;"
+
+              onclick="
+                openTaskModal(
+                  ${list.id}
+                )
+              "
+            >
+              ＋ Add Task
+            </button>
+
+          </section>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================================================
+   COMPLETED
+========================================================= */
+
+function renderCompleted() {
+
+  const container =
+    document.getElementById(
+      "completedContainer"
+    );
+
+
+  const completedGroups = [];
+
+
+  hubLists.forEach(
+    list => {
+
+      const completed =
+        list.items.filter(
+          task =>
+            task.done
+        );
+
+
+      if (completed.length > 0) {
+
+        completedGroups.push({
+          list,
+          items: completed
+        });
+
+      }
+
+    }
+  );
+
+
+  if (
+    completedGroups.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div
+        class="empty"
+        style="grid-column:1/-1;"
+      >
+
+        No completed tasks yet.
+
+        <br><br>
+
+        Finish a task from the
+        Dashboard and it will appear here.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    completedGroups.map(
+      group => {
+
+        const list =
+          group.list;
+
+        const items =
+          group.items;
+
+
+        const taskHTML =
+          items.map(
+            task =>
+              createTaskHTML(
+                list,
+                task,
+                true
+              )
+          ).join("");
+
+
+        return `
+
+          <section
+            class="dynamic-list-card"
+          >
+
+            <div class="list-header">
+
+              <div class="list-title-wrap">
+
+                <h2>
+                  ${escapeHTML(
+                    list.title
+                  )}
+                </h2>
+
+                <div class="list-count">
+                  ${items.length}
+                  completed
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="item-box">
+              ${taskHTML}
+            </div>
+
+          </section>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================================================
+   TODAY STATS
+========================================================= */
+
+function updateTodayStats() {
+
+  if (
+    currentTab !== "dashboard"
+  ) {
+    return;
+  }
+
+  /*
+   * Render is already inexpensive,
+   * so this keeps the numbers accurate
+   * when the clock crosses midnight.
+   */
+
+}
+
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function renderAll() {
+
+  renderDashboard();
+
+  renderUpcoming();
+
+  renderCompleted();
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+renderAll();
+
+runLiveSystemClock();
+
+setInterval(
+  runLiveSystemClock,
+  1000
+);
 
 </script>
 
