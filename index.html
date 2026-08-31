@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#03060f">
+
+<title>Grind Hub</title>
+
+<style>
+
+/* =========================================================
+   GRIND HUB
+   Simple, clean, beginner-friendly task manager
+   ========================================================= */
+
+:root {
+  --bg: #03060f;
+  --panel: #0b0f19;
+  --panel-2: #10172a;
+  --line: #1c2943;
+  --line-light: #263654;
+
+  --text: #f4f7ff;
+  --muted: #7889a8;
+
+  --cyan: #00f0ff;
+  --purple: #bd00ff;
+  --red: #ff2d63;
+
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================================================
+   GENERAL
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  padding-bottom: 60px;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: var(--text);
+
+  background:
+    radial-gradient(
+      circle at 15% -10%,
+      rgba(90, 0, 180, 0.35),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(0, 180, 255, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #03060f 0%,
+      #040712 100%
+    );
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050913;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1c2a45;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #294064;
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app {
+  width: min(1000px, calc(100% - 32px));
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   LIVE CLOCK
+   ========================================================= */
+
+.top-clock {
+  position: fixed;
+
+  top: 18px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 8px 16px;
+
+  color: var(--cyan);
+
+  background:
+    rgba(0, 240, 255, 0.05);
+
+  border:
+    1px solid rgba(0, 240, 255, 0.15);
+
+  border-radius: 10px;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  letter-spacing: 0.5px;
+
+  box-shadow:
+    0 0 25px rgba(0, 240, 255, 0.08);
+
+  z-index: 100;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 85px 0 25px;
+
+  margin-bottom: 25px;
+
+  border-bottom:
+    1px solid var(--line);
+}
+
+.brand h1 {
+  margin: 0;
+
+  font-size:
+    clamp(28px, 5vw, 38px);
+
+  font-weight: 950;
+
+  letter-spacing: 1px;
+
+  color: #fff;
+
+  text-shadow:
+    0 0 20px
+    rgba(0, 240, 255, 0.18);
+}
+
+.brand p {
+  margin: 7px 0 0;
+
+  color: var(--muted);
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 44px;
+
+  padding: 10px 17px;
+
+  color: var(--text);
+
+  background:
+    var(--panel-2);
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 11px;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.btn:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    var(--cyan);
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 240, 255, 0.12);
+}
+
+.btn:active {
+  transform:
+    translateY(0);
+}
+
+.btn.primary {
+  color: #02040a;
+
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      #3ce4ff 35%,
+      var(--purple)
+    );
+
+  box-shadow:
+    0 8px 30px
+    rgba(0, 240, 255, 0.12);
+}
+
+.btn.primary:hover {
+  color: #02040a;
+
+  box-shadow:
+    0 10px 35px
+    rgba(189, 0, 255, 0.28);
+}
+
+.btn.danger {
+  min-height: 34px;
+
+  padding: 7px 11px;
+
+  color: var(--red);
+
+  background:
+    rgba(255, 45, 99, 0.07);
+
+  border-color:
+    rgba(255, 45, 99, 0.35);
+
+  font-size: 11px;
+}
+
+.btn.danger:hover {
+  color: white;
+
+  background:
+    var(--red);
+
+  border-color:
+    var(--red);
+}
+
+
+/* =========================================================
+   WELCOME
+   ========================================================= */
+
+.welcome {
+  margin-bottom: 22px;
+}
+
+.welcome h2 {
+  margin: 0 0 7px;
+
+  font-size: 21px;
+
+  font-weight: 900;
+}
+
+.welcome p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   LIST DASHBOARD
+   ========================================================= */
+
+.list-container {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.dynamic-list-card {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 16, 29, 0.98),
+      rgba(5, 9, 17, 0.98)
+    );
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 20px;
+
+  box-shadow:
+    var(--shadow);
+}
+
+
+/* =========================================================
+   LIST HEADER
+   ========================================================= */
+
+.list-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding-bottom: 13px;
+
+  border-bottom:
+    1px dashed var(--line);
+}
+
+.list-title-wrap {
+  min-width: 0;
+}
+
+.list-header h2 {
+  overflow: hidden;
+
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 17px;
+
+  font-weight: 900;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.list-count {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+/* =========================================================
+   TASK CONTAINER
+   ========================================================= */
+
+.item-box {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+
+  max-height: 450px;
+
+  overflow-y: auto;
+
+  padding-right: 3px;
+}
+
+
+/* =========================================================
+   TASK ROW
+   ========================================================= */
+
+.todo-row {
+  display: grid;
+
+  grid-template-columns:
+    auto minmax(0, 1fr) auto auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 12px;
+
+  background:
+    rgba(11, 16, 28, 0.92);
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 13px;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.todo-row:hover {
+  background:
+    #0d1423;
+
+  border-color:
+    var(--line-light);
+}
+
+.todo-row.done {
+  opacity: 0.48;
+
+  background:
+    #04070d !important;
+
+  border-color:
+    rgba(30, 41, 66, 0.45) !important;
+}
+
+
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.todo-row input[type="checkbox"] {
+  width: 18px;
+
+  height: 18px;
+
+  margin: 0;
+
+  cursor: pointer;
+
+  accent-color:
+    var(--cyan);
+}
+
+
+/* =========================================================
+   TASK TEXT
+   ========================================================= */
+
+.todo-row label {
+  min-width: 0;
+
+  color:
+    #e9eef9;
+
+  font-size: 13px;
+
+  line-height: 1.45;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  overflow-wrap: anywhere;
+}
+
+.todo-row.done label {
+  color:
+    var(--muted);
+
+  text-decoration:
+    line-through;
+}
+
+
+/* =========================================================
+   TASK ACTION BUTTONS
+   ========================================================= */
+
+.action-icon-btn {
+  width: 30px;
+
+  height: 30px;
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 0;
+
+  color:
+    var(--muted);
+
+  background:
+    transparent;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+
+  transition:
+    0.2s ease;
+}
+
+.action-icon-btn:hover {
+  color:
+    var(--cyan);
+
+  background:
+    rgba(0, 240, 255, 0.06);
+
+  border-color:
+    rgba(0, 240, 255, 0.12);
+}
+
+.action-icon-btn.delete:hover {
+  color:
+    var(--red);
+
+  background:
+    rgba(255, 45, 99, 0.08);
+
+  border-color:
+    rgba(255, 45, 99, 0.14);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty {
+  padding: 35px 20px;
+
+  color:
+    var(--muted);
+
+  background:
+    rgba(7, 11, 20, 0.8);
+
+  border:
+    1px dashed var(--line);
+
+  border-radius: 14px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  line-height: 1.6;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 500;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+
+  background:
+    rgba(1, 2, 6, 0.82);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.modal.open {
+  display: flex;
+
+  animation:
+    fadeIn 0.18s ease;
+}
+
+.modal-box {
+  width:
+    min(450px, 100%);
+
+  max-height:
+    calc(100vh - 36px);
+
+  overflow-y: auto;
+
+  padding: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0a0f1b,
+      #050912
+    );
+
+  border:
+    1px solid var(--line-light);
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 30px 90px
+    rgba(0, 0, 0, 0.8),
+
+    0 0 40px
+    rgba(0, 240, 255, 0.04);
+
+  animation:
+    modalIn 0.22s ease;
+}
+
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.modal-head {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 22px;
+}
+
+.modal-head h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 19px;
+
+  font-weight: 900;
+}
+
+.close {
+  width: 34px;
+
+  height: 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  color:
+    var(--muted);
+
+  background:
+    #121a2c;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  font-weight: 900;
+
+  transition:
+    0.2s ease;
+}
+
+.close:hover {
+  color: #fff;
+
+  background:
+    var(--red);
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 17px;
+}
+
+form label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    var(--muted);
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.6px;
+}
+
+input {
+  width: 100%;
+
+  padding: 12px;
+
+  color: white;
+
+  background:
+    #03060f;
+
+  border:
+    1px solid var(--line);
+
+  border-radius: 11px;
+
+  outline: none;
+
+  transition:
+    0.2s ease;
+}
+
+input::placeholder {
+  color:
+    #465675;
+}
+
+input:focus {
+  border-color:
+    var(--cyan);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(0, 240, 255, 0.07);
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.form-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  margin-top: 6px;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+@keyframes modalIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 750px) {
+
+  .list-container {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (max-width: 550px) {
+
+  .app {
+    width:
+      min(
+        100% - 20px,
+        1000px
+      );
+  }
+
+  header {
+    padding-top: 85px;
+  }
+
+  .brand h1 {
+    font-size: 28px;
+  }
+
+  .brand p {
+    font-size: 11px;
+  }
+
+  .header-actions .btn {
+    padding:
+      10px 12px;
+  }
+
+  .todo-row {
+    grid-template-columns:
+      auto minmax(0, 1fr) auto;
+  }
+
+  .modal-box {
+    padding: 20px;
+  }
+
+}
+
+
+@media (max-width: 400px) {
+
+  .header-actions .btn {
+    font-size: 0;
+  }
+
+  .header-actions .btn::before {
+    content: "+";
+
+    font-size: 18px;
+  }
+
+  .top-clock {
+    font-size: 17px;
+
+    padding:
+      7px 12px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     LIVE CLOCK
+     ======================================================= -->
+
+<div
+  class="top-clock"
+  id="liveClock"
+>
+  12:00:00 AM
+</div>
+
+
+<div class="app">
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header>
+
+    <div class="brand">
+
+      <h1>
+        GRIND HUB
+      </h1>
+
+      <p>
+        Simple task and checklist manager
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <button
+        class="btn primary"
+        onclick="openHubModal()"
+      >
+        ＋ New List
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       WELCOME
+       ===================================================== -->
+
+  <section class="welcome">
+
+    <h2>
+      Your Lists
+    </h2>
+
+    <p>
+      Create a list, add tasks, and check them off when you're done.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       LISTS
+       ===================================================== -->
+
+  <main
+    class="list-container"
+    id="hubListsWrapper"
+  ></main>
+
+
+</div>
+
+
+<!-- =======================================================
+     NEW LIST MODAL
+     ======================================================= -->
+
+<div
+  id="hubListModal"
+  class="modal"
+  onclick="closeModalFromBackground(event, 'hubListModal')"
+>
+
+  <div class="modal-box">
+
+
+    <div class="modal-head">
+
+      <h2>
+        Create a New List
+      </h2>
+
+
+      <button
+        class="close"
+        onclick="closeHubModal()"
+        aria-label="Close"
+      >
+        ✕
+      </button>
+
+    </div>
+
+
+    <form
+      onsubmit="handleCreateHubList(event)"
+    >
+
+      <div>
+
+        <label
+          for="listTitleInput"
+        >
+          List Name
+        </label>
+
+
+        <input
+          type="text"
+          id="listTitleInput"
+
+          required
+
+          maxlength="60"
+
+          placeholder="Example: Things to Do"
+        >
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn"
+          onclick="closeHubModal()"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="submit"
+          class="btn primary"
+        >
+          Create List
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =======================================================
+     TASK MODAL
+     ======================================================= -->
+
+<div
+  id="taskEditModal"
+  class="modal"
+  onclick="closeModalFromBackground(event, 'taskEditModal')"
+>
+
+  <div class="modal-box">
+
+
+    <div class="modal-head">
+
+      <h2
+        id="taskModalHeader"
+      >
+        Add a Task
+      </h2>
+
+
+      <button
+        class="close"
+        onclick="closeTaskModal()"
+        aria-label="Close"
+      >
+        ✕
+      </button>
+
+    </div>
+
+
+    <form
+      id="taskModalForm"
+      onsubmit="handleTaskModalSubmit(event)"
+    >
+
+
+      <!-- Hidden information used by the app -->
+
+      <input
+        type="hidden"
+        id="taskModalListId"
+      >
+
+      <input
+        type="hidden"
+        id="taskModalItemId"
+      >
+
+
+      <!-- TASK -->
+
+      <div>
+
+        <label
+          for="taskModalTextInput"
+        >
+          What needs to be done?
+        </label>
+
+
+        <input
+          type="text"
+          id="taskModalTextInput"
+
+          required
+
+          maxlength="120"
+
+          placeholder="Example: Call the doctor"
+        >
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn"
+          onclick="closeTaskModal()"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="submit"
+          class="btn primary"
+          id="taskModalSubmitBtn"
+        >
+          Add Task
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   STORAGE
+   ========================================================= */
+
+const STORAGE_KEY =
+  "grind_hub_simple_v1";
+
+
+let hubLists =
+  loadLists();
+
+
+function loadLists() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
+
+    if (saved) {
+
+      const parsed =
+        JSON.parse(saved);
+
+
+      if (Array.isArray(parsed)) {
+
+        return parsed;
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Could not load saved data:",
+      error
+    );
+
+  }
+
+
+  /*
+   * Start empty.
+   * The person using the app
+   * creates their own lists.
+   */
+
+  return [];
+
+}
+
+
+function saveStateToStorage() {
+
+  try {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(
+        hubLists
+      )
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Could not save data:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LIVE CLOCK
+   ========================================================= */
+
+function updateClock() {
+
+  const now =
+    new Date();
+
+
+  let hours =
+    now.getHours();
+
+
+  const minutes =
+    String(
+      now.getMinutes()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const seconds =
+    String(
+      now.getSeconds()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const ampm =
+    hours >= 12
+      ? "PM"
+      : "AM";
+
+
+  hours =
+    hours % 12 || 12;
+
+
+  const clock =
+    document.getElementById(
+      "liveClock"
+    );
+
+
+  if (clock) {
+
+    clock.textContent =
+      `${hours}:${minutes}:${seconds} ${ampm}`;
+
+  }
+
+}
+
+
+updateClock();
+
+
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/* =========================================================
+   MODALS
+   ========================================================= */
+
+function openHubModal() {
+
+  const modal =
+    document.getElementById(
+      "hubListModal"
+    );
+
+
+  modal.classList.add(
+    "open"
+  );
+
+
+  setTimeout(() => {
+
+    document
+      .getElementById(
+        "listTitleInput"
+      )
+      .focus();
+
+  }, 50);
+
+}
+
+
+function closeHubModal() {
+
+  document
+    .getElementById(
+      "hubListModal"
+    )
+    .classList.remove(
+      "open"
+    );
+
+
+  document
+    .getElementById(
+      "listTitleInput"
+    )
+    .value = "";
+
+}
+
+
+function closeTaskModal() {
+
+  document
+    .getElementById(
+      "taskEditModal"
+    )
+    .classList.remove(
+      "open"
+    );
+
+
+  document
+    .getElementById(
+      "taskModalForm"
+    )
+    .reset();
+
+}
+
+
+function closeModalFromBackground(
+  event,
+  modalId
+) {
+
+  if (
+    event.target.id !== modalId
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    modalId === "hubListModal"
+  ) {
+
+    closeHubModal();
+
+  }
+
+
+  if (
+    modalId === "taskEditModal"
+  ) {
+
+    closeTaskModal();
+
+  }
+
+}
+
+
+/* =========================================================
+   ESCAPE KEY
+   ========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key !== "Escape"
+    ) {
+
+      return;
+
+    }
+
+
+    const hubModal =
+      document.getElementById(
+        "hubListModal"
+      );
+
+
+    const taskModal =
+      document.getElementById(
+        "taskEditModal"
+      );
+
+
+    if (
+      hubModal.classList.contains(
+        "open"
+      )
+    ) {
+
+      closeHubModal();
+
+    }
+
+
+    if (
+      taskModal.classList.contains(
+        "open"
+      )
+    ) {
+
+      closeTaskModal();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CREATE LIST
+   ========================================================= */
+
+function handleCreateHubList(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const input =
+    document.getElementById(
+      "listTitleInput"
+    );
+
+
+  const title =
+    input.value.trim();
+
+
+  if (!title) {
+
+    return;
+
+  }
+
+
+  hubLists.push({
+
+    id:
+      Date.now(),
+
+    title:
+      title,
+
+    items:
+      []
+
+  });
+
+
+  saveStateToStorage();
+
+
+  closeHubModal();
+
+
+  renderAllHubLists();
+
+}
+
+
+/* =========================================================
+   DELETE LIST
+   ========================================================= */
+
+function deleteHubListTrack(
+  listId
+) {
+
+  const list =
+    hubLists.find(
+      item =>
+        item.id === listId
+    );
+
+
+  if (!list) {
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      `Delete "${list.title}" and all of its tasks?`
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  hubLists =
+    hubLists.filter(
+      item =>
+        item.id !== listId
+    );
+
+
+  saveStateToStorage();
+
+
+  renderAllHubLists();
+
+}
+
+
+/* =========================================================
+   OPEN TASK MODAL
+   ========================================================= */
+
+function openTaskModal(
+  listId,
+  itemId = null
+) {
+
+  const modal =
+    document.getElementById(
+      "taskEditModal"
+    );
+
+
+  document
+    .getElementById(
+      "taskModalListId"
+    )
+    .value =
+    listId;
+
+
+  document
+    .getElementById(
+      "taskModalItemId"
+    )
+    .value =
+    itemId || "";
+
+
+  const textInput =
+    document.getElementById(
+      "taskModalTextInput"
+    );
+
+
+  if (itemId) {
+
+    document
+      .getElementById(
+        "taskModalHeader"
+      )
+      .textContent =
+      "Edit Task";
+
+
+    document
+      .getElementById(
+        "taskModalSubmitBtn"
+      )
+      .textContent =
+      "Save Changes";
+
+
+    const list =
+      hubLists.find(
+        item =>
+          item.id === listId
+      );
+
+
+    const task =
+      list?.items.find(
+        item =>
+          item.id === itemId
+      );
+
+
+    if (task) {
+
+      textInput.value =
+        task.text || "";
+
+    }
+
+  } else {
+
+    document
+      .getElementById(
+        "taskModalHeader"
+      )
+      .textContent =
+      "Add a Task";
+
+
+    document
+      .getElementById(
+        "taskModalSubmitBtn"
+      )
+      .textContent =
+      "Add Task";
+
+
+    textInput.value =
+      "";
+
+  }
+
+
+  modal.classList.add(
+    "open"
+  );
+
+
+  setTimeout(() => {
+
+    textInput.focus();
+
+  }, 50);
+
+}
+
+
+/* =========================================================
+   SAVE TASK
+   ========================================================= */
+
+function handleTaskModalSubmit(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const listId =
+    parseInt(
+      document.getElementById(
+        "taskModalListId"
+      ).value,
+      10
+    );
+
+
+  const itemIdString =
+    document.getElementById(
+      "taskModalItemId"
+    ).value;
+
+
+  const text =
+    document
+      .getElementById(
+        "taskModalTextInput"
+      )
+      .value
+      .trim();
+
+
+  if (!text) {
+
+    return;
+
+  }
+
+
+  const list =
+    hubLists.find(
+      item =>
+        item.id === listId
+    );
+
+
+  if (!list) {
+
+    return;
+
+  }
+
+
+  /*
+   * EDIT EXISTING TASK
+   */
+
+  if (itemIdString) {
+
+    const itemId =
+      parseInt(
+        itemIdString,
+        10
+      );
+
+
+    const task =
+      list.items.find(
+        item =>
+          item.id === itemId
+      );
+
+
+    if (task) {
+
+      task.text =
+        text;
+
+    }
+
+  }
+
+
+  /*
+   * CREATE NEW TASK
+   */
+
+  else {
+
+    list.items.push({
+
+      id:
+        Date.now(),
+
+      text:
+        text,
+
+      done:
+        false
+
+    });
+
+  }
+
+
+  saveStateToStorage();
+
+
+  closeTaskModal();
+
+
+  renderAllHubLists();
+
+}
+
+
+/* =========================================================
+   TOGGLE TASK
+   ========================================================= */
+
+function toggleChecklistItemState(
+  listId,
+  itemId
+) {
+
+  const list =
+    hubLists.find(
+      item =>
+        item.id === listId
+    );
+
+
+  if (!list) {
+
+    return;
+
+  }
+
+
+  const task =
+    list.items.find(
+      item =>
+        item.id === itemId
+    );
+
+
+  if (!task) {
+
+    return;
+
+  }
+
+
+  task.done =
+    !task.done;
+
+
+  saveStateToStorage();
+
+
+  renderAllHubLists();
+
+}
+
+
+/* =========================================================
+   DELETE TASK
+   ========================================================= */
+
+function deleteSingleChecklistItem(
+  listId,
+  itemId
+) {
+
+  const list =
+    hubLists.find(
+      item =>
+        item.id === listId
+    );
+
+
+  if (!list) {
+
+    return;
+
+  }
+
+
+  const task =
+    list.items.find(
+      item =>
+        item.id === itemId
+    );
+
+
+  if (!task) {
+
+    return;
+
+  }
+
+
+  if (
+    !confirm(
+      `Delete "${task.text}"?`
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  list.items =
+    list.items.filter(
+      item =>
+        item.id !== itemId
+    );
+
+
+  saveStateToStorage();
+
+
+  renderAllHubLists();
+
+}
+
+
+/* =========================================================
+   HTML SAFETY
+   ========================================================= */
+
+function escapeHTML(
+  value
+) {
+
+  return String(value)
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   RENDER LISTS
+   ========================================================= */
+
+function renderAllHubLists() {
+
+  const container =
+    document.getElementById(
+      "hubListsWrapper"
+    );
+
+
+  if (!container) {
+
+    return;
+
+  }
+
+
+  /*
+   * NO LISTS YET
+   */
+
+  if (
+    hubLists.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div
+        class="empty"
+        style="grid-column:1/-1;"
+      >
+
+        <strong>
+          No lists yet.
+        </strong>
+
+        <br>
+
+        Click
+        <strong>
+          ＋ New List
+        </strong>
+        above to get started.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /*
+   * RENDER EVERY LIST
+   */
+
+  container.innerHTML =
+    hubLists.map(
+      list => {
+
+        const items =
+          Array.isArray(
+            list.items
+          )
+            ? list.items
+            : [];
+
+
+        const completed =
+          items.filter(
+            task =>
+              task.done
+          ).length;
+
+
+        /*
+         * RENDER TASKS
+         */
+
+        const taskHTML =
+          items.map(
+            task => {
+
+              const safeText =
+                escapeHTML(
+                  task.text
+                );
+
+
+              return `
+
+                <div
+                  class="
+                    todo-row
+                    ${
+                      task.done
+                        ? "done"
+                        : ""
+                    }
+                  "
+                >
+
+                  <input
+                    type="checkbox"
+
+                    id="
+                      task-${list.id}-${task.id}
+                    "
+
+                    ${
+                      task.done
+                        ? "checked"
+                        : ""
+                    }
+
+                    onchange="
+                      toggleChecklistItemState(
+                        ${list.id},
+                        ${task.id}
+                      )
+                    "
+                  >
+
+
+                  <label
+                    for="
+                      task-${list.id}-${task.id}
+                    "
+                  >
+                    ${safeText}
+                  </label>
+
+
+                  <button
+                    class="action-icon-btn"
+
+                    title="Edit task"
+
+                    aria-label="Edit task"
+
+                    onclick="
+                      openTaskModal(
+                        ${list.id},
+                        ${task.id}
+                      )
+                    "
+                  >
+                    ✏️
+                  </button>
+
+
+                  <button
+                    class="
+                      action-icon-btn
+                      delete
+                    "
+
+                    title="Delete task"
+
+                    aria-label="Delete task"
+
+                    onclick="
+                      deleteSingleChecklistItem(
+                        ${list.id},
+                        ${task.id}
+                      )
+                    "
+                  >
+                    ✕
+                  </button>
+
+                </div>
+
+              `;
+
+            }
+          ).join("");
+
+
+        /*
+         * RENDER LIST
+         */
+
+        return `
+
+          <section
+            class="dynamic-list-card"
+          >
+
+
+            <div
+              class="list-header"
+            >
+
+              <div
+                class="list-title-wrap"
+              >
+
+                <h2>
+                  ${escapeHTML(
+                    list.title
+                  )}
+                </h2>
+
+
+                <div
+                  class="list-count"
+                >
+                  ${completed}/${items.length}
+                  completed
+                </div>
+
+              </div>
+
+
+              <button
+                class="btn danger"
+
+                onclick="
+                  deleteHubListTrack(
+                    ${list.id}
+                  )
+                "
+              >
+                Delete
+              </button>
+
+            </div>
+
+
+            <div
+              class="item-box"
+            >
+
+              ${
+                items.length === 0
+
+                  ? `
+
+                    <div
+                      class="empty"
+                    >
+
+                      No tasks yet.
+
+                      <br>
+
+                      Add your first task
+                      below.
+
+                    </div>
+
+                  `
+
+                  : taskHTML
+              }
+
+            </div>
+
+
+            <button
+              class="btn"
+
+              style="width:100%;"
+
+              onclick="
+                openTaskModal(
+                  ${list.id}
+                )
+              "
+            >
+              ＋ Add Task
+            </button>
+
+
+          </section>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================================================
+   START APP
+   ========================================================= */
+
+renderAllHubLists();
+
+</script>
+
+</body>
+</html>
