@@ -1,0 +1,3604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucky — Cat Care Tracker</title>
+
+<style>
+:root {
+  --bg:#03060f;
+  --panel:#0b0f19;
+  --panel2:#0f1526;
+  --line:#1e2942;
+  --text:#f0f4ff;
+  --muted:#7485a4;
+
+  --accent:#00f0ff;
+  --accent2:#bd00ff;
+
+  --good:#00ff87;
+  --warn:#ffb700;
+  --danger:#ff2a5f;
+  --pink:#ff4fd8;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  min-height:100vh;
+  padding-bottom:60px;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+
+  background:
+    radial-gradient(circle at 80% -10%,#153854 0,transparent 40%),
+    radial-gradient(circle at 10% 20%,rgba(189,0,255,.08),transparent 35%),
+    var(--bg);
+}
+
+button,
+input,
+select,
+textarea {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+.app {
+  max-width:1050px;
+  margin:auto;
+  padding:24px;
+}
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+.top-center-clock {
+  position:absolute;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  z-index:100;
+  pointer-events:none;
+}
+
+.time-text {
+  font-size:20px;
+  font-weight:900;
+  color:var(--accent);
+  letter-spacing:.5px;
+  background:rgba(0,240,255,.04);
+  padding:4px 14px;
+  border-radius:10px;
+  border:1px solid rgba(0,240,255,.12);
+  box-shadow:0 0 20px rgba(0,240,255,.05);
+}
+
+.date-text {
+  font-size:11px;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-top:4px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:24px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:20px;
+  padding-top:24px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.lucky-avatar {
+  width:58px;
+  height:58px;
+  display:grid;
+  place-items:center;
+  font-size:31px;
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,240,255,.15),
+      rgba(189,0,255,.18)
+    );
+
+  border:1px solid rgba(0,240,255,.25);
+
+  box-shadow:
+    0 0 25px rgba(0,240,255,.08),
+    inset 0 0 20px rgba(189,0,255,.05);
+}
+
+.brand h1 {
+  font-size:27px;
+  margin:0;
+  letter-spacing:1px;
+  font-weight:950;
+  color:#fff;
+  text-shadow:0 0 15px rgba(0,240,255,.2);
+}
+
+.brand p {
+  font-size:13px;
+  color:var(--muted);
+  margin:4px 0 0;
+  font-weight:600;
+}
+
+.header-actions {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn {
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--text);
+  padding:11px 17px;
+  border-radius:12px;
+  font-weight:800;
+  transition:all .2s ease;
+  text-decoration:none;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.btn:hover {
+  border-color:var(--accent);
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 5px 15px rgba(0,240,255,.1);
+}
+
+.btn.primary {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--accent2)
+    );
+
+  color:#000;
+  border:0;
+  font-weight:900;
+}
+
+.btn.primary:hover {
+  box-shadow:0 0 25px rgba(189,0,255,.4);
+  color:#000;
+}
+
+.btn.secondary {
+  background:#131b2e;
+  border-color:var(--line);
+  color:var(--muted);
+}
+
+/* =========================================================
+   CAT HERO
+========================================================= */
+
+.hero {
+  position:relative;
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,240,255,.08),
+      rgba(189,0,255,.08)
+    );
+
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:24px;
+  margin-bottom:20px;
+
+  box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+
+.hero::after {
+  content:"🐾";
+  position:absolute;
+  right:25px;
+  bottom:-25px;
+  font-size:125px;
+  opacity:.06;
+  transform:rotate(-12deg);
+}
+
+.eyebrow {
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  color:var(--accent);
+  font-weight:900;
+}
+
+.hero h2 {
+  margin:7px 0 4px;
+  font-size:31px;
+  font-weight:950;
+}
+
+.hero p {
+  color:var(--muted);
+  margin:0;
+  font-size:14px;
+  font-weight:600;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:24px;
+}
+
+.stat {
+  background:rgba(11,15,25,.7);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  backdrop-filter:blur(10px);
+}
+
+.stat span {
+  font-size:10px;
+  color:var(--muted);
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.stat b {
+  display:block;
+  font-size:27px;
+  margin-top:4px;
+  font-weight:950;
+  color:#fff;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.tabs-row {
+  display:flex;
+  gap:8px;
+  margin-bottom:20px;
+
+  background:#070b14;
+  padding:6px;
+  border-radius:14px;
+  border:1px solid var(--line);
+}
+
+.tabs-row button {
+  flex:1;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:10px;
+  border-radius:10px;
+  font-weight:800;
+}
+
+.tabs-row button.active {
+  background:#131b2e;
+  color:#fff;
+  border:1px solid var(--line);
+}
+
+.view {
+  display:none;
+}
+
+.view.active {
+  display:block;
+}
+
+/* =========================================================
+   SECTION HEADERS
+========================================================= */
+
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:25px 0 13px;
+}
+
+.section-head h2 {
+  font-size:18px;
+  margin:0;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:#fff;
+  font-weight:900;
+}
+
+.section-head span {
+  font-size:12px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+/* =========================================================
+   TASK ROW
+========================================================= */
+
+.task-row {
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  background:#0b0f19;
+  border:1px solid var(--line);
+
+  padding:14px;
+  border-radius:16px;
+
+  transition:all .23s ease;
+  margin-bottom:11px;
+}
+
+.task-row:hover {
+  border-color:rgba(0,240,255,.35);
+  transform:translateY(-1px);
+}
+
+.task-row.overdue {
+  background:rgba(255,42,95,.12);
+  border-color:rgba(255,42,95,.55);
+
+  box-shadow:
+    inset 0 0 15px rgba(255,42,95,.12),
+    0 0 18px rgba(255,42,95,.08);
+}
+
+.task-row.overdue .task-time {
+  color:#fff;
+  background:var(--danger);
+  border-color:transparent;
+  animation:pulse 2s infinite;
+}
+
+.task-row.done {
+  opacity:.5;
+  background:#04070d;
+  border-color:rgba(30,41,66,.5);
+  box-shadow:none;
+}
+
+.task-row.done .task-name {
+  text-decoration:line-through;
+  color:var(--muted);
+}
+
+.task-checkbox {
+  width:19px;
+  height:19px;
+  accent-color:var(--accent);
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.task-main {
+  flex:1;
+  min-width:0;
+}
+
+.task-title-line {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.task-name {
+  font-size:15px;
+  color:#e8edfa;
+  font-weight:700;
+  line-height:1.4;
+  word-break:break-word;
+}
+
+.badge {
+  font-size:9px;
+  font-weight:900;
+  padding:3px 7px;
+  border-radius:5px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.badge.feed {
+  color:#70dfff;
+  background:rgba(0,240,255,.08);
+  border:1px solid rgba(0,240,255,.2);
+}
+
+.badge.water {
+  color:#66d9ff;
+  background:rgba(0,180,255,.1);
+  border:1px solid rgba(0,180,255,.25);
+}
+
+.badge.litter {
+  color:#df80ff;
+  background:rgba(189,0,255,.12);
+  border:1px solid rgba(189,0,255,.3);
+}
+
+.badge.health {
+  color:var(--danger);
+  background:rgba(255,42,95,.12);
+  border:1px solid rgba(255,42,95,.3);
+}
+
+.badge.grooming {
+  color:var(--pink);
+  background:rgba(255,79,216,.1);
+  border:1px solid rgba(255,79,216,.25);
+}
+
+.badge.play {
+  color:var(--good);
+  background:rgba(0,255,135,.1);
+  border:1px solid rgba(0,255,135,.25);
+}
+
+.badge.other {
+  color:var(--warn);
+  background:rgba(255,183,0,.12);
+  border:1px solid rgba(255,183,0,.3);
+}
+
+.badge.high {
+  color:var(--danger);
+  background:rgba(255,42,95,.12);
+  border:1px solid rgba(255,42,95,.3);
+}
+
+.badge.mid {
+  color:var(--warn);
+  background:rgba(255,183,0,.12);
+  border:1px solid rgba(255,183,0,.3);
+}
+
+.badge.low {
+  color:var(--good);
+  background:rgba(0,255,135,.12);
+  border:1px solid rgba(0,255,135,.3);
+}
+
+.task-details {
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:600;
+  line-height:1.5;
+}
+
+.task-right {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-shrink:0;
+}
+
+.task-time {
+  color:var(--accent);
+  font-size:12px;
+  font-weight:800;
+
+  background:rgba(0,240,255,.05);
+  border:1px solid rgba(0,240,255,.15);
+
+  padding:5px 8px;
+  border-radius:7px;
+}
+
+.icon-btn {
+  width:30px;
+  height:30px;
+
+  display:grid;
+  place-items:center;
+
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  border-radius:8px;
+}
+
+.icon-btn:hover {
+  background:#131b2e;
+  color:var(--accent);
+}
+
+.icon-btn.delete:hover {
+  color:var(--danger);
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty {
+  text-align:center;
+  padding:45px 20px;
+  color:var(--muted);
+
+  border:1px dashed var(--line);
+  border-radius:16px;
+
+  font-size:14px;
+  background:rgba(255,255,255,.01);
+}
+
+.empty .emoji {
+  display:block;
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal {
+  position:fixed;
+  inset:0;
+
+  background:rgba(1,2,5,.85);
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:18px;
+  z-index:500;
+
+  backdrop-filter:blur(8px);
+}
+
+.modal.open {
+  display:flex;
+}
+
+.modal-box {
+  width:min(550px,100%);
+
+  background:#070a14;
+  border:1px solid var(--line);
+  border-radius:24px;
+
+  padding:26px;
+
+  box-shadow:0 30px 70px rgba(0,0,0,.8);
+
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+.modal-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.modal-head h2 {
+  margin:0;
+  font-size:20px;
+  color:#fff;
+  font-weight:900;
+}
+
+.close {
+  border:0;
+  background:#131b2e;
+  color:var(--muted);
+
+  width:34px;
+  height:34px;
+  border-radius:10px;
+
+  font-weight:bold;
+}
+
+.close:hover {
+  background:var(--danger);
+  color:#fff;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+form {
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+form label {
+  display:block;
+
+  font-size:10px;
+  color:var(--muted);
+  font-weight:900;
+
+  margin-bottom:6px;
+
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+input,
+select,
+textarea {
+  width:100%;
+
+  background:#03060f;
+  border:1px solid var(--line);
+
+  color:#fff;
+
+  border-radius:12px;
+  padding:12px;
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(0,240,255,.05);
+}
+
+textarea {
+  resize:vertical;
+  min-height:80px;
+}
+
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.time-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.form-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:8px;
+}
+
+.help-text {
+  color:var(--muted);
+  font-size:11px;
+  margin-top:6px;
+  line-height:1.5;
+}
+
+/* =========================================================
+   REPEAT
+========================================================= */
+
+.repeat-box {
+  padding:14px;
+
+  border:1px solid var(--line);
+  background:rgba(0,240,255,.025);
+
+  border-radius:14px;
+}
+
+.days-box {
+  margin-top:12px;
+}
+
+.days-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:9px;
+}
+
+.days-header span {
+  font-size:11px;
+  color:var(--muted);
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.day-actions {
+  display:flex;
+  gap:6px;
+}
+
+.day-action {
+  border:1px solid var(--line);
+  background:#11192b;
+  color:var(--muted);
+
+  padding:5px 8px;
+  border-radius:7px;
+
+  font-size:10px;
+  font-weight:900;
+}
+
+.day-action:hover {
+  color:#fff;
+  border-color:var(--accent);
+}
+
+.day-selector {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.day-btn {
+  border:1px solid var(--line);
+  background:#080d18;
+  color:var(--muted);
+
+  border-radius:9px;
+  padding:9px 3px;
+
+  font-size:10px;
+  font-weight:900;
+
+  transition:.18s ease;
+}
+
+.day-btn:hover {
+  border-color:var(--accent);
+  color:#fff;
+}
+
+.day-btn.selected {
+  color:#000;
+  border-color:transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--accent2)
+    );
+
+  box-shadow:0 0 12px rgba(0,240,255,.15);
+}
+
+.selected-summary {
+  margin-top:9px;
+  font-size:11px;
+  color:var(--accent);
+  font-weight:700;
+  min-height:15px;
+}
+
+/* =========================================================
+   PULSE
+========================================================= */
+
+@keyframes pulse {
+  0% {
+    opacity:.85;
+  }
+
+  50% {
+    opacity:1;
+    filter:brightness(1.25);
+  }
+
+  100% {
+    opacity:.85;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:720px) {
+
+  .app {
+    padding:16px;
+  }
+
+  .top-center-clock {
+    position:relative;
+    top:auto;
+    left:auto;
+    transform:none;
+    margin:0 auto 12px;
+  }
+
+  header {
+    padding-top:5px;
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .header-actions {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .stats {
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:460px) {
+
+  .tabs-row {
+    flex-direction:column;
+  }
+
+  .header-actions {
+    grid-template-columns:1fr;
+  }
+
+  .task-row {
+    align-items:flex-start;
+  }
+
+  .task-right {
+    margin-left:auto;
+    flex-direction:column;
+  }
+
+  .time-grid {
+    grid-template-columns:1fr 1fr;
+  }
+
+  .time-grid select {
+    grid-column:span 2;
+  }
+
+  .day-selector {
+    gap:4px;
+  }
+
+  .day-btn {
+    padding:8px 2px;
+    font-size:9px;
+  }
+
+  .days-header {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     CLOCK
+======================================================== -->
+
+<div class="top-center-clock">
+
+  <div
+    class="time-text"
+    id="liveClock">
+    00:00:00 AM
+  </div>
+
+  <div
+    class="date-text"
+    id="liveDate">
+    Loading System Time...
+  </div>
+
+</div>
+
+
+<div class="app">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header>
+
+    <div class="brand">
+
+      <div class="lucky-avatar">
+        🐈
+      </div>
+
+      <div>
+
+        <h1>LUCKY TRACKER</h1>
+
+        <p>
+          Cat care • routines • health • daily life
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <a
+        href="index.html"
+        class="btn secondary">
+        ← Back
+      </a>
+
+      <button
+        class="btn primary"
+        onclick="openTaskModal()">
+        ＋ New Cat Task
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      🐾 Lucky's Cat Command Center
+    </div>
+
+    <h2 id="greeting">
+      Let's take care of Lucky.
+    </h2>
+
+    <p id="heroSubtitle">
+      Food, water, litter, playtime, grooming, health,
+      and everything Lucky needs.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       STATS
+  ====================================================== -->
+
+  <div class="stats">
+
+    <div class="stat">
+      <span>TODAY</span>
+      <b id="statToday">0</b>
+    </div>
+
+    <div class="stat">
+      <span>DONE TODAY</span>
+      <b id="statDone">0</b>
+    </div>
+
+    <div class="stat">
+      <span>RECURRING</span>
+      <b id="statRecurring">0</b>
+    </div>
+
+    <div class="stat">
+      <span>COMPLETION</span>
+      <b id="statRate">0%</b>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       TABS
+  ====================================================== -->
+
+  <div class="tabs-row">
+
+    <button
+      id="tabToday"
+      class="active"
+      onclick="switchView('today')">
+      🐾 Today
+    </button>
+
+    <button
+      id="tabUpcoming"
+      onclick="switchView('upcoming')">
+      📅 Upcoming
+    </button>
+
+    <button
+      id="tabAll"
+      onclick="switchView('all')">
+      🗂 All Tasks
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       TODAY
+  ====================================================== -->
+
+  <section
+    id="viewToday"
+    class="view active">
+
+    <div class="section-head">
+
+      <h2>
+        Lucky's Tasks
+      </h2>
+
+      <span id="todayLabel"></span>
+
+    </div>
+
+    <div id="todayContainer"></div>
+
+  </section>
+
+
+  <!-- =====================================================
+       UPCOMING
+  ====================================================== -->
+
+  <section
+    id="viewUpcoming"
+    class="view">
+
+    <div class="section-head">
+
+      <h2>
+        Upcoming Care
+      </h2>
+
+      <span>
+        Next 30 days
+      </span>
+
+    </div>
+
+    <div id="upcomingContainer"></div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ALL TASKS
+  ====================================================== -->
+
+  <section
+    id="viewAll"
+    class="view">
+
+    <div class="section-head">
+
+      <h2>
+        Lucky's Task Library
+      </h2>
+
+      <span>
+        Everything you've created
+      </span>
+
+    </div>
+
+    <div id="allContainer"></div>
+
+  </section>
+
+</div>
+
+
+<!-- =======================================================
+     TASK MODAL
+======================================================== -->
+
+<div
+  id="taskModal"
+  class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="modalTitle">
+        Create Cat Care Task
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeTaskModal()">
+        ✕
+      </button>
+
+    </div>
+
+
+    <form
+      id="taskForm"
+      onsubmit="saveTask(event)">
+
+      <input
+        type="hidden"
+        id="editTaskId">
+
+
+      <!-- TASK NAME -->
+
+      <div>
+
+        <label for="taskName">
+          What does Lucky need?
+        </label>
+
+        <input
+          id="taskName"
+          type="text"
+          required
+          placeholder="e.g. Feed Lucky, clean litter box..." />
+
+      </div>
+
+
+      <!-- CATEGORY + PRIORITY -->
+
+      <div class="form-grid">
+
+        <div>
+
+          <label for="taskCategory">
+            Care Category
+          </label>
+
+          <select id="taskCategory">
+
+            <option value="feed">
+              🍽 Feeding
+            </option>
+
+            <option value="water">
+              💧 Water
+            </option>
+
+            <option value="litter">
+              🧹 Litter
+            </option>
+
+            <option value="play">
+              🧶 Playtime
+            </option>
+
+            <option value="grooming">
+              ✨ Grooming
+            </option>
+
+            <option value="health">
+              ❤️ Health
+            </option>
+
+            <option value="other">
+              🐾 Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label for="taskPriority">
+            Priority
+          </label>
+
+          <select id="taskPriority">
+
+            <option value="High">
+              🔴 High
+            </option>
+
+            <option value="Mid" selected>
+              🟡 Medium
+            </option>
+
+            <option value="Low">
+              🟢 Low
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- SCHEDULE -->
+
+      <div>
+
+        <label for="taskType">
+          Schedule
+        </label>
+
+        <select id="taskType">
+
+          <option value="once">
+            One Time
+          </option>
+
+          <option value="daily">
+            Every Day
+          </option>
+
+          <option value="weekly">
+            Specific Days
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- START DATE -->
+
+      <div>
+
+        <label for="startDate">
+          Start Date
+        </label>
+
+        <input
+          id="startDate"
+          type="date"
+          required />
+
+      </div>
+
+
+      <!-- REPEAT SETTINGS -->
+
+      <div
+        id="endDateContainer"
+        class="repeat-box">
+
+        <label for="endDate">
+          Repeat Until
+        </label>
+
+        <input
+          id="endDate"
+          type="date" />
+
+        <div class="help-text">
+          Leave blank for an ongoing routine.
+        </div>
+
+
+        <!-- WEEKLY DAYS -->
+
+        <div
+          id="daysBox"
+          class="days-box"
+          style="display:none;">
+
+          <div class="days-header">
+
+            <span>
+              Repeat On
+            </span>
+
+            <div class="day-actions">
+
+              <button
+                type="button"
+                class="day-action"
+                onclick="selectAllDays()">
+                Select All
+              </button>
+
+              <button
+                type="button"
+                class="day-action"
+                onclick="clearDays()">
+                Clear
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="day-selector">
+
+            <button
+              type="button"
+              class="day-btn"
+              data-day="1"
+              onclick="toggleDay(1)">
+              MON
+            </button>
+
+            <button
+              type="button"
+              class="day-btn"
+              data-day="2"
+              onclick="toggleDay(2)">
+              TUE
+            </button>
+
+            <button
+              type="button"
+              class="day-btn"
+              data-day="3"
+              onclick="toggleDay(3)">
+              WED
+            </button>
+
+            <button
+              type="button"
+              class="day-btn"
+              data-day="4"
+              onclick="toggleDay(4)">
+              THU
+            </button>
+
+            <button
+              type="button"
+              class="day-btn"
+              data-day="5"
+              onclick="toggleDay(5)">
+              FRI
+            </button>
+
+            <button
+              type="button"
+              class="day-btn"
+              data-day="6"
+              onclick="toggleDay(6)">
+              SAT
+            </button>
+
+            <button
+              type="button"
+              class="day-btn"
+              data-day="0"
+              onclick="toggleDay(0)">
+              SUN
+            </button>
+
+          </div>
+
+          <div
+            id="selectedDaysSummary"
+            class="selected-summary">
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- TIME -->
+
+      <div>
+
+        <label>
+          Optional Due Time
+        </label>
+
+        <div class="time-grid">
+
+          <input
+            id="timeHour"
+            type="number"
+            min="1"
+            max="12"
+            placeholder="Hour">
+
+          <input
+            id="timeMinute"
+            type="number"
+            min="0"
+            max="59"
+            placeholder="Minute">
+
+          <select id="timeAmpm">
+
+            <option value="AM">
+              AM
+            </option>
+
+            <option value="PM">
+              PM
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="help-text">
+          Leave the hour empty if there is no specific time.
+        </div>
+
+      </div>
+
+
+      <!-- NOTES -->
+
+      <div>
+
+        <label for="taskNotes">
+          Notes
+        </label>
+
+        <textarea
+          id="taskNotes"
+          placeholder="Food amount, medicine instructions, grooming notes, etc."></textarea>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn"
+          onclick="closeTaskModal()">
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn primary"
+          id="saveButton">
+          Create Task
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const STORAGE_KEY =
+  "lucky_cat_tracker_v3";
+
+let tasks =
+  JSON.parse(
+    localStorage.getItem(STORAGE_KEY)
+  ) || [];
+
+
+/* =========================================================
+   DATE HELPERS
+========================================================= */
+
+function localDateString(
+  date = new Date()
+) {
+
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0");
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(2,"0");
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+function parseLocalDate(
+  dateString
+) {
+
+  if (!dateString) {
+    return null;
+  }
+
+  const parts =
+    dateString.split("-");
+
+  return new Date(
+    Number(parts[0]),
+    Number(parts[1]) - 1,
+    Number(parts[2])
+  );
+
+}
+
+
+function formatDate(
+  dateString
+) {
+
+  if (!dateString) {
+    return "";
+  }
+
+  return parseLocalDate(
+    dateString
+  ).toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   DAY SELECTION
+========================================================= */
+
+let selectedDays = [];
+
+
+function toggleDay(day) {
+
+  if (
+    selectedDays.includes(day)
+  ) {
+
+    selectedDays =
+      selectedDays.filter(
+        d => d !== day
+      );
+
+  } else {
+
+    selectedDays.push(day);
+
+  }
+
+  renderDayButtons();
+
+}
+
+
+function selectAllDays() {
+
+  selectedDays =
+    [0,1,2,3,4,5,6];
+
+  renderDayButtons();
+
+}
+
+
+function clearDays() {
+
+  selectedDays = [];
+
+  renderDayButtons();
+
+}
+
+
+function renderDayButtons() {
+
+  document
+    .querySelectorAll(".day-btn")
+    .forEach(button => {
+
+      const day =
+        Number(
+          button.dataset.day
+        );
+
+      button.classList.toggle(
+        "selected",
+        selectedDays.includes(day)
+      );
+
+    });
+
+
+  const names = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
+
+  const summary =
+    document.getElementById(
+      "selectedDaysSummary"
+    );
+
+
+  if (!selectedDays.length) {
+
+    summary.innerText =
+      "No days selected.";
+
+    return;
+
+  }
+
+
+  if (
+    selectedDays.length === 7
+  ) {
+
+    summary.innerText =
+      "Every day";
+
+    return;
+
+  }
+
+
+  const sorted =
+    [...selectedDays]
+      .sort((a,b) => {
+
+        const orderA =
+          a === 0 ? 7 : a;
+
+        const orderB =
+          b === 0 ? 7 : b;
+
+        return orderA - orderB;
+
+      });
+
+
+  summary.innerText =
+    "Repeats: " +
+    sorted
+      .map(day => names[day])
+      .join(", ");
+
+}
+
+
+/* =========================================================
+   SCHEDULE LOGIC
+========================================================= */
+
+function taskOccursOnDate(
+  task,
+  dateString
+) {
+
+  if (
+    dateString < task.startDate
+  ) {
+    return false;
+  }
+
+
+  if (
+    task.endDate &&
+    dateString > task.endDate
+  ) {
+    return false;
+  }
+
+
+  if (
+    task.type === "once"
+  ) {
+
+    return (
+      dateString === task.startDate
+    );
+
+  }
+
+
+  const date =
+    parseLocalDate(dateString);
+
+  const weekday =
+    date.getDay();
+
+
+  if (
+    task.type === "daily"
+  ) {
+
+    return true;
+
+  }
+
+
+  if (
+    task.type === "weekly"
+  ) {
+
+    return (
+      Array.isArray(task.days) &&
+      task.days.includes(weekday)
+    );
+
+  }
+
+
+  return false;
+
+}
+
+
+function taskExistsToday(task) {
+
+  return taskOccursOnDate(
+    task,
+    localDateString()
+  );
+
+}
+
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+function isCompletedForDate(
+  task,
+  dateString
+) {
+
+  return (
+    Array.isArray(task.completedDates) &&
+    task.completedDates.includes(
+      dateString
+    )
+  );
+
+}
+
+
+function toggleTask(id) {
+
+  const task =
+    tasks.find(
+      t => t.id === id
+    );
+
+  if (!task) {
+    return;
+  }
+
+
+  const today =
+    localDateString();
+
+
+  if (!task.completedDates) {
+
+    task.completedDates = [];
+
+  }
+
+
+  const index =
+    task.completedDates.indexOf(
+      today
+    );
+
+
+  if (index === -1) {
+
+    task.completedDates.push(
+      today
+    );
+
+  } else {
+
+    task.completedDates.splice(
+      index,
+      1
+    );
+
+  }
+
+
+  saveTasks();
+  renderEverything();
+
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+function convertTaskTimeToMinutes(
+  time
+) {
+
+  if (!time) {
+    return null;
+  }
+
+
+  const parts =
+    time.split(" ");
+
+
+  if (
+    parts.length !== 2
+  ) {
+    return null;
+  }
+
+
+  const timeParts =
+    parts[0].split(":");
+
+
+  let hour =
+    Number(timeParts[0]);
+
+
+  const minute =
+    Number(timeParts[1]);
+
+
+  if (
+    !Number.isFinite(hour) ||
+    !Number.isFinite(minute)
+  ) {
+
+    return null;
+
+  }
+
+
+  if (
+    parts[1] === "PM" &&
+    hour !== 12
+  ) {
+
+    hour += 12;
+
+  }
+
+
+  if (
+    parts[1] === "AM" &&
+    hour === 12
+  ) {
+
+    hour = 0;
+
+  }
+
+
+  return (
+    hour * 60 +
+    minute
+  );
+
+}
+
+
+/* =========================================================
+   OVERDUE
+========================================================= */
+
+function isOverdue(task) {
+
+  const today =
+    localDateString();
+
+
+  /*
+    Only tasks actually scheduled for TODAY
+    can become overdue.
+  */
+
+  if (
+    !taskOccursOnDate(
+      task,
+      today
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  if (
+    isCompletedForDate(
+      task,
+      today
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  if (!task.time) {
+    return false;
+  }
+
+
+  const dueMinutes =
+    convertTaskTimeToMinutes(
+      task.time
+    );
+
+
+  if (dueMinutes === null) {
+    return false;
+  }
+
+
+  const now =
+    new Date();
+
+
+  const currentMinutes =
+    now.getHours() * 60 +
+    now.getMinutes();
+
+
+  return (
+    currentMinutes >= dueMinutes
+  );
+
+}
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function saveTasks() {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(tasks)
+  );
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openTaskModal() {
+
+  document
+    .getElementById("taskModal")
+    .classList.add("open");
+
+
+  document
+    .getElementById("modalTitle")
+    .innerText =
+      "Create Cat Care Task";
+
+
+  document
+    .getElementById("saveButton")
+    .innerText =
+      "Create Task";
+
+
+  document
+    .getElementById("editTaskId")
+    .value = "";
+
+
+  document
+    .getElementById("taskForm")
+    .reset();
+
+
+  document
+    .getElementById("startDate")
+    .value =
+      localDateString();
+
+
+  selectedDays = [];
+
+
+  updateScheduleUI();
+  renderDayButtons();
+
+}
+
+
+function closeTaskModal() {
+
+  document
+    .getElementById("taskModal")
+    .classList.remove("open");
+
+}
+
+
+/* =========================================================
+   EDIT
+========================================================= */
+
+function editTask(id) {
+
+  const task =
+    tasks.find(
+      t => t.id === id
+    );
+
+
+  if (!task) {
+    return;
+  }
+
+
+  document
+    .getElementById("taskModal")
+    .classList.add("open");
+
+
+  document
+    .getElementById("modalTitle")
+    .innerText =
+      "Edit Lucky's Task";
+
+
+  document
+    .getElementById("saveButton")
+    .innerText =
+      "Save Changes";
+
+
+  document
+    .getElementById("editTaskId")
+    .value =
+      task.id;
+
+
+  document
+    .getElementById("taskName")
+    .value =
+      task.name;
+
+
+  document
+    .getElementById("taskCategory")
+    .value =
+      task.category;
+
+
+  document
+    .getElementById("taskPriority")
+    .value =
+      task.priority;
+
+
+  document
+    .getElementById("taskType")
+    .value =
+      task.type;
+
+
+  document
+    .getElementById("startDate")
+    .value =
+      task.startDate;
+
+
+  document
+    .getElementById("endDate")
+    .value =
+      task.endDate || "";
+
+
+  document
+    .getElementById("taskNotes")
+    .value =
+      task.notes || "";
+
+
+  selectedDays =
+    Array.isArray(task.days)
+      ? [...task.days]
+      : [];
+
+
+  if (task.time) {
+
+    const parts =
+      task.time.split(" ");
+
+
+    const timeParts =
+      parts[0].split(":");
+
+
+    document
+      .getElementById("timeHour")
+      .value =
+        timeParts[0];
+
+
+    document
+      .getElementById("timeMinute")
+      .value =
+        timeParts[1];
+
+
+    document
+      .getElementById("timeAmpm")
+      .value =
+        parts[1];
+
+  } else {
+
+    document
+      .getElementById("timeHour")
+      .value = "";
+
+
+    document
+      .getElementById("timeMinute")
+      .value = "";
+
+  }
+
+
+  updateScheduleUI();
+  renderDayButtons();
+
+}
+
+
+/* =========================================================
+   SCHEDULE UI
+========================================================= */
+
+document
+  .getElementById("taskType")
+  .addEventListener(
+    "change",
+    updateScheduleUI
+  );
+
+
+function updateScheduleUI() {
+
+  const type =
+    document
+      .getElementById("taskType")
+      .value;
+
+
+  const endContainer =
+    document.getElementById(
+      "endDateContainer"
+    );
+
+
+  const daysBox =
+    document.getElementById(
+      "daysBox"
+    );
+
+
+  if (
+    type === "once"
+  ) {
+
+    endContainer.style.display =
+      "none";
+
+    daysBox.style.display =
+      "none";
+
+  } else {
+
+    endContainer.style.display =
+      "block";
+
+
+    if (
+      type === "weekly"
+    ) {
+
+      daysBox.style.display =
+        "block";
+
+    } else {
+
+      daysBox.style.display =
+        "none";
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   SAVE TASK
+========================================================= */
+
+function saveTask(event) {
+
+  event.preventDefault();
+
+
+  const editId =
+    document
+      .getElementById("editTaskId")
+      .value;
+
+
+  const name =
+    document
+      .getElementById("taskName")
+      .value
+      .trim();
+
+
+  const category =
+    document
+      .getElementById("taskCategory")
+      .value;
+
+
+  const type =
+    document
+      .getElementById("taskType")
+      .value;
+
+
+  const priority =
+    document
+      .getElementById("taskPriority")
+      .value;
+
+
+  const startDate =
+    document
+      .getElementById("startDate")
+      .value;
+
+
+  const endDate =
+    document
+      .getElementById("endDate")
+      .value;
+
+
+  const hour =
+    document
+      .getElementById("timeHour")
+      .value
+      .trim();
+
+
+  const minute =
+    document
+      .getElementById("timeMinute")
+      .value
+      .trim();
+
+
+  const ampm =
+    document
+      .getElementById("timeAmpm")
+      .value;
+
+
+  const notes =
+    document
+      .getElementById("taskNotes")
+      .value
+      .trim();
+
+
+  /* WEEKLY VALIDATION */
+
+  if (
+    type === "weekly" &&
+    selectedDays.length === 0
+  ) {
+
+    alert(
+      "Choose at least one day for Lucky's routine."
+    );
+
+    return;
+
+  }
+
+
+  /* END DATE VALIDATION */
+
+  if (
+    type !== "once" &&
+    endDate &&
+    endDate < startDate
+  ) {
+
+    alert(
+      "The repeat-until date cannot be before the start date."
+    );
+
+    return;
+
+  }
+
+
+  /* TIME */
+
+  let time = "";
+
+
+  if (hour) {
+
+    let cleanHour =
+      Number(hour);
+
+
+    let cleanMinute =
+      Number(minute || 0);
+
+
+    cleanHour =
+      Math.min(
+        12,
+        Math.max(
+          1,
+          cleanHour
+        )
+      );
+
+
+    cleanMinute =
+      Math.min(
+        59,
+        Math.max(
+          0,
+          cleanMinute
+        )
+      );
+
+
+    time =
+      `${cleanHour}:${String(
+        cleanMinute
+      ).padStart(2,"0")} ${ampm}`;
+
+  }
+
+
+  /* =======================================================
+     EDIT EXISTING TASK
+  ======================================================== */
+
+  if (editId) {
+
+    const task =
+      tasks.find(
+        t => t.id === Number(editId)
+      );
+
+
+    if (task) {
+
+      task.name =
+        name;
+
+      task.category =
+        category;
+
+      task.type =
+        type;
+
+      task.priority =
+        priority;
+
+      task.startDate =
+        startDate;
+
+      task.endDate =
+        type === "once"
+          ? ""
+          : endDate;
+
+      task.days =
+        type === "weekly"
+          ? [...selectedDays]
+          : [];
+
+      task.time =
+        time;
+
+      task.notes =
+        notes;
+
+    }
+
+  }
+
+
+  /* =======================================================
+     CREATE NEW TASK
+  ======================================================== */
+
+  else {
+
+    tasks.unshift({
+
+      id:Date.now(),
+
+      name,
+
+      category,
+
+      type,
+
+      priority,
+
+      startDate,
+
+      endDate:
+        type === "once"
+          ? ""
+          : endDate,
+
+      days:
+        type === "weekly"
+          ? [...selectedDays]
+          : [],
+
+      time,
+
+      notes,
+
+      completedDates:[]
+
+    });
+
+  }
+
+
+  saveTasks();
+
+  closeTaskModal();
+
+  renderEverything();
+
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteTask(id) {
+
+  const task =
+    tasks.find(
+      t => t.id === id
+    );
+
+
+  if (!task) {
+    return;
+  }
+
+
+  if (
+    !confirm(
+      `Delete "${task.name}" from Lucky's tracker?`
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  tasks =
+    tasks.filter(
+      t => t.id !== id
+    );
+
+
+  saveTasks();
+
+  renderEverything();
+
+}
+
+
+/* =========================================================
+   PRIORITY
+========================================================= */
+
+function priorityValue(
+  priority
+) {
+
+  if (
+    priority === "High"
+  ) {
+
+    return 1;
+
+  }
+
+  if (
+    priority === "Mid"
+  ) {
+
+    return 2;
+
+  }
+
+  return 3;
+
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+function categoryText(
+  category
+) {
+
+  const categories = {
+
+    feed:"Feeding",
+
+    water:"Water",
+
+    litter:"Litter",
+
+    play:"Playtime",
+
+    grooming:"Grooming",
+
+    health:"Health",
+
+    other:"Other"
+
+  };
+
+
+  return (
+    categories[category] ||
+    "Other"
+  );
+
+}
+
+
+/* =========================================================
+   SCHEDULE DESCRIPTION
+========================================================= */
+
+function scheduleDescription(
+  task
+) {
+
+  if (
+    task.type === "once"
+  ) {
+
+    return `
+      One-time care • ${formatDate(task.startDate)}
+    `;
+
+  }
+
+
+  if (
+    task.type === "daily"
+  ) {
+
+    return `
+      Every day from ${formatDate(task.startDate)}
+      ${
+        task.endDate
+          ? `until ${formatDate(task.endDate)}`
+          : "• ongoing"
+      }
+    `;
+
+  }
+
+
+  const names = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
+
+  const days =
+    (task.days || [])
+      .slice()
+      .sort((a,b) => {
+
+        const aa =
+          a === 0 ? 7 : a;
+
+        const bb =
+          b === 0 ? 7 : b;
+
+        return aa - bb;
+
+      });
+
+
+  const dayText =
+    days
+      .map(
+        d => names[d]
+      )
+      .join(", ");
+
+
+  return `
+    ${dayText}
+    • from ${formatDate(task.startDate)}
+    ${
+      task.endDate
+        ? `until ${formatDate(task.endDate)}`
+        : "• ongoing"
+    }
+  `;
+
+}
+
+
+/* =========================================================
+   TASK HTML
+========================================================= */
+
+function createTaskHTML(
+  task,
+  occurrenceDate = null
+) {
+
+  const targetDate =
+    occurrenceDate ||
+    localDateString();
+
+
+  const completed =
+    isCompletedForDate(
+      task,
+      targetDate
+    );
+
+
+  /*
+    Important:
+    Upcoming occurrences NEVER become overdue.
+  */
+
+  const overdue =
+    occurrenceDate === null &&
+    isOverdue(task);
+
+
+  const priorityClass =
+    task.priority.toLowerCase();
+
+
+  const categoryClass =
+    task.category || "other";
+
+
+  return `
+
+    <div
+      class="
+        task-row
+        ${completed ? "done" : ""}
+        ${overdue ? "overdue" : ""}
+      ">
+
+
+      <input
+        class="task-checkbox"
+        type="checkbox"
+        ${completed ? "checked" : ""}
+        ${
+          occurrenceDate === null
+            ? `onchange="toggleTask(${task.id})"`
+            : "disabled"
+        }>
+
+
+      <div class="task-main">
+
+        <div class="task-title-line">
+
+          <span class="task-name">
+            ${escapeHTML(task.name)}
+          </span>
+
+
+          <span class="badge ${categoryClass}">
+            ${categoryText(task.category)}
+          </span>
+
+
+          <span class="badge ${priorityClass}">
+            ${task.priority}
+          </span>
+
+
+          ${
+            overdue
+              ? `
+                <span class="badge high">
+                  OVERDUE
+                </span>
+              `
+              : ""
+          }
+
+        </div>
+
+
+        <div class="task-details">
+
+          ${scheduleDescription(task)}
+
+          ${
+            task.notes
+              ? ` • ${escapeHTML(task.notes)}`
+              : ""
+          }
+
+          ${
+            completed &&
+            occurrenceDate === null
+              ? " • Completed today"
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="task-right">
+
+        ${
+          task.time
+            ? `
+              <span class="task-time">
+                ⏰ ${task.time}
+              </span>
+            `
+            : ""
+        }
+
+
+        <button
+          class="icon-btn"
+          title="Edit"
+          onclick="editTask(${task.id})">
+          ✏️
+        </button>
+
+
+        <button
+          class="icon-btn delete"
+          title="Delete"
+          onclick="deleteTask(${task.id})">
+          ✕
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(text) {
+
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   TODAY
+========================================================= */
+
+function renderToday() {
+
+  const container =
+    document.getElementById(
+      "todayContainer"
+    );
+
+
+  const today =
+    localDateString();
+
+
+  const todayTasks =
+    tasks
+      .filter(
+        task =>
+          taskOccursOnDate(
+            task,
+            today
+          )
+      )
+      .sort((a,b) => {
+
+        const overdueA =
+          isOverdue(a);
+
+        const overdueB =
+          isOverdue(b);
+
+
+        if (
+          overdueA !== overdueB
+        ) {
+
+          return overdueA
+            ? -1
+            : 1;
+
+        }
+
+
+        const doneA =
+          isCompletedForDate(
+            a,
+            today
+          );
+
+
+        const doneB =
+          isCompletedForDate(
+            b,
+            today
+          );
+
+
+        if (
+          doneA !== doneB
+        ) {
+
+          return doneA
+            ? 1
+            : -1;
+
+        }
+
+
+        const timeA =
+          convertTaskTimeToMinutes(
+            a.time
+          );
+
+
+        const timeB =
+          convertTaskTimeToMinutes(
+            b.time
+          );
+
+
+        /*
+          Tasks with times appear before
+          tasks without times.
+        */
+
+        if (
+          timeA !== null &&
+          timeB !== null
+        ) {
+
+          if (
+            timeA !== timeB
+          ) {
+
+            return timeA - timeB;
+
+          }
+
+        } else if (
+          timeA !== null
+        ) {
+
+          return -1;
+
+        } else if (
+          timeB !== null
+        ) {
+
+          return 1;
+
+        }
+
+
+        return (
+          priorityValue(a.priority) -
+          priorityValue(b.priority)
+        );
+
+      });
+
+
+  if (
+    !todayTasks.length
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <span class="emoji">
+          🐈
+        </span>
+
+        No cat-care tasks for today.
+
+        <br>
+
+        Lucky approves. 🐾
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    todayTasks
+      .map(
+        task =>
+          createTaskHTML(task)
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   UPCOMING
+========================================================= */
+
+function getUpcomingOccurrences() {
+
+  const results = [];
+
+
+  const today =
+    parseLocalDate(
+      localDateString()
+    );
+
+
+  /*
+    Look ahead 30 days.
+  */
+
+  for (
+    let i = 1;
+    i <= 30;
+    i++
+  ) {
+
+    const date =
+      new Date(today);
+
+
+    date.setDate(
+      date.getDate() + i
+    );
+
+
+    const dateString =
+      localDateString(date);
+
+
+    tasks.forEach(task => {
+
+      if (
+        taskOccursOnDate(
+          task,
+          dateString
+        )
+      ) {
+
+        results.push({
+
+          task,
+
+          dateString
+
+        });
+
+      }
+
+    });
+
+  }
+
+
+  return results;
+
+}
+
+
+function renderUpcoming() {
+
+  const container =
+    document.getElementById(
+      "upcomingContainer"
+    );
+
+
+  const occurrences =
+    getUpcomingOccurrences();
+
+
+  if (
+    !occurrences.length
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <span class="emoji">
+          🌙
+        </span>
+
+        Nothing upcoming for Lucky.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  let html = "";
+
+  let currentDate = "";
+
+
+  occurrences.forEach(
+    occurrence => {
+
+      if (
+        occurrence.dateString !==
+        currentDate
+      ) {
+
+        currentDate =
+          occurrence.dateString;
+
+
+        const date =
+          parseLocalDate(
+            currentDate
+          );
+
+
+        html += `
+
+          <div
+            class="section-head"
+            style="margin-top:22px;">
+
+            <h2>
+              ${date.toLocaleDateString(
+                undefined,
+                {
+                  weekday:"long",
+                  month:"short",
+                  day:"numeric"
+                }
+              )}
+            </h2>
+
+            <span>
+              Upcoming
+            </span>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /*
+        occurrenceDate is supplied.
+        Therefore this task cannot receive
+        the overdue class.
+      */
+
+      html +=
+        createTaskHTML(
+          occurrence.task,
+          occurrence.dateString
+        );
+
+    }
+  );
+
+
+  container.innerHTML =
+    html;
+
+}
+
+
+/* =========================================================
+   ALL TASKS
+========================================================= */
+
+function renderAll() {
+
+  const container =
+    document.getElementById(
+      "allContainer"
+    );
+
+
+  const sorted =
+    [...tasks]
+      .sort(
+        (a,b) =>
+          a.startDate.localeCompare(
+            b.startDate
+          )
+      );
+
+
+  if (
+    !sorted.length
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <span class="emoji">
+          🐾
+        </span>
+
+        Lucky has no tasks yet.
+
+        <br>
+
+        Create the first care routine.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    sorted
+      .map(
+        task =>
+          createTaskHTML(task)
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function renderStats() {
+
+  const today =
+    localDateString();
+
+
+  const todayTasks =
+    tasks.filter(
+      task =>
+        taskOccursOnDate(
+          task,
+          today
+        )
+    );
+
+
+  const completed =
+    todayTasks.filter(
+      task =>
+        isCompletedForDate(
+          task,
+          today
+        )
+    ).length;
+
+
+  const recurring =
+    tasks.filter(
+      task =>
+        task.type !== "once"
+    ).length;
+
+
+  const rate =
+    todayTasks.length
+      ? Math.round(
+          completed /
+          todayTasks.length *
+          100
+        )
+      : 0;
+
+
+  document.getElementById(
+    "statToday"
+  ).innerText =
+    todayTasks.length;
+
+
+  document.getElementById(
+    "statDone"
+  ).innerText =
+    completed;
+
+
+  document.getElementById(
+    "statRecurring"
+  ).innerText =
+    recurring;
+
+
+  document.getElementById(
+    "statRate"
+  ).innerText =
+    `${rate}%`;
+
+}
+
+
+/* =========================================================
+   GREETING
+========================================================= */
+
+function renderGreeting() {
+
+  const hour =
+    new Date().getHours();
+
+
+  let greeting;
+
+
+  if (
+    hour < 12
+  ) {
+
+    greeting =
+      "Good morning. Feed the tiny boss.";
+
+  } else if (
+    hour < 18
+  ) {
+
+    greeting =
+      "Good afternoon. Keep Lucky happy.";
+
+  } else {
+
+    greeting =
+      "Good evening. Finish Lucky's care routine.";
+
+  }
+
+
+  document.getElementById(
+    "greeting"
+  ).innerText =
+    greeting;
+
+
+  document.getElementById(
+    "todayLabel"
+  ).innerText =
+    new Date().toLocaleDateString(
+      undefined,
+      {
+        weekday:"long",
+        month:"short",
+        day:"numeric"
+      }
+    );
+
+}
+
+
+/* =========================================================
+   MASTER RENDER
+========================================================= */
+
+function renderEverything() {
+
+  renderToday();
+
+  renderUpcoming();
+
+  renderAll();
+
+  renderStats();
+
+  renderGreeting();
+
+}
+
+
+/* =========================================================
+   VIEW SWITCHER
+========================================================= */
+
+function switchView(
+  view
+) {
+
+  document
+    .querySelectorAll(".view")
+    .forEach(
+      element =>
+        element.classList.remove(
+          "active"
+        )
+    );
+
+
+  document
+    .querySelectorAll(
+      ".tabs-row button"
+    )
+    .forEach(
+      button =>
+        button.classList.remove(
+          "active"
+        )
+    );
+
+
+  const capitalized =
+    view.charAt(0).toUpperCase() +
+    view.slice(1);
+
+
+  document
+    .getElementById(
+      "view" + capitalized
+    )
+    .classList.add("active");
+
+
+  document
+    .getElementById(
+      "tab" + capitalized
+    )
+    .classList.add("active");
+
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock() {
+
+  const now =
+    new Date();
+
+
+  let hours =
+    now.getHours();
+
+
+  const minutes =
+    String(
+      now.getMinutes()
+    ).padStart(2,"0");
+
+
+  const seconds =
+    String(
+      now.getSeconds()
+    ).padStart(2,"0");
+
+
+  const ampm =
+    hours >= 12
+      ? "PM"
+      : "AM";
+
+
+  hours =
+    hours % 12;
+
+
+  hours =
+    hours || 12;
+
+
+  document.getElementById(
+    "liveClock"
+  ).innerText =
+    `${hours}:${minutes}:${seconds} ${ampm}`;
+
+
+  document.getElementById(
+    "liveDate"
+  ).innerText =
+    now.toLocaleDateString(
+      undefined,
+      {
+        weekday:"long",
+        month:"short",
+        day:"numeric",
+        year:"numeric"
+      }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderEverything();
+
+updateClock();
+
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/*
+  Re-render every minute so an ordinary task
+  automatically becomes overdue at its due time.
+*/
+
+setInterval(
+  renderEverything,
+  30000
+);
+
+</script>
+
+</body>
+</html>

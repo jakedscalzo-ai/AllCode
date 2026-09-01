@@ -1,0 +1,3239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grind Hub — School Tracker</title>
+
+<style>
+  :root {
+    --bg: #03060f;
+    --panel: #0b0f19;
+    --panel2: #0f1526;
+    --line: #1e2942;
+    --text: #f0f4ff;
+    --muted: #7485a4;
+    --accent: #00f0ff;
+    --accent2: #bd00ff;
+    --good: #00ff87;
+    --warn: #ffb700;
+    --danger: #ff2a5f;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--text);
+    padding-bottom: 60px;
+    background:
+      radial-gradient(circle at 80% -10%, #153854 0, transparent 40%),
+      var(--bg);
+    position: relative;
+    min-height: 100vh;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  .app {
+    max-width: 1000px;
+    margin: auto;
+    padding: 24px;
+  }
+
+  /* =========================================================
+     CLOCK
+  ========================================================= */
+
+  .top-center-clock {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .top-center-clock .time-text {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    background: rgba(0, 240, 255, 0.04);
+    padding: 4px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 240, 255, 0.12);
+    display: inline-block;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
+  }
+
+  .top-center-clock .date-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* =========================================================
+     HEADER
+  ========================================================= */
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 20px;
+    position: relative;
+    padding-top: 24px;
+  }
+
+  .brand h1 {
+    font-size: 26px;
+    margin: 0;
+    letter-spacing: 1px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  }
+
+  .brand p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 4px 0 0;
+    font-weight: 500;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* =========================================================
+     BUTTONS
+  ========================================================= */
+
+  .btn {
+    border: 1px solid var(--line);
+    background: var(--panel2);
+    color: var(--text);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 770;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn:hover {
+    border-color: var(--accent);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(0, 240, 255, 0.1);
+  }
+
+  .btn.primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000;
+    border: 0;
+    font-weight: 800;
+  }
+
+  .btn.primary:hover {
+    box-shadow: 0 0 25px rgba(189, 0, 255, 0.4);
+    color: #000;
+  }
+
+  .btn.secondary {
+    background: #131b2e;
+    border-color: var(--line);
+    color: var(--muted);
+  }
+
+  .btn.secondary:hover {
+    border-color: var(--accent2);
+    color: #fff;
+  }
+
+  /* =========================================================
+     STATS
+  ========================================================= */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat {
+    background: rgba(11, 15, 25, 0.6);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+  }
+
+  .stat span {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .stat b {
+    display: block;
+    font-size: 26px;
+    margin-top: 4px;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  /* =========================================================
+     TABS
+  ========================================================= */
+
+  .tabs-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: #070b14;
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+  }
+
+  .tabs-row .btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border: 0;
+    background: transparent;
+    border-radius: 10px;
+    color: var(--muted);
+  }
+
+  .tabs-row .btn.active {
+    background: #131b2e;
+    color: #fff;
+    font-weight: 800;
+    border: 1px solid var(--line);
+  }
+
+  .view {
+    display: none;
+  }
+
+  .view.active {
+    display: block;
+  }
+
+  /* =========================================================
+     SECTION HEADER
+  ========================================================= */
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 0 4px;
+  }
+
+  .section-title {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+  }
+
+  .section-count {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  /* =========================================================
+     TASKS
+  ========================================================= */
+
+  .todo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #0b0f19;
+    border: 1px solid var(--line);
+    padding: 14px;
+    border-radius: 16px;
+    transition: all 0.23s ease;
+    margin-bottom: 12px;
+  }
+
+  .todo-row:hover {
+    border-color: rgba(0, 240, 255, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .todo-row.upcoming-task {
+    border-color: rgba(189, 0, 255, 0.3);
+    background:
+      linear-gradient(
+        135deg,
+        rgba(189, 0, 255, 0.06),
+        rgba(0, 240, 255, 0.025)
+      ),
+      #0b0f19;
+  }
+
+  .todo-row.overdue {
+    background: rgba(255, 42, 95, 0.12);
+    border-color: rgba(255, 42, 95, 0.5);
+    box-shadow:
+      inset 0 0 12px rgba(255, 42, 95, 0.15),
+      0 0 15px rgba(255, 42, 95, 0.1);
+  }
+
+  .todo-row.done {
+    background: #04070d !important;
+    border-color: rgba(30, 41, 66, 0.4) !important;
+    opacity: 0.6;
+    box-shadow: none !important;
+  }
+
+  .todo-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent);
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .todo-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .todo-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .todo-row label {
+    font-size: 15px;
+    color: #e3e8f2;
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .todo-row.done label {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  /* =========================================================
+     BADGES
+  ========================================================= */
+
+  .badge-label {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-label.class {
+    background: rgba(189, 0, 255, 0.15);
+    color: #df80ff;
+    border: 1px solid rgba(189, 0, 255, 0.3);
+  }
+
+  .badge-label.p-high {
+    background: rgba(255, 42, 95, 0.15);
+    color: var(--danger);
+    border: 1px solid rgba(255, 42, 95, 0.3);
+  }
+
+  .badge-label.p-mid {
+    background: rgba(255, 183, 0, 0.15);
+    color: var(--warn);
+    border: 1px solid rgba(255, 183, 0, 0.3);
+  }
+
+  .badge-label.p-low {
+    background: rgba(0, 255, 135, 0.15);
+    color: var(--good);
+    border: 1px solid rgba(0, 255, 135, 0.3);
+  }
+
+  .badge-label.daily {
+    background: rgba(0, 240, 255, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+  }
+
+  .badge-label.scheduled {
+    background: rgba(189, 0, 255, 0.12);
+    color: #df80ff;
+    border: 1px solid rgba(189, 0, 255, 0.25);
+  }
+
+  /* =========================================================
+     META
+  ========================================================= */
+
+  .todo-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+    align-items: flex-end;
+  }
+
+  .meta-target {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+    background: rgba(0, 240, 255, 0.05);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    display: inline-block;
+  }
+
+  .todo-row.overdue .meta-target {
+    color: #fff;
+    background: var(--danger);
+    border-color: transparent;
+    animation: pulse 2s infinite;
+  }
+
+  .meta-date {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .meta-scheduled {
+    font-size: 11px;
+    color: #df80ff;
+    font-weight: 700;
+    background: rgba(189, 0, 255, 0.06);
+    border: 1px solid rgba(189, 0, 255, 0.15);
+    padding: 3px 7px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  /* =========================================================
+     ICON BUTTONS
+  ========================================================= */
+
+  .action-icon-btn {
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .action-icon-btn:hover {
+    color: var(--accent);
+  }
+
+  .action-icon-btn.delete:hover {
+    color: var(--danger);
+  }
+
+  /* =========================================================
+     EMPTY
+  ========================================================= */
+
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    border: 1px dashed var(--line);
+    border-radius: 16px;
+    font-size: 14px;
+    background: rgba(255,255,255,0.01);
+  }
+
+  /* =========================================================
+     MODAL
+  ========================================================= */
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(1, 2, 5, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    z-index: 500;
+    backdrop-filter: blur(8px);
+  }
+
+  .modal.open {
+    display: flex;
+  }
+
+  .modal-box {
+    width: min(500px, 100%);
+    background: #070a14;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 26px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-head h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .close {
+    border: 0;
+    background: #131b2e;
+    color: var(--muted);
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+
+  .close:hover {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  /* =========================================================
+     FORM
+  ========================================================= */
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  form label {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 800;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    background: #03060f;
+    border: 1px solid var(--line);
+    color: white;
+    border-radius: 12px;
+    padding: 12px;
+    outline: none;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.05);
+  }
+
+  input[type="date"] {
+    color-scheme: dark;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .time-input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* =========================================================
+     DAILY TOGGLE
+  ========================================================= */
+
+  .repeat-box {
+    background: rgba(0, 240, 255, 0.04);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 14px;
+    padding: 13px;
+  }
+
+  .repeat-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .repeat-option input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--accent);
+  }
+
+  .repeat-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .repeat-text strong {
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .repeat-text small {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* =========================================================
+     UPCOMING INFO
+  ========================================================= */
+
+  .upcoming-info {
+    background: rgba(189, 0, 255, 0.04);
+    border: 1px solid rgba(189, 0, 255, 0.14);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .upcoming-info strong {
+    color: #df80ff;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0.9;
+    }
+
+    50% {
+      opacity: 1;
+      filter: brightness(1.2);
+    }
+
+    100% {
+      opacity: 0.9;
+    }
+  }
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media (max-width: 700px) {
+
+    .app {
+      padding: 18px;
+      padding-top: 75px;
+    }
+
+    header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .header-actions {
+      flex-direction: column;
+    }
+
+    .header-actions .btn {
+      width: 100%;
+    }
+
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tabs-row {
+      overflow-x: auto;
+    }
+
+    .tabs-row .btn {
+      min-width: 130px;
+    }
+
+    .todo-row {
+      align-items: flex-start;
+    }
+
+    .todo-meta {
+      font-size: 11px;
+    }
+
+    .top-center-clock {
+      top: 8px;
+    }
+
+    .top-center-clock .time-text {
+      font-size: 16px;
+    }
+
+    .todo-row {
+      flex-wrap: wrap;
+    }
+
+    .todo-content {
+      min-width: calc(100% - 50px);
+    }
+
+    .todo-meta {
+      margin-left: 30px;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     LIVE CLOCK
+========================================================= -->
+
+<div class="top-center-clock">
+
+  <div
+    class="time-text"
+    id="masterLiveClock">
+    00:00:00 AM
+  </div>
+
+  <div
+    class="date-text"
+    id="masterLiveDate">
+    Loading System Time...
+  </div>
+
+</div>
+
+
+<div class="app">
+
+  <!-- =======================================================
+       HEADER
+  ======================================================= -->
+
+  <header>
+
+    <div class="brand">
+
+      <h1>SCHOOL GRIND</h1>
+
+      <p>
+        Class Assignments Portal
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <a
+        href="index.html"
+        class="btn secondary">
+        ← Back to Menu
+      </a>
+
+
+      <button
+        class="btn primary"
+        onclick="openAssignmentModal()">
+        ＋ New Assignment
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       STATS
+  ======================================================= -->
+
+  <div class="stats">
+
+    <div class="stat">
+
+      <span>
+        PENDING TASKS
+      </span>
+
+      <b id="statPending">
+        0
+      </b>
+
+    </div>
+
+
+    <div class="stat">
+
+      <span>
+        COMPLETED TOTAL
+      </span>
+
+      <b id="statCompleted">
+        0
+      </b>
+
+    </div>
+
+
+    <div class="stat">
+
+      <span>
+        URGENT HIGH PRIO
+      </span>
+
+      <b id="statUrgent">
+        0
+      </b>
+
+    </div>
+
+
+    <div class="stat">
+
+      <span>
+        COMPLETION RATE
+      </span>
+
+      <b id="statRate">
+        0%
+      </b>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       TABS
+  ======================================================= -->
+
+  <div class="tabs-row">
+
+    <button
+      class="btn tab active"
+      id="tabActive"
+      onclick="switchSchoolView('active')">
+      Active Backlog
+    </button>
+
+
+    <button
+      class="btn tab"
+      id="tabUpcoming"
+      onclick="switchSchoolView('upcoming')">
+      Upcoming
+    </button>
+
+
+    <button
+      class="btn tab"
+      id="tabDone"
+      onclick="switchSchoolView('done')">
+      Completed Archive
+    </button>
+
+  </div>
+
+
+  <!-- =======================================================
+       ACTIVE
+  ======================================================= -->
+
+  <section
+    id="viewActive"
+    class="view active">
+
+    <div
+      id="activeBacklogContainer">
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       UPCOMING
+  ======================================================= -->
+
+  <section
+    id="viewUpcoming"
+    class="view">
+
+    <div class="upcoming-info">
+
+      <strong>📅 Upcoming assignments</strong>
+      <br>
+
+      Tasks scheduled for a future date will appear here.
+      When their scheduled date arrives, they automatically
+      move into your Active Backlog.
+
+    </div>
+
+
+    <div
+      id="upcomingContainer">
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       COMPLETED
+  ======================================================= -->
+
+  <section
+    id="viewDone"
+    class="view">
+
+    <div
+      id="completedArchiveContainer">
+    </div>
+
+  </section>
+
+</div>
+
+
+<!-- =========================================================
+     ASSIGNMENT MODAL
+========================================================= -->
+
+<div
+  id="assignmentModal"
+  class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="modalHeaderTitle">
+        Configure Assignment Track
+      </h2>
+
+
+      <button
+        class="close"
+        onclick="closeAssignmentModal()">
+        ✕
+      </button>
+
+    </div>
+
+
+    <form
+      id="assignmentForm"
+      onsubmit="handleAssignmentSubmit(event)">
+
+      <!-- Hidden edit ID -->
+
+      <input
+        type="hidden"
+        id="editTaskId">
+
+
+      <!-- ===================================================
+           TASK NAME
+      ==================================================== -->
+
+      <div>
+
+        <label for="taskText">
+          Assignment Task Name
+        </label>
+
+
+        <input
+          type="text"
+          id="taskText"
+          required
+          placeholder="e.g. Read chapter 4, Complete calculus proof sheet..."
+        >
+
+      </div>
+
+
+      <!-- ===================================================
+           CLASS / PRIORITY
+      ==================================================== -->
+
+      <div
+        style="
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:12px;
+        ">
+
+        <div>
+
+          <label for="taskClass">
+            Class / Course
+          </label>
+
+
+          <select
+            id="taskClass"
+            required>
+
+            <option value="Math">
+              Math
+            </option>
+
+            <option value="ELA">
+              ELA
+            </option>
+
+            <option value="Science">
+              Science
+            </option>
+
+            <option value="History">
+              History
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label for="taskPriority">
+            Priority Level
+          </label>
+
+
+          <select
+            id="taskPriority"
+            required>
+
+            <option value="High">
+              🔴 High Priority
+            </option>
+
+            <option value="Mid">
+              🟡 Mid Priority
+            </option>
+
+            <option value="Low">
+              🟢 Low Priority
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           SCHEDULE DATE
+      ==================================================== -->
+
+      <div>
+
+        <label for="taskDate">
+          Scheduled Date
+        </label>
+
+
+        <input
+          type="date"
+          id="taskDate"
+          required>
+
+
+        <small
+          style="
+            display:block;
+            color:var(--muted);
+            margin-top:6px;
+            font-size:11px;
+          ">
+
+          Choose today's date for an active assignment,
+          or a future date to place it in Upcoming.
+
+        </small>
+
+      </div>
+
+
+      <!-- ===================================================
+           DAILY
+      ==================================================== -->
+
+      <div class="repeat-box">
+
+        <label
+          style="margin-bottom:10px;">
+          REPEAT
+        </label>
+
+
+        <label class="repeat-option">
+
+          <input
+            type="checkbox"
+            id="taskDaily">
+
+
+          <span class="repeat-text">
+
+            <strong>
+              Every Day
+            </strong>
+
+            <small>
+              Automatically unchecks this task when a new day begins.
+            </small>
+
+          </span>
+
+        </label>
+
+      </div>
+
+
+      <!-- ===================================================
+           TIME
+      ==================================================== -->
+
+      <div>
+
+        <label>
+          Optional Execution Due Time
+          (Leave Hour blank for Anytime)
+        </label>
+
+
+        <div class="time-input-container">
+
+          <input
+            type="number"
+            id="timeHour"
+            min="1"
+            max="12"
+            placeholder="12"
+            style="flex:1;"
+            onblur="validateInputDigit(this, true)">
+
+
+          <span
+            style="
+              font-weight:bold;
+              color:var(--muted);
+            ">
+            :
+          </span>
+
+
+          <input
+            type="number"
+            id="timeMinute"
+            min="0"
+            max="59"
+            placeholder="00"
+            style="flex:1;"
+            onblur="validateInputDigit(this, false)">
+
+
+          <select
+            id="timeAmpm"
+            style="flex:1;">
+
+            <option value="AM">
+              AM
+            </option>
+
+            <option value="PM">
+              PM
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           ACTIONS
+      ==================================================== -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn"
+          onclick="closeAssignmentModal()">
+          Cancel
+        </button>
+
+
+        <button
+          type="submit"
+          class="btn primary"
+          id="submitBtnLabel">
+          Create Track
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   STORAGE
+   =========================================================
+
+   IMPORTANT:
+
+   DO NOT CHANGE THIS KEY.
+
+   Your original application uses:
+
+       gh_school_tasks_v5
+
+   Keeping this exact key means your existing localStorage
+   tasks are loaded instead of starting from a new database.
+
+========================================================= */
+
+const STORAGE_KEY = "gh_school_tasks_v5";
+
+
+let schoolTasks = JSON.parse(
+  localStorage.getItem(STORAGE_KEY)
+) || [];
+
+
+/* =========================================================
+   DATE HELPERS
+========================================================= */
+
+function getTodayKey() {
+
+  const now = new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(2, "0");
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+/* =========================================================
+   SAFE DATE PARSING
+========================================================= */
+
+function parseDateKey(dateKey) {
+
+  if (!dateKey) {
+    return new Date();
+  }
+
+  const parts =
+    dateKey.split("-");
+
+  if (parts.length !== 3) {
+    return new Date();
+  }
+
+  return new Date(
+    Number(parts[0]),
+    Number(parts[1]) - 1,
+    Number(parts[2])
+  );
+}
+
+
+/* =========================================================
+   MIGRATE EXISTING TASKS
+=========================================================
+
+   THIS IS THE PART THAT PROTECTS YOUR OLD TASKS.
+
+   Older tasks created by your original version did not have
+   `scheduledDate`.
+
+   We do NOT delete them.
+
+   We simply add today's date to those old tasks.
+
+   Existing:
+   - text
+   - class
+   - priority
+   - completed status
+   - completion date
+   - daily setting
+   - target time
+
+   are all preserved.
+
+========================================================= */
+
+function migrateExistingTasks() {
+
+  let changed = false;
+
+
+  schoolTasks.forEach(task => {
+
+    /*
+       Old tasks have no scheduledDate.
+
+       Give them today's date so they stay in the
+       Active Backlog exactly as before.
+    */
+
+    if (!task.scheduledDate) {
+
+      task.scheduledDate =
+        getTodayKey();
+
+      changed = true;
+    }
+
+
+    /*
+       Protect old task structures by adding missing
+       properties WITHOUT overwriting existing values.
+    */
+
+    if (
+      typeof task.done !==
+      "boolean"
+    ) {
+
+      task.done = false;
+
+      changed = true;
+    }
+
+
+    if (
+      typeof task.daily !==
+      "boolean"
+    ) {
+
+      task.daily = false;
+
+      changed = true;
+    }
+
+
+    if (
+      typeof task.isOverdue !==
+      "boolean"
+    ) {
+
+      task.isOverdue = false;
+
+      changed = true;
+    }
+
+
+    if (
+      !("completedDateStamp" in task)
+    ) {
+
+      task.completedDateStamp =
+        null;
+
+      changed = true;
+    }
+
+
+    if (
+      !("completedDay" in task)
+    ) {
+
+      task.completedDay =
+        null;
+
+      changed = true;
+    }
+
+  });
+
+
+  if (changed) {
+
+    saveSchoolState();
+  }
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveSchoolState() {
+
+  /*
+     This only writes the current task array.
+
+     It does NOT clear localStorage.
+
+     It does NOT create a new storage key.
+  */
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(schoolTasks)
+  );
+}
+
+
+/* =========================================================
+   DAILY TASK RESET
+========================================================= */
+
+function resetDailyTasksIfNewDay() {
+
+  const today =
+    getTodayKey();
+
+  let changed = false;
+
+
+  schoolTasks.forEach(task => {
+
+    /*
+       Only daily tasks reset.
+    */
+
+    if (!task.daily) {
+      return;
+    }
+
+
+    /*
+       If the task was completed on another date,
+       make it available again today.
+    */
+
+    if (
+      task.done &&
+      task.completedDay !== today
+    ) {
+
+      task.done = false;
+
+      task.isOverdue = false;
+
+      task.scheduledDate = today;
+
+      changed = true;
+    }
+
+
+    /*
+       Old daily task with no completion date.
+    */
+
+    if (
+      task.done &&
+      !task.completedDay
+    ) {
+
+      task.done = false;
+
+      task.isOverdue = false;
+
+      task.scheduledDate = today;
+
+      changed = true;
+    }
+
+  });
+
+
+  if (changed) {
+
+    saveSchoolState();
+
+    renderAllComponents();
+  }
+}
+
+
+/* =========================================================
+   INPUT VALIDATION
+========================================================= */
+
+function validateInputDigit(
+  el,
+  isHourField
+) {
+
+  let val =
+    el.value.trim();
+
+
+  if (!val) {
+
+    if (!isHourField) {
+
+      const hrVal =
+        document
+          .getElementById("timeHour")
+          .value
+          .trim();
+
+      if (hrVal) {
+
+        el.value = "00";
+      }
+    }
+
+    return;
+  }
+
+
+  let num =
+    parseInt(
+      val,
+      10
+    );
+
+
+  if (isNaN(num)) {
+    return;
+  }
+
+
+  if (isHourField) {
+
+    if (num < 1) {
+      num = 1;
+    }
+
+    if (num > 12) {
+      num = 12;
+    }
+
+  } else {
+
+    if (num < 0) {
+      num = 0;
+    }
+
+    if (num > 59) {
+      num = 59;
+    }
+  }
+
+
+  el.value =
+    String(num)
+      .padStart(2, "0");
+
+
+  if (isHourField) {
+
+    const minField =
+      document.getElementById(
+        "timeMinute"
+      );
+
+
+    if (!minField.value.trim()) {
+
+      minField.value = "00";
+    }
+  }
+}
+
+
+/* =========================================================
+   RELATIVE DATE
+========================================================= */
+
+function getRelativeDayString(
+  completedDateStamp
+) {
+
+  if (!completedDateStamp) {
+    return "";
+  }
+
+
+  const compDate =
+    new Date(
+      completedDateStamp
+    );
+
+
+  const today =
+    new Date();
+
+
+  compDate.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  today.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  const diffTime =
+    today.getTime() -
+    compDate.getTime();
+
+
+  const diffDays =
+    Math.floor(
+      diffTime /
+      (1000 * 60 * 60 * 24)
+    );
+
+
+  if (diffDays <= 0) {
+    return "Today";
+  }
+
+
+  if (diffDays === 1) {
+    return "Yesterday";
+  }
+
+
+  return `${diffDays} days ago`;
+}
+
+
+/* =========================================================
+   FORMAT SCHEDULED DATE
+========================================================= */
+
+function formatScheduledDate(
+  dateKey
+) {
+
+  if (!dateKey) {
+    return "Today";
+  }
+
+
+  const date =
+    parseDateKey(
+      dateKey
+    );
+
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }
+  );
+}
+
+
+/* =========================================================
+   FUTURE TASK CHECK
+========================================================= */
+
+function isFutureTask(task) {
+
+  if (task.done) {
+    return false;
+  }
+
+
+  const today =
+    getTodayKey();
+
+
+  return (
+    task.scheduledDate &&
+    task.scheduledDate > today
+  );
+}
+
+
+/* =========================================================
+   ACTIVE TASK CHECK
+========================================================= */
+
+function isActiveTask(task) {
+
+  if (task.done) {
+    return false;
+  }
+
+
+  const today =
+    getTodayKey();
+
+
+  /*
+     If there is no date, treat the task as active.
+
+     This also protects against malformed old data.
+  */
+
+  if (!task.scheduledDate) {
+    return true;
+  }
+
+
+  return (
+    task.scheduledDate <= today
+  );
+}
+
+
+/* =========================================================
+   VIEW SWITCHING
+========================================================= */
+
+function switchSchoolView(
+  target
+) {
+
+  document
+    .querySelectorAll(".view")
+    .forEach(view => {
+
+      view.style.display =
+        "none";
+
+    });
+
+
+  document
+    .querySelectorAll(
+      ".tabs-row .btn"
+    )
+    .forEach(button => {
+
+      button.classList.remove(
+        "active"
+      );
+
+    });
+
+
+  if (target === "active") {
+
+    document.getElementById(
+      "viewActive"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "tabActive"
+    ).classList.add(
+      "active"
+    );
+
+  }
+
+
+  else if (
+    target === "upcoming"
+  ) {
+
+    document.getElementById(
+      "viewUpcoming"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "tabUpcoming"
+    ).classList.add(
+      "active"
+    );
+
+  }
+
+
+  else {
+
+    document.getElementById(
+      "viewDone"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "tabDone"
+    ).classList.add(
+      "active"
+    );
+  }
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openAssignmentModal() {
+
+  const modal =
+    document.getElementById(
+      "assignmentModal"
+    );
+
+
+  modal.classList.add(
+    "open"
+  );
+
+
+  document.getElementById(
+    "modalHeaderTitle"
+  ).innerText =
+    "Configure Assignment Track";
+
+
+  document.getElementById(
+    "submitBtnLabel"
+  ).innerText =
+    "Create Track";
+
+
+  document.getElementById(
+    "editTaskId"
+  ).value = "";
+
+
+  document
+    .getElementById(
+      "assignmentForm"
+    )
+    .reset();
+
+
+  /*
+     New tasks default to today.
+  */
+
+  document.getElementById(
+    "taskDate"
+  ).value =
+    getTodayKey();
+}
+
+
+function closeAssignmentModal() {
+
+  document
+    .getElementById(
+      "assignmentModal"
+    )
+    .classList.remove(
+      "open"
+    );
+}
+
+
+/* =========================================================
+   CLICK OUTSIDE MODAL
+========================================================= */
+
+document
+  .getElementById(
+    "assignmentModal"
+  )
+  .addEventListener(
+    "click",
+    function(e) {
+
+      if (
+        e.target === this
+      ) {
+
+        closeAssignmentModal();
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   EDIT ASSIGNMENT
+========================================================= */
+
+function openEditAssignmentModal(
+  id
+) {
+
+  const task =
+    schoolTasks.find(
+      t => t.id === id
+    );
+
+
+  if (!task) {
+    return;
+  }
+
+
+  openAssignmentModal();
+
+
+  document.getElementById(
+    "modalHeaderTitle"
+  ).innerText =
+    "Edit Assignment";
+
+
+  document.getElementById(
+    "submitBtnLabel"
+  ).innerText =
+    "Apply Updates";
+
+
+  document.getElementById(
+    "editTaskId"
+  ).value =
+    task.id;
+
+
+  document.getElementById(
+    "taskText"
+  ).value =
+    task.text || "";
+
+
+  document.getElementById(
+    "taskClass"
+  ).value =
+    task.course || "Other";
+
+
+  document.getElementById(
+    "taskPriority"
+  ).value =
+    task.priority || "Mid";
+
+
+  document.getElementById(
+    "taskDaily"
+  ).checked =
+    !!task.daily;
+
+
+  document.getElementById(
+    "taskDate"
+  ).value =
+    task.scheduledDate ||
+    getTodayKey();
+
+
+  /*
+     Restore existing time.
+  */
+
+  if (
+    task.targetTime &&
+    task.targetTime !== "Anytime"
+  ) {
+
+    const parts =
+      task.targetTime.split(" ");
+
+
+    const timeParts =
+      parts[0].split(":");
+
+
+    document.getElementById(
+      "timeHour"
+    ).value =
+      timeParts[0];
+
+
+    document.getElementById(
+      "timeMinute"
+    ).value =
+      timeParts[1];
+
+
+    document.getElementById(
+      "timeAmpm"
+    ).value =
+      parts[1] || "AM";
+
+  } else {
+
+    document.getElementById(
+      "timeHour"
+    ).value = "";
+
+
+    document.getElementById(
+      "timeMinute"
+    ).value = "";
+
+
+    document.getElementById(
+      "timeAmpm"
+    ).value = "AM";
+  }
+}
+
+
+/* =========================================================
+   LIVE CLOCK
+========================================================= */
+
+function runSchoolLiveClock() {
+
+  const clockEl =
+    document.getElementById(
+      "masterLiveClock"
+    );
+
+
+  const dateEl =
+    document.getElementById(
+      "masterLiveDate"
+    );
+
+
+  if (
+    !clockEl ||
+    !dateEl
+  ) {
+    return;
+  }
+
+
+  const now =
+    new Date();
+
+
+  let hours =
+    now.getHours();
+
+
+  const minutes =
+    String(
+      now.getMinutes()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const seconds =
+    String(
+      now.getSeconds()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const ampm =
+    hours >= 12
+      ? "PM"
+      : "AM";
+
+
+  hours =
+    hours % 12;
+
+
+  hours =
+    hours
+      ? hours
+      : 12;
+
+
+  clockEl.innerText =
+    `${hours}:${minutes}:${seconds} ${ampm}`;
+
+
+  const daysArr = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
+
+  const monthsArr = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+
+  dateEl.innerText =
+    `${daysArr[now.getDay()]} — ` +
+    `${monthsArr[now.getMonth()]} ` +
+    `${now.getDate()}, ` +
+    `${now.getFullYear()}`;
+
+
+  /*
+     Check for midnight.
+  */
+
+  resetDailyTasksIfNewDay();
+
+
+  /*
+     Check due times.
+  */
+
+  evaluateOverdueStates();
+}
+
+
+/* =========================================================
+   OVERDUE SYSTEM
+========================================================= */
+
+function evaluateOverdueStates() {
+
+  const now =
+    new Date();
+
+
+  const currentMinutes =
+    (now.getHours() * 60) +
+    now.getMinutes();
+
+
+  let stateChanged =
+    false;
+
+
+  schoolTasks.forEach(task => {
+
+    /*
+       Future assignments cannot be overdue.
+    */
+
+    if (
+      isFutureTask(task)
+    ) {
+
+      if (
+        task.isOverdue
+      ) {
+
+        task.isOverdue =
+          false;
+
+        stateChanged =
+          true;
+      }
+
+      return;
+    }
+
+
+    /*
+       No time = anytime.
+    */
+
+    if (
+      !task.targetTime ||
+      task.targetTime === "Anytime" ||
+      task.done
+    ) {
+
+      if (
+        task.isOverdue
+      ) {
+
+        task.isOverdue =
+          false;
+
+        stateChanged =
+          true;
+      }
+
+      return;
+    }
+
+
+    const parts =
+      task.targetTime
+        .split(" ");
+
+
+    const timeParts =
+      parts[0]
+        .split(":");
+
+
+    let itemHours =
+      parseInt(
+        timeParts[0],
+        10
+      );
+
+
+    const itemMins =
+      parseInt(
+        timeParts[1],
+        10
+      );
+
+
+    if (
+      parts[1] === "PM" &&
+      itemHours !== 12
+    ) {
+
+      itemHours += 12;
+    }
+
+
+    if (
+      parts[1] === "AM" &&
+      itemHours === 12
+    ) {
+
+      itemHours = 0;
+    }
+
+
+    const targetMinutes =
+      (itemHours * 60) +
+      itemMins;
+
+
+    /*
+       Only compare time for tasks scheduled today.
+
+       This prevents a task scheduled tomorrow at 9 AM
+       from being marked overdue today.
+    */
+
+    const today =
+      getTodayKey();
+
+
+    if (
+      task.scheduledDate &&
+      task.scheduledDate !== today
+    ) {
+
+      if (
+        task.isOverdue
+      ) {
+
+        task.isOverdue =
+          false;
+
+        stateChanged =
+          true;
+      }
+
+      return;
+    }
+
+
+    const shouldBeOverdue =
+      currentMinutes >=
+      targetMinutes;
+
+
+    if (
+      task.isOverdue !==
+      shouldBeOverdue
+    ) {
+
+      task.isOverdue =
+        shouldBeOverdue;
+
+      stateChanged =
+        true;
+    }
+
+  });
+
+
+  if (stateChanged) {
+
+    saveSchoolState();
+
+    renderAllComponents();
+  }
+}
+
+
+/* =========================================================
+   CREATE / EDIT ASSIGNMENT
+========================================================= */
+
+function handleAssignmentSubmit(
+  e
+) {
+
+  e.preventDefault();
+
+
+  const taskIdStr =
+    document.getElementById(
+      "editTaskId"
+    ).value;
+
+
+  const text =
+    document.getElementById(
+      "taskText"
+    ).value.trim();
+
+
+  const course =
+    document.getElementById(
+      "taskClass"
+    ).value;
+
+
+  const priority =
+    document.getElementById(
+      "taskPriority"
+    ).value;
+
+
+  const daily =
+    document.getElementById(
+      "taskDaily"
+    ).checked;
+
+
+  const scheduledDate =
+    document.getElementById(
+      "taskDate"
+    ).value ||
+    getTodayKey();
+
+
+  const h =
+    document.getElementById(
+      "timeHour"
+    ).value.trim();
+
+
+  const m =
+    document.getElementById(
+      "timeMinute"
+    ).value.trim();
+
+
+  const ampm =
+    document.getElementById(
+      "timeAmpm"
+    ).value;
+
+
+  let targetTime =
+    "Anytime";
+
+
+  if (h && m) {
+
+    targetTime =
+      `${parseInt(h, 10)}:` +
+      `${m.padStart(2, "0")} ` +
+      `${ampm}`;
+  }
+
+
+  /* =======================================================
+     EDIT EXISTING
+  ======================================================= */
+
+  if (taskIdStr) {
+
+    const taskId =
+      parseInt(
+        taskIdStr,
+        10
+      );
+
+
+    const task =
+      schoolTasks.find(
+        t => t.id === taskId
+      );
+
+
+    if (task) {
+
+      /*
+         Only change the fields the user edited.
+
+         Completion data stays untouched.
+      */
+
+      task.text =
+        text;
+
+
+      task.course =
+        course;
+
+
+      task.priority =
+        priority;
+
+
+      task.daily =
+        daily;
+
+
+      task.scheduledDate =
+        scheduledDate;
+
+
+      task.targetTime =
+        targetTime;
+
+
+      task.isOverdue =
+        false;
+
+
+      /*
+         If a completed daily task is edited,
+         keep today's completion information.
+      */
+
+      if (
+        daily &&
+        task.done
+      ) {
+
+        task.completedDay =
+          getTodayKey();
+      }
+    }
+
+  }
+
+
+  /* =======================================================
+     CREATE NEW
+  ======================================================= */
+
+  else {
+
+    schoolTasks.unshift({
+
+      id: Date.now(),
+
+      text: text,
+
+      course: course,
+
+      priority: priority,
+
+      targetTime: targetTime,
+
+      scheduledDate: scheduledDate,
+
+      done: false,
+
+      daily: daily,
+
+      isOverdue: false,
+
+      completedDateStamp: null,
+
+      completedDay: null
+
+    });
+  }
+
+
+  saveSchoolState();
+
+  closeAssignmentModal();
+
+  renderAllComponents();
+}
+
+
+/* =========================================================
+   CHECK / UNCHECK TASK
+========================================================= */
+
+function toggleTaskCheckbox(
+  id
+) {
+
+  const task =
+    schoolTasks.find(
+      t => t.id === id
+    );
+
+
+  if (!task) {
+    return;
+  }
+
+
+  task.done =
+    !task.done;
+
+
+  if (task.done) {
+
+    /*
+       Record completion time.
+    */
+
+    task.completedDateStamp =
+      Date.now();
+
+
+    /*
+       Daily tasks remember today's completion.
+    */
+
+    if (task.daily) {
+
+      task.completedDay =
+        getTodayKey();
+
+    } else {
+
+      task.completedDay =
+        null;
+    }
+
+
+    task.isOverdue =
+      false;
+
+  } else {
+
+    task.completedDateStamp =
+      null;
+
+
+    task.completedDay =
+      null;
+
+
+    task.isOverdue =
+      false;
+  }
+
+
+  saveSchoolState();
+
+  renderAllComponents();
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteSchoolTask(
+  id
+) {
+
+  if (
+    !confirm(
+      "Erase assignment?"
+    )
+  ) {
+
+    return;
+  }
+
+
+  schoolTasks =
+    schoolTasks.filter(
+      t => t.id !== id
+    );
+
+
+  saveSchoolState();
+
+  renderAllComponents();
+}
+
+
+/* =========================================================
+   CREATE TASK CARD
+========================================================= */
+
+function createTaskCard(
+  task
+) {
+
+  const overdueClass =
+    task.isOverdue
+      ? "overdue"
+      : "";
+
+
+  const upcomingClass =
+    isFutureTask(task)
+      ? "upcoming-task"
+      : "";
+
+
+  const priorityClass =
+    `p-${
+      String(
+        task.priority ||
+        "Mid"
+      ).toLowerCase()
+    }`;
+
+
+  const relativeDateText =
+    task.done
+      ? getRelativeDayString(
+          task.completedDateStamp
+        )
+      : "";
+
+
+  const dailyBadge =
+    task.daily
+
+      ? `<span class="badge-label daily">
+           DAILY
+         </span>`
+
+      : "";
+
+
+  const scheduledBadge =
+    task.scheduledDate &&
+    task.scheduledDate !==
+      getTodayKey()
+
+      ? `<span class="badge-label scheduled">
+           📅 ${escapeHTML(
+             formatScheduledDate(
+               task.scheduledDate
+             )
+           )}
+         </span>`
+
+      : "";
+
+
+  const dateMeta =
+    task.scheduledDate
+
+      ? `<span class="meta-scheduled">
+           📅 ${escapeHTML(
+             formatScheduledDate(
+               task.scheduledDate
+             )
+           )}
+         </span>`
+
+      : "";
+
+
+  return `
+
+    <div
+      class="
+        todo-row
+        ${task.done ? "done" : ""}
+        ${overdueClass}
+        ${upcomingClass}
+      ">
+
+      <input
+        type="checkbox"
+        id="task-${task.id}"
+        ${task.done ? "checked" : ""}
+        onchange="toggleTaskCheckbox(${task.id})"
+      >
+
+
+      <div class="todo-content">
+
+        <div class="todo-title-row">
+
+          <label
+            for="task-${task.id}">
+
+            ${escapeHTML(
+              task.text || "Untitled Task"
+            )}
+
+          </label>
+
+
+          <span class="badge-label class">
+
+            ${escapeHTML(
+              task.course || "Other"
+            )}
+
+          </span>
+
+
+          <span
+            class="badge-label ${priorityClass}">
+
+            ${escapeHTML(
+              task.priority || "Mid"
+            )}
+
+          </span>
+
+
+          ${dailyBadge}
+
+
+          ${
+            !task.done
+              ? scheduledBadge
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="todo-meta">
+
+        ${
+          task.targetTime &&
+          task.targetTime !== "Anytime"
+
+            ? `<span class="meta-target">
+                 ⏰ ${escapeHTML(
+                   task.targetTime
+                 )}
+               </span>`
+
+            : `<span
+                 class="meta-target"
+                 style="
+                   color:var(--muted);
+                   background:none;
+                   border-color:transparent;
+                 ">
+                 Anytime
+               </span>`
+        }
+
+
+        ${
+          task.done
+
+            ? `<span class="meta-date">
+                 ${escapeHTML(
+                   relativeDateText
+                 )}
+               </span>`
+
+            : dateMeta
+        }
+
+      </div>
+
+
+      ${
+        !task.done
+
+          ? `<button
+               class="action-icon-btn"
+               title="Edit assignment"
+               onclick="openEditAssignmentModal(${task.id})">
+               ✏️
+             </button>`
+
+          : ""
+      }
+
+
+      <button
+        class="action-icon-btn delete"
+        title="Delete assignment"
+        onclick="deleteSchoolTask(${task.id})">
+
+        ✕
+
+      </button>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================================================
+   RENDER ALL
+========================================================= */
+
+function renderAllComponents() {
+
+  const activeContainer =
+    document.getElementById(
+      "activeBacklogContainer"
+    );
+
+
+  const upcomingContainer =
+    document.getElementById(
+      "upcomingContainer"
+    );
+
+
+  const doneContainer =
+    document.getElementById(
+      "completedArchiveContainer"
+    );
+
+
+  if (
+    !activeContainer ||
+    !upcomingContainer ||
+    !doneContainer
+  ) {
+
+    return;
+  }
+
+
+  let pendingCount =
+    0;
+
+
+  let completedCount =
+    0;
+
+
+  let urgentCount =
+    0;
+
+
+  let activeHTML =
+    "";
+
+
+  let upcomingHTML =
+    "";
+
+
+  let doneHTML =
+    "";
+
+
+  /* =======================================================
+     SORT TASKS
+  ======================================================= */
+
+  const upcomingTasks =
+    schoolTasks
+      .filter(
+        task =>
+          isFutureTask(task)
+      )
+      .sort(
+        (a, b) =>
+          a.scheduledDate
+            .localeCompare(
+              b.scheduledDate
+            )
+      );
+
+
+  const activeTasks =
+    schoolTasks
+      .filter(
+        task =>
+          isActiveTask(task)
+      );
+
+
+  const completedTasks =
+    schoolTasks
+      .filter(
+        task =>
+          task.done
+      );
+
+
+  /* =======================================================
+     STATS
+  ======================================================= */
+
+  schoolTasks.forEach(task => {
+
+    if (!task.done) {
+
+      pendingCount++;
+
+
+      if (
+        task.priority === "High"
+      ) {
+
+        urgentCount++;
+      }
+
+    } else {
+
+      completedCount++;
+    }
+
+  });
+
+
+  /* =======================================================
+     ACTIVE HTML
+  ======================================================= */
+
+  activeTasks.forEach(
+    task => {
+
+      activeHTML +=
+        createTaskCard(
+          task
+        );
+
+    }
+  );
+
+
+  /* =======================================================
+     UPCOMING HTML
+  ======================================================= */
+
+  upcomingTasks.forEach(
+    task => {
+
+      upcomingHTML +=
+        createTaskCard(
+          task
+        );
+
+    }
+  );
+
+
+  /* =======================================================
+     COMPLETED HTML
+  ======================================================= */
+
+  completedTasks.forEach(
+    task => {
+
+      doneHTML +=
+        createTaskCard(
+          task
+        );
+
+    }
+  );
+
+
+  /* =======================================================
+     STATS DISPLAY
+  ======================================================= */
+
+  document.getElementById(
+    "statPending"
+  ).innerText =
+    pendingCount;
+
+
+  document.getElementById(
+    "statCompleted"
+  ).innerText =
+    completedCount;
+
+
+  document.getElementById(
+    "statUrgent"
+  ).innerText =
+    urgentCount;
+
+
+  const total =
+    pendingCount +
+    completedCount;
+
+
+  document.getElementById(
+    "statRate"
+  ).innerText =
+
+    total > 0
+
+      ? Math.round(
+          (
+            completedCount /
+            total
+          ) * 100
+        ) + "%"
+
+      : "0%";
+
+
+  /* =======================================================
+     CONTAINERS
+  ======================================================= */
+
+  activeContainer.innerHTML =
+    activeHTML ||
+
+    `<div class="empty">
+       All clear! 🎯
+     </div>`;
+
+
+  upcomingContainer.innerHTML =
+    upcomingHTML ||
+
+    `<div class="empty">
+       No upcoming assignments scheduled. 📅
+     </div>`;
+
+
+  doneContainer.innerHTML =
+    doneHTML ||
+
+    `<div class="empty">
+       Archive is empty.
+     </div>`;
+}
+
+
+/* =========================================================
+   HTML ESCAPING
+========================================================= */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+}
+
+
+/* =========================================================
+   KEYBOARD ESCAPE
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function(e) {
+
+    if (
+      e.key === "Escape"
+    ) {
+
+      closeAssignmentModal();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+/*
+   STEP 1:
+   Migrate old tasks WITHOUT deleting them.
+*/
+
+migrateExistingTasks();
+
+
+/*
+   STEP 2:
+   Reset daily tasks if a new day started.
+*/
+
+resetDailyTasksIfNewDay();
+
+
+/*
+   STEP 3:
+   Draw the application.
+*/
+
+renderAllComponents();
+
+
+/*
+   STEP 4:
+   Keep the clock and task system alive.
+*/
+
+setInterval(
+  runSchoolLiveClock,
+  1000
+);
+
+
+/*
+   Run immediately instead of waiting one second.
+*/
+
+runSchoolLiveClock();
+
+</script>
+
+</body>
+</html>
