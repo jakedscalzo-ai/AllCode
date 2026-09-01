@@ -1,0 +1,2876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Notes</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+
+    background: #000;
+    color: white;
+
+    font-family: Arial, sans-serif;
+}
+
+button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* ================================= */
+/* HOME */
+/* ================================= */
+
+.notes-app {
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 14px;
+
+    background: #000;
+}
+
+/* ================================= */
+/* HOME TOP */
+/* ================================= */
+
+.top-bar {
+    width: 100%;
+    min-height: 60px;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+}
+
+h1 {
+    margin: 0;
+
+    color: cyan;
+
+    font-size: 27px;
+
+    text-shadow:
+        0 0 5px cyan,
+        0 0 15px cyan;
+}
+
+/* ================================= */
+/* NEW BUTTON */
+/* ================================= */
+
+.new-button {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    padding: 12px 22px;
+
+    background: cyan;
+    color: black;
+
+    border: none;
+    border-radius: 11px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.new-button:active {
+    transform:
+        translate(-50%, -50%)
+        scale(0.94);
+}
+
+/* ================================= */
+/* ALL PROJECTS */
+/* ================================= */
+
+.all-projects-button {
+    position: absolute;
+
+    right: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    padding: 10px 12px;
+
+    background: #111;
+    color: cyan;
+
+    border: 2px solid cyan;
+    border-radius: 10px;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+/* ================================= */
+/* NOTES */
+/* ================================= */
+
+.notes-container {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(280px, 1fr));
+
+    gap: 15px;
+
+    margin-top: 18px;
+}
+
+/* ================================= */
+/* NOTE CARD */
+/* ================================= */
+
+.note-card {
+    position: relative;
+
+    background: #111;
+
+    border: 2px solid cyan;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    min-height: 180px;
+
+    box-shadow:
+        0 0 8px rgba(0, 255, 255, 0.25);
+}
+
+.note-title {
+    color: cyan;
+
+    font-size: 21px;
+    font-weight: bold;
+
+    margin-right: 70px;
+    margin-bottom: 12px;
+
+    word-break: break-word;
+}
+
+.note-preview {
+    color: #aaa;
+
+    font-size: 15px;
+
+    line-height: 1.4;
+
+    min-height: 55px;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+
+    margin-bottom: 15px;
+}
+
+.open-button {
+    padding: 10px 20px;
+
+    background: cyan;
+    color: black;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.delete-button {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    padding: 7px 10px;
+
+    background: #330000;
+    color: #ff4444;
+
+    border: 2px solid #ff3333;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.empty-message {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    color: #666;
+
+    font-size: 18px;
+
+    margin-top: 40px;
+}
+
+/* ================================= */
+/* DELETE POPUP */
+/* ================================= */
+
+.popup-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.82);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 99999;
+
+    padding: 20px;
+}
+
+.popup-box {
+    width: 100%;
+    max-width: 430px;
+
+    background: #071522;
+
+    border: 2px solid #00aaff;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    text-align: center;
+
+    box-shadow:
+        0 0 10px #008cff,
+        0 0 30px rgba(0, 140, 255, 0.35);
+}
+
+.popup-box h2 {
+    margin-top: 0;
+
+    color: #00b7ff;
+
+    text-shadow:
+        0 0 8px #008cff;
+}
+
+.popup-box p {
+    color: #aaa;
+
+    line-height: 1.4;
+
+    margin-bottom: 20px;
+}
+
+.popup-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.popup-cancel,
+.delete-confirm {
+    min-height: 48px;
+
+    padding: 10px 22px;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.popup-cancel {
+    background: #111;
+
+    color: #aaa;
+
+    border: 2px solid #444;
+}
+
+.delete-confirm {
+    background: #cc2222;
+
+    color: white;
+
+    border: 2px solid #ff4444;
+}
+
+/* ================================= */
+/* EDITOR */
+/* ================================= */
+
+#editorPage {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: #000;
+
+    z-index: 9000;
+
+    overflow-y: auto;
+}
+
+/* ================================= */
+/* EDITOR TOP */
+/* ================================= */
+
+.editor-top {
+    position: sticky;
+
+    top: 0;
+
+    width: 100%;
+
+    min-height: 75px;
+
+    padding: 9px;
+
+    background: #050505;
+
+    border-bottom: 2px solid #222;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    z-index: 20;
+}
+
+/* ================================= */
+/* TOOLBAR */
+/* ================================= */
+
+.editor-toolbar {
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+}
+
+.editor-toolbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* ================================= */
+/* TOOL BUTTONS */
+/* ================================= */
+
+.tool-button {
+    flex: 0 0 auto;
+
+    width: 56px;
+    height: 56px;
+
+    background: #111;
+
+    color: cyan;
+
+    border: 2px solid #008f9c;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.tool-button:active {
+    background: cyan;
+
+    color: black;
+
+    transform: scale(0.93);
+}
+
+/* ================================= */
+/* EDITOR BACK BUTTON */
+/* ================================= */
+
+.back-button {
+    flex: 0 0 auto;
+
+    width: 58px;
+    height: 56px;
+
+    background: #111;
+
+    color: cyan;
+
+    border: 2px solid cyan;
+
+    border-radius: 12px;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.back-button:active {
+    background: cyan;
+
+    color: black;
+
+    transform: scale(0.93);
+}
+
+/* ================================= */
+/* EDITOR AREA */
+/* ================================= */
+
+.editor-area {
+    width: 100%;
+
+    padding: 9px;
+}
+
+/* ================================= */
+/* EDITOR */
+/* ================================= */
+
+#noteEditor {
+    width: 100%;
+
+    min-height: calc(100vh - 105px);
+
+    background: #050505;
+
+    color: white;
+
+    border: 2px solid #111;
+
+    border-radius: 10px;
+
+    padding: 16px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    line-height: 1.6;
+
+    outline: none;
+
+    overflow-y: auto;
+
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+#noteEditor:focus {
+    border-color: cyan;
+
+    box-shadow:
+        0 0 10px rgba(0, 255, 255, 0.15);
+}
+
+/* ================================= */
+/* TITLE */
+/* ================================= */
+
+.note-editor-title {
+    font-size: 30px;
+
+    font-weight: bold;
+
+    color: white;
+
+    line-height: 1.25;
+
+    min-height: 38px;
+
+    margin-bottom: 8px;
+}
+
+.note-editor-title:empty::before {
+    content: "Note title";
+
+    color: #555;
+}
+
+/* ================================= */
+/* NORMAL LINE */
+/* ================================= */
+
+.note-editor-line {
+    font-size: 18px;
+
+    font-weight: normal;
+
+    color: white;
+
+    min-height: 29px;
+
+    line-height: 1.6;
+}
+
+/* ================================= */
+/* CHECKLIST */
+/* ================================= */
+
+.checklist-line,
+.bullet-line {
+    display: flex;
+
+    align-items: flex-start;
+
+    width: 100%;
+
+    min-height: 30px;
+
+    line-height: 1.6;
+}
+
+.list-content {
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: 29px;
+
+    outline: none;
+
+    cursor: text;
+}
+
+/* ================================= */
+/* CHECK CIRCLE */
+/* ================================= */
+
+.check-circle {
+    flex: 0 0 auto;
+
+    width: 24px;
+    height: 24px;
+
+    margin-top: 5px;
+    margin-right: 10px;
+
+    border: 2px solid white;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: transparent;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.check-circle.checked {
+    background: #18c75a;
+
+    border-color: #18c75a;
+
+    color: white;
+}
+
+.check-circle.checked::after {
+    content: "✓";
+}
+
+.check-circle.checked + .list-content {
+    color: #777;
+
+    text-decoration: line-through;
+}
+
+/* ================================= */
+/* BULLET */
+/* ================================= */
+
+.bullet-circle {
+    flex: 0 0 auto;
+
+    width: 12px;
+    height: 12px;
+
+    margin-top: 9px;
+
+    margin-left: 6px;
+    margin-right: 16px;
+
+    border: 2px solid white;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    pointer-events: none;
+}
+
+/* ================================= */
+/* MOBILE */
+/* ================================= */
+
+@media (max-width: 600px) {
+
+    .notes-app {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .new-button {
+        padding: 11px 18px;
+
+        font-size: 15px;
+    }
+
+    .all-projects-button {
+        padding: 8px 7px;
+
+        font-size: 9px;
+    }
+
+    .notes-container {
+        grid-template-columns: 1fr;
+    }
+
+    .editor-top {
+        padding: 8px;
+
+        gap: 7px;
+    }
+
+    .tool-button {
+        width: 55px;
+        height: 55px;
+    }
+
+    .back-button {
+        width: 58px;
+        height: 55px;
+    }
+
+    #noteEditor {
+        font-size: 17px;
+
+        padding: 15px;
+    }
+
+    .note-editor-title {
+        font-size: 28px;
+    }
+
+    .note-editor-line {
+        font-size: 17px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- ================================= -->
+<!-- HOME -->
+<!-- ================================= -->
+
+<div
+    class="notes-app"
+    id="notesHome">
+
+    <div class="top-bar">
+
+        <h1>📝 Notes</h1>
+
+
+        <button
+            type="button"
+            class="new-button"
+            onclick="createNote(); return false;">
+
+            + NEW
+
+        </button>
+
+
+        <button
+            type="button"
+            class="all-projects-button"
+            onclick="location.href='../AllMyCode/index.html'; return false;">
+
+            ALL PROJECTS
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="notes-container"
+        id="notesContainer">
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- DELETE POPUP -->
+<!-- ================================= -->
+
+<div
+    class="popup-overlay"
+    id="deletePopup">
+
+    <div class="popup-box">
+
+        <h2>⚠️ Delete Note?</h2>
+
+        <p>
+            Are you sure you want to delete this note?
+            This cannot be undone.
+        </p>
+
+
+        <div class="popup-buttons">
+
+            <button
+                type="button"
+                class="delete-confirm"
+                onclick="confirmDelete(); return false;">
+
+                Yes, Delete
+
+            </button>
+
+
+            <button
+                type="button"
+                class="popup-cancel"
+                onclick="closeDeletePopup(); return false;">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- EDITOR -->
+<!-- ================================= -->
+
+<div id="editorPage">
+
+
+    <div class="editor-top">
+
+
+        <div class="editor-toolbar">
+
+
+            <!-- NOTE UNDO ONLY -->
+
+            <button
+                type="button"
+                class="tool-button"
+                id="undoButton"
+                aria-label="Undo note change">
+
+                ←
+
+            </button>
+
+
+            <!-- NOTE REDO ONLY -->
+
+            <button
+                type="button"
+                class="tool-button"
+                id="redoButton"
+                aria-label="Redo note change">
+
+                →
+
+            </button>
+
+
+            <!-- CHECKLIST -->
+
+            <button
+                type="button"
+                class="tool-button"
+                onclick="toggleChecklist(); return false;"
+                aria-label="Checklist">
+
+                ☑
+
+            </button>
+
+
+            <!-- BULLETS -->
+
+            <button
+                type="button"
+                class="tool-button"
+                onclick="toggleBullets(); return false;"
+                aria-label="Bullets">
+
+                ○
+
+            </button>
+
+
+        </div>
+
+
+        <!-- CLOSE EDITOR -->
+
+        <button
+            type="button"
+            class="back-button"
+            onclick="closeEditor(); return false;"
+            aria-label="Close note">
+
+            ←
+
+        </button>
+
+
+    </div>
+
+
+    <div class="editor-area">
+
+        <div
+            id="noteEditor"
+            contenteditable="true"
+            spellcheck="true">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================================= */
+/* STORAGE */
+/* ================================= */
+
+let notes =
+    JSON.parse(
+        localStorage.getItem("jakeNotes")
+    ) || [];
+
+
+let currentNoteId = null;
+
+let noteToDeleteId = null;
+
+
+/* ================================= */
+/* NOTE HISTORY */
+/* ================================= */
+
+/*
+    This is a separate undo/redo history
+    for the current note.
+
+    It is NOT browser history.
+
+    Pressing ← or → therefore can never
+    send Safari to another webpage.
+*/
+
+let historyStack = [];
+
+let historyPosition = -1;
+
+let historyTimer = null;
+
+let restoringHistory = false;
+
+
+/* ================================= */
+/* SAVE NOTES */
+/* ================================= */
+
+function saveNotes() {
+
+    localStorage.setItem(
+        "jakeNotes",
+        JSON.stringify(notes)
+    );
+
+}
+
+
+/* ================================= */
+/* PLAIN TEXT */
+/* ================================= */
+
+function getPlainText(html) {
+
+    if (!html) {
+
+        return "";
+
+    }
+
+
+    const temp =
+        document.createElement("div");
+
+    temp.innerHTML = html;
+
+
+    return (
+        temp.innerText ||
+        temp.textContent ||
+        ""
+    );
+
+}
+
+
+/* ================================= */
+/* RENDER NOTES */
+/* ================================= */
+
+function renderNotes() {
+
+    const container =
+        document.getElementById(
+            "notesContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (notes.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-message">
+                No notes yet.<br>
+                Press <b>+ NEW</b> to create one.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    notes.forEach(function(note) {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "note-card";
+
+
+        const title =
+            document.createElement("div");
+
+        title.className =
+            "note-title";
+
+        title.textContent =
+            note.name || "Untitled";
+
+
+        const preview =
+            document.createElement("div");
+
+        preview.className =
+            "note-preview";
+
+
+        let previewText =
+            getPlainText(note.content);
+
+
+        if (!previewText.trim()) {
+
+            previewText =
+                "Empty note";
+
+        }
+
+
+        if (previewText.length > 140) {
+
+            previewText =
+                previewText.substring(0, 140)
+                + "...";
+
+        }
+
+
+        preview.textContent =
+            previewText;
+
+
+        const openButton =
+            document.createElement("button");
+
+        openButton.type = "button";
+
+        openButton.className =
+            "open-button";
+
+        openButton.textContent =
+            "Open";
+
+
+        openButton.onclick =
+            function(event) {
+
+                event.preventDefault();
+
+                openEditor(note.id);
+
+            };
+
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.type = "button";
+
+        deleteButton.className =
+            "delete-button";
+
+        deleteButton.textContent =
+            "DELETE";
+
+
+        deleteButton.onclick =
+            function(event) {
+
+                event.preventDefault();
+
+                openDeletePopup(note.id);
+
+            };
+
+
+        card.appendChild(title);
+
+        card.appendChild(preview);
+
+        card.appendChild(openButton);
+
+        card.appendChild(deleteButton);
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+/* ================================= */
+/* CREATE NOTE */
+/* ================================= */
+
+function createNote() {
+
+    const newNote = {
+
+        id:
+            Date.now().toString()
+            +
+            Math.random()
+                .toString(36)
+                .substring(2),
+
+        name: "",
+
+        content:
+            '<div class="note-editor-title"></div>' +
+            '<div class="note-editor-line"><br></div>'
+
+    };
+
+
+    notes.unshift(newNote);
+
+
+    saveNotes();
+
+    renderNotes();
+
+
+    /* Open immediately */
+
+    openEditor(
+        newNote.id,
+        true
+    );
+
+}
+
+
+/* ================================= */
+/* OPEN DELETE */
+/* ================================= */
+
+function openDeletePopup(id) {
+
+    noteToDeleteId = id;
+
+
+    document.getElementById(
+        "deletePopup"
+    ).style.display = "flex";
+
+}
+
+
+/* ================================= */
+/* CLOSE DELETE */
+/* ================================= */
+
+function closeDeletePopup() {
+
+    noteToDeleteId = null;
+
+
+    document.getElementById(
+        "deletePopup"
+    ).style.display = "none";
+
+}
+
+
+/* ================================= */
+/* DELETE */
+/* ================================= */
+
+function confirmDelete() {
+
+    if (
+        noteToDeleteId === null
+    ) {
+
+        return;
+
+    }
+
+
+    notes =
+        notes.filter(function(note) {
+
+            return note.id !== noteToDeleteId;
+
+        });
+
+
+    saveNotes();
+
+    renderNotes();
+
+    closeDeletePopup();
+
+}
+
+
+/* ================================= */
+/* OPEN EDITOR */
+/* ================================= */
+
+function openEditor(
+    id,
+    newNote = false
+) {
+
+    const note =
+        notes.find(function(note) {
+
+            return note.id === id;
+
+        });
+
+
+    if (!note) {
+
+        return;
+
+    }
+
+
+    currentNoteId = id;
+
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    if (note.content) {
+
+        editor.innerHTML =
+            note.content;
+
+    }
+
+    else {
+
+        editor.innerHTML =
+            '<div class="note-editor-title"></div>' +
+            '<div class="note-editor-line"><br></div>';
+
+    }
+
+
+    normalizeEditor();
+
+
+    document.getElementById(
+        "notesHome"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "editorPage"
+    ).style.display = "block";
+
+
+    /*
+        Create a fresh note history.
+
+        This history belongs ONLY to this note.
+    */
+
+    startNoteHistory();
+
+
+    if (newNote) {
+
+        setTimeout(function() {
+
+            const title =
+                editor.querySelector(
+                    ".note-editor-title"
+                );
+
+
+            placeCursorAtStart(
+                title
+            );
+
+        }, 50);
+
+    }
+
+    else {
+
+        setTimeout(function() {
+
+            placeCursorAtEnd(
+                editor
+            );
+
+        }, 50);
+
+    }
+
+}
+
+
+/* ================================= */
+/* NORMALIZE */
+/* ================================= */
+
+function normalizeEditor() {
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    if (!editor.firstElementChild) {
+
+        editor.innerHTML =
+            '<div class="note-editor-title"></div>' +
+            '<div class="note-editor-line"><br></div>';
+
+        return;
+
+    }
+
+
+    const first =
+        editor.firstElementChild;
+
+
+    first.classList.add(
+        "note-editor-title"
+    );
+
+
+    first.classList.remove(
+        "note-editor-line"
+    );
+
+
+    /*
+        Make sure the title is always
+        the first line.
+    */
+
+    first.style.fontWeight =
+        "bold";
+
+}
+
+
+/* ================================= */
+/* SAVE CURRENT NOTE */
+/* ================================= */
+
+function saveCurrentNote() {
+
+    if (
+        currentNoteId === null
+    ) {
+
+        return;
+
+    }
+
+
+    const note =
+        notes.find(function(note) {
+
+            return note.id === currentNoteId;
+
+        });
+
+
+    if (!note) {
+
+        return;
+
+    }
+
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    normalizeEditor();
+
+
+    const title =
+        editor.firstElementChild;
+
+
+    note.name =
+        title
+            ? title.innerText.trim()
+            : "";
+
+
+    note.content =
+        editor.innerHTML;
+
+
+    saveNotes();
+
+}
+
+
+/* ================================= */
+/* SAVE HISTORY STATE */
+/* ================================= */
+
+function saveHistoryState() {
+
+    if (
+        restoringHistory ||
+        currentNoteId === null
+    ) {
+
+        return;
+
+    }
+
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    const html =
+        editor.innerHTML;
+
+
+    /*
+        Do not add duplicate states.
+    */
+
+    if (
+        historyStack[
+            historyPosition
+        ] === html
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+        If the user undid something and
+        then types something new, remove
+        the old redo states.
+    */
+
+    historyStack =
+        historyStack.slice(
+            0,
+            historyPosition + 1
+        );
+
+
+    historyStack.push(
+        html
+    );
+
+
+    /*
+        Keep history reasonably small
+        for mobile.
+    */
+
+    if (
+        historyStack.length > 100
+    ) {
+
+        historyStack.shift();
+
+    }
+
+
+    historyPosition =
+        historyStack.length - 1;
+
+}
+
+
+/* ================================= */
+/* START NOTE HISTORY */
+/* ================================= */
+
+function startNoteHistory() {
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    historyStack = [
+        editor.innerHTML
+    ];
+
+
+    historyPosition = 0;
+
+}
+
+
+/* ================================= */
+/* RECORD EDIT */
+/* ================================= */
+
+function recordEdit() {
+
+    if (
+        restoringHistory
+    ) {
+
+        return;
+
+    }
+
+
+    clearTimeout(
+        historyTimer
+    );
+
+
+    /*
+        Small delay groups individual
+        typing actions naturally.
+    */
+
+    historyTimer =
+        setTimeout(
+            function() {
+
+                saveHistoryState();
+
+            },
+            250
+        );
+
+}
+
+
+/* ================================= */
+/* UNDO NOTE ONLY */
+/* ================================= */
+
+function undoNoteOnly() {
+
+    /*
+        NEVER call history.back().
+
+        This function only changes the
+        HTML inside the note editor.
+    */
+
+    clearTimeout(
+        historyTimer
+    );
+
+
+    if (
+        historyPosition <= 0
+    ) {
+
+        return;
+
+    }
+
+
+    historyPosition--;
+
+
+    restoreHistoryState(
+        historyStack[
+            historyPosition
+        ]
+    );
+
+}
+
+
+/* ================================= */
+/* REDO NOTE ONLY */
+/* ================================= */
+
+function redoNoteOnly() {
+
+    /*
+        NEVER call history.forward().
+
+        This function only changes the
+        HTML inside the note editor.
+    */
+
+    clearTimeout(
+        historyTimer
+    );
+
+
+    if (
+        historyPosition >=
+        historyStack.length - 1
+    ) {
+
+        return;
+
+    }
+
+
+    historyPosition++;
+
+
+    restoreHistoryState(
+        historyStack[
+            historyPosition
+        ]
+    );
+
+}
+
+
+/* ================================= */
+/* RESTORE NOTE STATE */
+/* ================================= */
+
+function restoreHistoryState(html) {
+
+    restoringHistory = true;
+
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    editor.innerHTML =
+        html;
+
+
+    normalizeEditor();
+
+    saveCurrentNote();
+
+
+    /*
+        Put the cursor back into the
+        note without touching browser
+        history.
+    */
+
+    setTimeout(function() {
+
+        placeCursorAtEnd(
+            editor
+        );
+
+
+        restoringHistory = false;
+
+    }, 0);
+
+}
+
+
+/* ================================= */
+/* ARROW BUTTON EVENTS */
+/* ================================= */
+
+/*
+    These buttons use addEventListener
+    instead of navigation.
+
+    Safari therefore has no reason
+    to navigate backwards/forwards.
+*/
+
+document
+    .getElementById("undoButton")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            undoNoteOnly();
+
+        }
+    );
+
+
+document
+    .getElementById("redoButton")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            redoNoteOnly();
+
+        }
+    );
+
+
+/*
+    Prevent mouse auxiliary navigation
+    from affecting these buttons.
+*/
+
+["mousedown", "mouseup"].forEach(
+    function(type) {
+
+        document
+            .getElementById("undoButton")
+            .addEventListener(
+                type,
+                function(event) {
+
+                    event.preventDefault();
+
+                }
+            );
+
+
+        document
+            .getElementById("redoButton")
+            .addEventListener(
+                type,
+                function(event) {
+
+                    event.preventDefault();
+
+                }
+            );
+
+    }
+);
+
+
+/* ================================= */
+/* INPUT */
+/* ================================= */
+
+document
+    .getElementById("noteEditor")
+    .addEventListener(
+        "input",
+        function() {
+
+            normalizeEditor();
+
+            saveCurrentNote();
+
+            recordEdit();
+
+        }
+    );
+
+
+/* ================================= */
+/* ENTER KEY */
+/* ================================= */
+
+document
+    .getElementById("noteEditor")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                handleEnter(event);
+
+            }
+
+        }
+    );
+
+
+/* ================================= */
+/* ENTER HANDLER */
+/* ================================= */
+
+function handleEnter(event) {
+
+    const line =
+        getCurrentLine();
+
+
+    if (!line) {
+
+        return;
+
+    }
+
+
+    /* CHECKLIST */
+
+    if (
+        line.classList.contains(
+            "checklist-line"
+        )
+    ) {
+
+        event.preventDefault();
+
+
+        const content =
+            line.querySelector(
+                ".list-content"
+            );
+
+
+        if (
+            !content.innerText.trim()
+        ) {
+
+            exitList(line);
+
+        }
+
+        else {
+
+            createListItem(
+                "checklist",
+                line
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* BULLET */
+
+    if (
+        line.classList.contains(
+            "bullet-line"
+        )
+    ) {
+
+        event.preventDefault();
+
+
+        const content =
+            line.querySelector(
+                ".list-content"
+            );
+
+
+        if (
+            !content.innerText.trim()
+        ) {
+
+            exitList(line);
+
+        }
+
+        else {
+
+            createListItem(
+                "bullet",
+                line
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    /*
+        If the title is active, Enter
+        creates a normal text line.
+    */
+
+    if (
+        line.classList.contains(
+            "note-editor-title"
+        )
+    ) {
+
+        setTimeout(function() {
+
+            const editor =
+                document.getElementById(
+                    "noteEditor"
+                );
+
+
+            const first =
+                editor.firstElementChild;
+
+
+            /*
+                The browser creates the
+                next line. Make it normal.
+            */
+
+            if (
+                first &&
+                first.nextElementSibling
+            ) {
+
+                first.nextElementSibling.className =
+                    "note-editor-line";
+
+            }
+
+
+            normalizeEditor();
+
+            saveCurrentNote();
+
+            saveHistoryState();
+
+        }, 0);
+
+    }
+
+}
+
+
+/* ================================= */
+/* EXIT LIST */
+/* ================================= */
+
+function exitList(line) {
+
+    const normal =
+        document.createElement(
+            "div"
+        );
+
+
+    normal.className =
+        "note-editor-line";
+
+
+    normal.innerHTML =
+        "<br>";
+
+
+    line.parentNode.insertBefore(
+        normal,
+        line.nextSibling
+    );
+
+
+    placeCursorAtStart(
+        normal
+    );
+
+
+    saveCurrentNote();
+
+    saveHistoryState();
+
+}
+
+
+/* ================================= */
+/* CURRENT LINE */
+/* ================================= */
+
+function getCurrentLine() {
+
+    const selection =
+        window.getSelection();
+
+
+    if (
+        !selection.rangeCount
+    ) {
+
+        return null;
+
+    }
+
+
+    let node =
+        selection.anchorNode;
+
+
+    if (!node) {
+
+        return null;
+
+    }
+
+
+    if (
+        node.nodeType === 3
+    ) {
+
+        node =
+            node.parentElement;
+
+    }
+
+
+    return node.closest(
+        ".note-editor-title," +
+        ".note-editor-line," +
+        ".checklist-line," +
+        ".bullet-line"
+    );
+
+}
+
+
+/* ================================= */
+/* CREATE LIST ITEM */
+/* ================================= */
+
+function createListItem(
+    type,
+    currentLine
+) {
+
+    const line =
+        document.createElement(
+            "div"
+        );
+
+
+    const content =
+        document.createElement(
+            "span"
+        );
+
+
+    content.className =
+        "list-content";
+
+    content.contentEditable =
+        "true";
+
+    content.innerHTML =
+        "<br>";
+
+
+    if (
+        type === "checklist"
+    ) {
+
+        line.className =
+            "checklist-line";
+
+
+        const circle =
+            document.createElement(
+                "span"
+            );
+
+
+        circle.className =
+            "check-circle";
+
+
+        circle.contentEditable =
+            "false";
+
+
+        circle.onclick =
+            function(event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                toggleCheck(
+                    circle
+                );
+
+            };
+
+
+        line.appendChild(
+            circle
+        );
+
+        line.appendChild(
+            content
+        );
+
+    }
+
+    else {
+
+        line.className =
+            "bullet-line";
+
+
+        const bullet =
+            document.createElement(
+                "span"
+            );
+
+
+        bullet.className =
+            "bullet-circle";
+
+
+        bullet.contentEditable =
+            "false";
+
+
+        line.appendChild(
+            bullet
+        );
+
+        line.appendChild(
+            content
+        );
+
+    }
+
+
+    currentLine.parentNode.insertBefore(
+        line,
+        currentLine.nextSibling
+    );
+
+
+    placeCursorAtStart(
+        content
+    );
+
+
+    saveCurrentNote();
+
+    saveHistoryState();
+
+}
+
+
+/* ================================= */
+/* CHECKLIST TOOL */
+/* ================================= */
+
+function toggleChecklist() {
+
+    const line =
+        getCurrentLine();
+
+
+    if (!line) {
+
+        return;
+
+    }
+
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    if (
+        line === editor.firstElementChild
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        line.classList.contains(
+            "checklist-line"
+        )
+    ) {
+
+        placeCursorInsideLine(
+            line
+        );
+
+        return;
+
+    }
+
+
+    if (
+        line.classList.contains(
+            "bullet-line"
+        )
+    ) {
+
+        convertBulletToChecklist(
+            line
+        );
+
+        return;
+
+    }
+
+
+    convertLineToChecklist(
+        line
+    );
+
+}
+
+
+/* ================================= */
+/* BULLET TOOL */
+/* ================================= */
+
+function toggleBullets() {
+
+    const line =
+        getCurrentLine();
+
+
+    if (!line) {
+
+        return;
+
+    }
+
+
+    const editor =
+        document.getElementById(
+            "noteEditor"
+        );
+
+
+    if (
+        line === editor.firstElementChild
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        line.classList.contains(
+            "bullet-line"
+        )
+    ) {
+
+        placeCursorInsideLine(
+            line
+        );
+
+        return;
+
+    }
+
+
+    if (
+        line.classList.contains(
+            "checklist-line"
+        )
+    ) {
+
+        convertChecklistToBullet(
+            line
+        );
+
+        return;
+
+    }
+
+
+    convertLineToBullet(
+        line
+    );
+
+}
+
+
+/* ================================= */
+/* NORMAL -> CHECKLIST */
+/* ================================= */
+
+function convertLineToChecklist(line) {
+
+    const text =
+        line.innerText;
+
+
+    const newLine =
+        document.createElement(
+            "div"
+        );
+
+
+    newLine.className =
+        "checklist-line";
+
+
+    const circle =
+        document.createElement(
+            "span"
+        );
+
+
+    circle.className =
+        "check-circle";
+
+
+    circle.contentEditable =
+        "false";
+
+
+    circle.onclick =
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            toggleCheck(
+                circle
+            );
+
+        };
+
+
+    const content =
+        document.createElement(
+            "span"
+        );
+
+
+    content.className =
+        "list-content";
+
+
+    content.contentEditable =
+        "true";
+
+
+    content.textContent =
+        text;
+
+
+    newLine.appendChild(
+        circle
+    );
+
+
+    newLine.appendChild(
+        content
+    );
+
+
+    line.parentNode.replaceChild(
+        newLine,
+        line
+    );
+
+
+    placeCursorAtEnd(
+        content
+    );
+
+
+    saveCurrentNote();
+
+    saveHistoryState();
+
+}
+
+
+/* ================================= */
+/* NORMAL -> BULLET */
+/* ================================= */
+
+function convertLineToBullet(line) {
+
+    const text =
+        line.innerText;
+
+
+    const newLine =
+        document.createElement(
+            "div"
+        );
+
+
+    newLine.className =
+        "bullet-line";
+
+
+    const bullet =
+        document.createElement(
+            "span"
+        );
+
+
+    bullet.className =
+        "bullet-circle";
+
+
+    bullet.contentEditable =
+        "false";
+
+
+    const content =
+        document.createElement(
+            "span"
+        );
+
+
+    content.className =
+        "list-content";
+
+
+    content.contentEditable =
+        "true";
+
+
+    content.textContent =
+        text;
+
+
+    newLine.appendChild(
+        bullet
+    );
+
+
+    newLine.appendChild(
+        content
+    );
+
+
+    line.parentNode.replaceChild(
+        newLine,
+        line
+    );
+
+
+    placeCursorAtEnd(
+        content
+    );
+
+
+    saveCurrentNote();
+
+    saveHistoryState();
+
+}
+
+
+/* ================================= */
+/* BULLET -> CHECKLIST */
+/* ================================= */
+
+function convertBulletToChecklist(line) {
+
+    const oldContent =
+        line.querySelector(
+            ".list-content"
+        );
+
+
+    const newLine =
+        document.createElement(
+            "div"
+        );
+
+
+    newLine.className =
+        "checklist-line";
+
+
+    const circle =
+        document.createElement(
+            "span"
+        );
+
+
+    circle.className =
+        "check-circle";
+
+
+    circle.contentEditable =
+        "false";
+
+
+    circle.onclick =
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            toggleCheck(
+                circle
+            );
+
+        };
+
+
+    const content =
+        document.createElement(
+            "span"
+        );
+
+
+    content.className =
+        "list-content";
+
+
+    content.contentEditable =
+        "true";
+
+
+    content.innerHTML =
+        oldContent.innerHTML;
+
+
+    newLine.appendChild(
+        circle
+    );
+
+
+    newLine.appendChild(
+        content
+    );
+
+
+    line.parentNode.replaceChild(
+        newLine,
+        line
+    );
+
+
+    placeCursorAtEnd(
+        content
+    );
+
+
+    saveCurrentNote();
+
+    saveHistoryState();
+
+}
+
+
+/* ================================= */
+/* CHECKLIST -> BULLET */
+/* ================================= */
+
+function convertChecklistToBullet(line) {
+
+    const oldContent =
+        line.querySelector(
+            ".list-content"
+        );
+
+
+    const newLine =
+        document.createElement(
+            "div"
+        );
+
+
+    newLine.className =
+        "bullet-line";
+
+
+    const bullet =
+        document.createElement(
+            "span"
+        );
+
+
+    bullet.className =
+        "bullet-circle";
+
+
+    bullet.contentEditable =
+        "false";
+
+
+    const content =
+        document.createElement(
+            "span"
+        );
+
+
+    content.className =
+        "list-content";
+
+
+    content.contentEditable =
+        "true";
+
+
+    content.innerHTML =
+        oldContent.innerHTML;
+
+
+    newLine.appendChild(
+        bullet
+    );
+
+
+    newLine.appendChild(
+        content
+    );
+
+
+    line.parentNode.replaceChild(
+        newLine,
+        line
+    );
+
+
+    placeCursorAtEnd(
+        content
+    );
+
+
+    saveCurrentNote();
+
+    saveHistoryState();
+
+}
+
+
+/* ================================= */
+/* CHECKBOX */
+/* ================================= */
+
+function toggleCheck(circle) {
+
+    circle.classList.toggle(
+        "checked"
+    );
+
+
+    saveCurrentNote();
+
+    saveHistoryState();
+
+}
+
+
+/* ================================= */
+/* LIST CLICK */
+/* ================================= */
+
+document
+    .getElementById("noteEditor")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            const content =
+                event.target.closest(
+                    ".list-content"
+                );
+
+
+            if (content) {
+
+                content.focus();
+
+            }
+
+        }
+    );
+
+
+/* ================================= */
+/* PLACE CURSOR START */
+/* ================================= */
+
+function placeCursorAtStart(
+    element
+) {
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    const range =
+        document.createRange();
+
+
+    const selection =
+        window.getSelection();
+
+
+    range.selectNodeContents(
+        element
+    );
+
+
+    range.collapse(true);
+
+
+    selection.removeAllRanges();
+
+    selection.addRange(range);
+
+
+    element.focus();
+
+}
+
+
+/* ================================= */
+/* PLACE CURSOR END */
+/* ================================= */
+
+function placeCursorAtEnd(
+    element
+) {
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    const range =
+        document.createRange();
+
+
+    const selection =
+        window.getSelection();
+
+
+    range.selectNodeContents(
+        element
+    );
+
+
+    range.collapse(false);
+
+
+    selection.removeAllRanges();
+
+    selection.addRange(range);
+
+
+    element.focus();
+
+}
+
+
+/* ================================= */
+/* CLOSE EDITOR */
+/* ================================= */
+
+function closeEditor() {
+
+    saveCurrentNote();
+
+
+    clearTimeout(
+        historyTimer
+    );
+
+
+    currentNoteId = null;
+
+
+    document.getElementById(
+        "editorPage"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "notesHome"
+    ).style.display = "block";
+
+
+    renderNotes();
+
+}
+
+
+/* ================================= */
+/* INITIAL LOAD */
+/* ================================= */
+
+renderNotes();
+
+</script>
+
+</body>
+</html>
