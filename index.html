@@ -43,7 +43,6 @@
             font-size: 14px;
         }
 
-        
         /* MAIN */
         main {
             max-width: 1400px;
@@ -273,17 +272,11 @@
             main {
                 padding: 35px 20px;
             }
-
-            .all-projects {
-                font-size: 11px;
-                padding: 10px 12px;
-            }
         }
     </style>
 </head>
 
 <body>
-
 
     <!-- HEADER -->
     <header>
@@ -291,12 +284,10 @@
         <div class="subtitle">By Jake Scalzo</div>
     </header>
 
-
     <!-- MAIN CONTENT -->
     <main>
 
         <section class="hero">
-
             <h1>
                 My <span>Projects</span>
             </h1>
@@ -304,16 +295,13 @@
             <p>
                 A collection of all my coding projects in one place.
             </p>
-
         </section>
-
 
         <!-- PROJECTS -->
         <section class="projects">
 
             <!-- PROJECT 01 -->
             <div class="project">
-
                 <div>
                     <div class="project-number">
                         PROJECT 01
@@ -330,17 +318,15 @@
 
                 <a
                     class="project-button"
-                    href="../Arcade/index.html"
+                    href="Arcade/index.html"
                 >
                     OPEN ARCADE HUB
                 </a>
-
             </div>
 
 
             <!-- PROJECT 02 -->
             <div class="project">
-
                 <div>
                     <div class="project-number">
                         PROJECT 02
@@ -356,16 +342,90 @@
                     </p>
                 </div>
 
-                <!-- This link changes when Jake Mode is activated -->
                 <a
                     id="grind-button"
                     class="project-button"
-                    href="../MyGrindHub/index.html"
+                    href="GrindHub/index.html"
                 >
                     OPEN GRIND HUB
                 </a>
-
             </div>
+
+
+            <!-- PROJECT 03 -->
+            <div class="project">
+                <div>
+                    <div class="project-number">
+                        PROJECT 03
+                    </div>
+
+                    <h2>
+                        My Grind Hub
+                    </h2>
+
+                    <p>
+                        My personal grind and progress tracker.
+                    </p>
+                </div>
+
+                <a
+                    class="project-button"
+                    href="MyGrindHub/index.html"
+                >
+                    OPEN MY GRIND HUB
+                </a>
+            </div>
+
+
+            <!-- PROJECT 04 -->
+            <div class="project">
+                <div>
+                    <div class="project-number">
+                        PROJECT 04
+                    </div>
+
+                    <h2>
+                        Massage
+                    </h2>
+
+                    <p>
+                        My massage project.
+                    </p>
+                </div>
+
+                <a
+                    class="project-button"
+                    href="Massage/index.html"
+                >
+                    OPEN MASSAGE
+                </a>
+            </div>
+
+
+            <!-- PROJECT 05 -->
+            <div class="project">
+                <div>
+                    <div class="project-number">
+                        PROJECT 05
+                    </div>
+
+                    <h2>
+                        Notes
+                    </h2>
+
+                    <p>
+                        My notes and information hub.
+                    </p>
+                </div>
+
+                <a
+                    class="project-button"
+                    href="Notes/index.html"
+                >
+                    OPEN NOTES
+                </a>
+            </div>
+
         </section>
 
     </main>
@@ -383,7 +443,7 @@
     </div>
 
 
-    <!-- SECRET CODE BOX -->
+    <!-- SECRET CODE AREA -->
     <div id="secret-area">
 
         <input
@@ -428,7 +488,7 @@
                 document.body.classList.add("jake-mode");
 
                 // Change Grind Hub destination
-                grindButton.href = "../MyGrindHub/index.html";
+                grindButton.href = "MyGrindHub/index.html";
 
                 // Hide code box
                 secretArea.style.display = "none";
@@ -481,7 +541,7 @@
             document.body.classList.remove("jake-mode");
 
             // Change Grind Hub back to normal
-            grindButton.href = "../GrindHub/index.html";
+            grindButton.href = "GrindHub/index.html";
 
             // Hide Back to Normal Mode
             normalModeButton.style.display = "none";
