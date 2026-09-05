@@ -3,1327 +3,1058 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reload Grind — Fortnite Tracker</title>
+<title>Fortnite Grind</title>
 
 <style>
-:root{
-  --bg:#03050b;
-  --panel:#080d18;
-  --panel2:#0d1423;
-  --panel3:#111b2d;
-  --line:#1d2a43;
-  --text:#f4f7ff;
-  --muted:#71809b;
-  --cyan:#00eaff;
-  --purple:#a855f7;
-  --pink:#ec4899;
-  --green:#00f59b;
-  --yellow:#ffc400;
-  --red:#ff3864;
-  --blue:#4f8cff;
-  --shadow:0 20px 60px rgba(0,0,0,.55);
+* {
+  box-sizing: border-box;
 }
 
-*{
-  box-sizing:border-box;
+:root {
+  --cyan: #00f6ff;
+  --blue: #008cff;
+  --purple: #8a2eff;
+  --pink: #ff18d0;
+  --green: #00ff9d;
+  --yellow: #ffe600;
+  --text: #f5fbff;
+  --muted: #8290a7;
+  --bg: #03050b;
 }
 
-html{
-  scroll-behavior:smooth;
+html {
+  min-height: 100%;
 }
 
-body{
-  margin:0;
-  min-height:100vh;
-  color:var(--text);
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: Inter, Arial, Helvetica, sans-serif;
   background:
-    radial-gradient(circle at 10% -10%,rgba(0,234,255,.13),transparent 30%),
-    radial-gradient(circle at 95% 0%,rgba(168,85,247,.15),transparent 32%),
-    radial-gradient(circle at 50% 100%,rgba(236,72,153,.05),transparent 35%),
-    var(--bg);
-  padding-bottom:50px;
+    radial-gradient(circle at 15% 15%, rgba(0,246,255,.20), transparent 27%),
+    radial-gradient(circle at 85% 20%, rgba(138,46,255,.22), transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(255,24,208,.15), transparent 32%),
+    #03050b;
+  overflow-x: hidden;
 }
 
-button,
-input,
-textarea,
-select{
-  font:inherit;
-}
+/* =========================
+   ANIMATED CYBER BACKGROUND
+========================= */
 
-button{
-  cursor:pointer;
-}
-
-.app{
-  width:min(1180px,calc(100% - 32px));
-  margin:auto;
-  padding:24px 0;
-}
-
-/* HEADER */
-
-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-  margin-bottom:22px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.logo{
-  width:52px;
-  height:52px;
-  border-radius:15px;
-  display:grid;
-  place-items:center;
-  font-size:25px;
-  font-weight:1000;
-  color:#02040a;
-  background:linear-gradient(135deg,var(--cyan),var(--purple) 70%,var(--pink));
-  box-shadow:0 0 25px rgba(0,234,255,.25),0 0 45px rgba(168,85,247,.18);
-}
-
-.brand h1{
-  margin:0;
-  font-size:22px;
-  letter-spacing:1.5px;
-  font-weight:1000;
-}
-
-.brand p{
-  margin:3px 0 0;
-  color:var(--muted);
-  font-size:12px;
-  font-weight:600;
-}
-
-.header-actions{
-  display:flex;
-  gap:9px;
-  align-items:center;
-}
-
-/* BUTTONS */
-
-.btn{
-  border:1px solid var(--line);
-  background:var(--panel2);
-  color:var(--text);
-  border-radius:12px;
-  padding:10px 15px;
-  font-weight:800;
-  transition:.2s ease;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-  border-color:rgba(0,234,255,.55);
-  box-shadow:0 8px 25px rgba(0,0,0,.3);
-}
-
-.btn.primary{
-  border:0;
-  color:#02040a;
-  background:linear-gradient(135deg,var(--cyan),#4f8cff 48%,var(--purple));
-}
-
-.btn.danger:hover{
-  border-color:var(--red);
-  color:#fff;
-  background:rgba(255,56,100,.1);
-}
-
-.btn.small{
-  padding:7px 10px;
-  font-size:12px;
-}
-
-/* NAV */
-
-.tabs-row{
-  display:flex;
-  gap:5px;
-  padding:5px;
-  background:rgba(6,10,19,.8);
-  border:1px solid var(--line);
-  border-radius:15px;
-  margin-bottom:20px;
-  position:sticky;
-  top:10px;
-  z-index:50;
-  backdrop-filter:blur(15px);
-}
-
-.tabs-row .tab{
-  flex:1;
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  padding:11px;
-  border-radius:10px;
-}
-
-.tabs-row .tab:hover{
-  color:#fff;
-  transform:none;
-  box-shadow:none;
-}
-
-.tabs-row .tab.active{
-  color:#fff;
-  background:linear-gradient(180deg,#162238,#101827);
-  box-shadow:inset 0 0 0 1px var(--line),0 5px 15px rgba(0,0,0,.2);
-}
-
-/* VIEWS */
-
-.view{
-  display:none;
-}
-
-.view.active{
-  display:block;
-}
-
-/* HERO */
-
-.hero{
-  position:relative;
-  overflow:hidden;
-  min-height:225px;
-  padding:30px;
-  border-radius:24px;
-  border:1px solid var(--line);
+body::before {
+  content: "";
+  position: fixed;
+  inset: -25%;
+  z-index: -3;
+  pointer-events: none;
   background:
-    radial-gradient(circle at 90% 20%,rgba(168,85,247,.22),transparent 30%),
-    radial-gradient(circle at 10% 90%,rgba(0,234,255,.1),transparent 35%),
-    linear-gradient(135deg,#0b1220,#060a13);
-  box-shadow:var(--shadow);
+    radial-gradient(circle at 20% 30%, rgba(0,246,255,.22), transparent 18%),
+    radial-gradient(circle at 75% 25%, rgba(255,24,208,.18), transparent 20%),
+    radial-gradient(circle at 45% 75%, rgba(138,46,255,.20), transparent 22%),
+    radial-gradient(circle at 85% 80%, rgba(0,255,157,.12), transparent 18%);
+  filter: blur(45px);
+  animation: backgroundMove 14s ease-in-out infinite alternate;
 }
 
-.hero:after{
-  content:"";
-  position:absolute;
-  width:300px;
-  height:300px;
-  right:-130px;
-  bottom:-170px;
-  border-radius:50%;
-  border:1px solid rgba(0,234,255,.15);
+@keyframes backgroundMove {
+  0% {
+    transform: translate(-4%, -2%) scale(1);
+    filter: blur(45px) hue-rotate(0deg);
+  }
+  50% {
+    transform: translate(5%, 3%) scale(1.12);
+    filter: blur(55px) hue-rotate(45deg);
+  }
+  100% {
+    transform: translate(-2%, 6%) scale(1.08);
+    filter: blur(48px) hue-rotate(100deg);
+  }
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: .28;
+  background:
+    linear-gradient(rgba(0,246,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,246,255,.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 90%);
+}
+
+/* Floating lights */
+
+.app::before,
+.app::after {
+  content: "";
+  position: fixed;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(70px);
+  opacity: .15;
+  z-index: -1;
+}
+
+.app::before {
+  top: 15%;
+  left: -100px;
+  background: var(--cyan);
+  animation: orbOne 11s ease-in-out infinite alternate;
+}
+
+.app::after {
+  right: -100px;
+  bottom: 5%;
+  background: var(--pink);
+  animation: orbTwo 13s ease-in-out infinite alternate;
+}
+
+@keyframes orbOne {
+  from { transform: translate(0,0); }
+  to { transform: translate(180px,160px); }
+}
+
+@keyframes orbTwo {
+  from { transform: translate(0,0); }
+  to { transform: translate(-180px,-150px); }
+}
+
+.app {
+  width: 100%;
+  max-width: 1180px;
+  margin: auto;
+  padding: 24px 20px 70px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.title-area h1 {
+  margin: 0;
+  font-size: clamp(30px, 5vw, 42px);
+  font-weight: 950;
+  letter-spacing: -1.5px;
+  background: linear-gradient(
+    90deg,
+    var(--cyan),
+    white,
+    var(--pink),
+    var(--purple)
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleFlow 5s linear infinite;
+}
+
+@keyframes titleFlow {
+  to {
+    background-position: 250% center;
+  }
+}
+
+.title-area p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.grind-hub {
+  text-decoration: none;
+  color: white;
+  font-weight: 900;
+  padding: 13px 19px;
+  border-radius: 13px;
+  border: 1px solid rgba(0,246,255,.5);
+  background: rgba(0,246,255,.07);
   box-shadow:
-    0 0 0 35px rgba(0,234,255,.025),
-    0 0 0 70px rgba(168,85,247,.02);
-}
-
-.eyebrow{
-  color:var(--cyan);
-  font-size:11px;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  font-weight:1000;
-}
-
-.hero-title{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  flex-wrap:wrap;
-  margin:9px 0 4px;
-}
-
-.hero-title h2{
-  margin:0;
-  font-size:38px;
-  line-height:1;
-  letter-spacing:-1.5px;
-}
-
-.day-button{
-  border:1px solid rgba(0,234,255,.25);
-  color:#fff;
-  background:rgba(0,234,255,.06);
-  padding:9px 13px;
-  border-radius:10px;
-  font-size:13px;
-  font-weight:1000;
-}
-
-.day-button:hover{
-  border-color:var(--cyan);
-  background:rgba(0,234,255,.12);
-}
-
-.clock{
-  color:var(--cyan);
-  font-size:13px;
-  font-weight:900;
-  padding:7px 11px;
-  border-radius:9px;
-  background:rgba(0,234,255,.06);
-  border:1px solid rgba(0,234,255,.16);
-}
-
-.hero-sub{
-  color:var(--muted);
-  font-size:14px;
-  margin:9px 0 18px;
-}
-
-.progress-wrap{
-  max-width:700px;
-}
-
-.progress{
-  height:9px;
-  background:#03060c;
-  border-radius:99px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.03);
-}
-
-.bar{
-  height:100%;
-  width:0%;
-  border-radius:99px;
-  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--purple),var(--pink));
-  box-shadow:0 0 15px rgba(0,234,255,.3);
-  transition:width .5s ease;
-}
-
-.progress-label{
-  display:flex;
-  justify-content:space-between;
-  margin-top:7px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:700;
-}
-
-.all-done{
-  display:none;
-  margin-top:13px;
-  padding:10px;
-  border:1px solid rgba(0,245,155,.3);
-  border-radius:10px;
-  background:rgba(0,245,155,.06);
-  color:var(--green);
-  font-size:12px;
-  font-weight:900;
-}
-
-/* STATS */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin:16px 0;
-}
-
-.stat{
-  min-height:105px;
-  padding:17px;
-  border-radius:17px;
-  border:1px solid var(--line);
-  background:linear-gradient(180deg,#0b1220,#070b13);
-  position:relative;
-  overflow:hidden;
-}
-
-.stat span{
-  color:var(--muted);
-  font-size:10px;
-  font-weight:1000;
-  letter-spacing:.12em;
-}
-
-.stat b{
-  display:block;
-  margin-top:6px;
-  font-size:28px;
-  line-height:1;
-  font-weight:1000;
-}
-
-.stat small{
-  display:block;
-  color:var(--muted);
-  margin-top:8px;
-  font-size:10px;
-}
-
-/* SECTION */
-
-.section-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin:27px 0 12px;
-}
-
-.section-head h2{
-  margin:0;
-  font-size:17px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font-weight:1000;
-}
-
-.section-head span{
-  color:var(--muted);
-  font-size:11px;
-  font-weight:700;
-}
-
-/* DASH GRID */
-
-.dashboard-grid{
-  display:grid;
-  grid-template-columns:1.25fr .75fr;
-  gap:16px;
-}
-
-.card{
-  background:linear-gradient(180deg,#0a111e,#060a12);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:21px;
-  box-shadow:0 18px 45px rgba(0,0,0,.3);
-}
-
-/* RECORDS */
-
-.records{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.record{
-  padding:14px;
-  border:1px solid var(--line);
-  background:#080d17;
-  border-radius:13px;
-}
-
-.record .record-icon{
-  font-size:18px;
-}
-
-.record label{
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  font-weight:900;
-  text-transform:uppercase;
-  margin-top:8px;
-}
-
-.record b{
-  display:block;
-  margin-top:3px;
-  font-size:18px;
-}
-
-/* TREND */
-
-.trend{
-  display:flex;
-  align-items:flex-end;
-  gap:7px;
-  height:150px;
-  padding:20px 8px 0;
-}
-
-.trend-col{
-  flex:1;
-  height:100%;
-  display:flex;
-  align-items:flex-end;
-  gap:3px;
-  position:relative;
-}
-
-.trend-bar{
-  flex:1;
-  min-height:3px;
-  border-radius:5px 5px 2px 2px;
-}
-
-.trend-bar.kill{
-  background:linear-gradient(180deg,var(--cyan),#007eaa);
-}
-
-.trend-bar.place{
-  background:linear-gradient(180deg,var(--purple),#5425a3);
-}
-
-.trend-label{
-  position:absolute;
-  bottom:-18px;
-  left:50%;
-  transform:translateX(-50%);
-  color:var(--muted);
-  font-size:9px;
-}
-
-.legend{
-  display:flex;
-  gap:15px;
-  margin-top:28px;
-  color:var(--muted);
-  font-size:10px;
-  font-weight:800;
-}
-
-.legend i{
-  display:inline-block;
-  width:8px;
-  height:8px;
-  border-radius:2px;
-  margin-right:4px;
-}
-
-.legend .cyan{
-  background:var(--cyan);
-}
-
-.legend .purple{
-  background:var(--purple);
-}
-
-/* ACHIEVEMENTS */
-
-.achievement-list{
-  display:grid;
-  gap:9px;
-}
-
-.achievement{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:#080d17;
-  opacity:.42;
-}
-
-.achievement.unlocked{
-  opacity:1;
-  border-color:rgba(0,245,155,.25);
-  background:linear-gradient(90deg,rgba(0,245,155,.07),#080d17);
-}
-
-.achievement-icon{
-  width:38px;
-  height:38px;
-  display:grid;
-  place-items:center;
-  border-radius:10px;
-  background:#111a2b;
-  font-size:18px;
-}
-
-.achievement-text{
-  flex:1;
-}
-
-.achievement-text b{
-  display:block;
-  font-size:12px;
-}
-
-.achievement-text span{
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:2px;
-}
-
-/* SESSIONS */
-
-.session-card{
-  margin-bottom:10px;
-  border:1px solid var(--line);
-  background:linear-gradient(180deg,#0b111e,#070b13);
-  border-radius:16px;
-  overflow:hidden;
-  transition:.2s ease;
-}
-
-.session-card:hover{
-  border-color:#304261;
-}
-
-.session-summary{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  padding:15px 17px;
-  cursor:pointer;
-}
-
-.session-left{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  flex-wrap:wrap;
-}
-
-.match-number{
-  width:34px;
-  height:34px;
-  display:grid;
-  place-items:center;
-  border-radius:10px;
-  background:#111b2d;
-  color:var(--cyan);
-  font-size:11px;
-  font-weight:1000;
-}
-
-.pill{
-  font-size:12px;
-  font-weight:900;
-}
-
-.pill span{
-  color:var(--muted);
-  font-size:10px;
-  margin-right:3px;
-}
-
-.place-win{
-  color:var(--green);
-}
-
-.death{
-  color:var(--red);
-}
-
-.drop{
-  color:var(--yellow);
-}
-
-.session-time{
-  text-align:right;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-}
+    0 0 15px rgba(0,246,255,.12),
+    inset 0 0 15px rgba(0,246,255,.04);
+  transition: .25s;
+}
+
+.grind-hub:hover {
+  transform: translateY(-2px) scale(1.03);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow:
+    0 0 25px rgba(0,246,255,.45),
+    0 0 50px rgba(138,46,255,.15);
+}
+
+/* =========================
+   DAY SELECTORS
+========================= */
+
+.day-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.day-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: rgba(0,246,255,.06);
+  border: 1px solid rgba(0,246,255,.25);
+  color: var(--cyan);
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.day-arrow:hover {
+  transform: scale(1.12);
+  color: white;
+  border-color: var(--cyan);
+  box-shadow:
+    0 0 18px rgba(0,246,255,.5),
+    0 0 35px rgba(138,46,255,.2);
+}
+
+.day-label {
+  min-width: 125px;
+  text-align: center;
+  font-size: 21px;
+  font-weight: 950;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  text-shadow:
+    0 0 8px rgba(0,246,255,.7),
+    0 0 22px rgba(138,46,255,.35);
+  transition: .2s;
+}
+
+.day-label:hover {
+  color: var(--cyan);
+  transform: scale(1.05);
+}
+
+.top-day {
+  margin-bottom: 18px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  position: relative;
+  padding: 18px;
+  border-radius: 15px;
+  background: rgba(6,10,20,.84);
+  border: 1px solid rgba(0,246,255,.15);
+  overflow: hidden;
+}
+
+.stat::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    transparent 240deg,
+    var(--cyan) 275deg,
+    var(--pink) 300deg,
+    transparent 335deg
+  );
+  animation: spinBorder 4s linear infinite;
+  z-index: -1;
+}
 
-.session-time strong{
-  color:#fff;
-  font-size:11px;
+.stat::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: rgba(5,8,15,.96);
+  z-index: -1;
 }
-
-.session-details{
-  display:none;
-  border-top:1px solid var(--line);
-  padding:15px 17px;
-  background:#05080f;
-}
-
-.session-card.expanded .session-details{
-  display:block;
-}
-
-.focus-box{
-  padding:11px 13px;
-  margin-bottom:10px;
-  border-radius:10px;
-  border-left:3px solid var(--purple);
-  background:rgba(168,85,247,.06);
-  font-size:12px;
-}
-
-.death-review{
-  padding:13px;
-  margin-top:9px;
-  border:1px solid #27213a;
-  border-radius:12px;
-  background:#090b13;
-}
-
-.death-review h4{
-  margin:0 0 8px;
-  color:var(--purple);
-  font-size:10px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.note{
-  margin-top:6px;
-  padding:9px 11px;
-  border-radius:8px;
-  background:#070a11;
-  border-left:2px solid var(--line);
-  color:#cdd6e7;
-  font-size:11px;
-  line-height:1.55;
-}
-
-.note.how{
-  border-left-color:var(--red);
-}
-
-.note.why{
-  border-left-color:var(--yellow);
-}
-
-.session-footer{
-  display:flex;
-  justify-content:flex-end;
-  margin-top:10px;
-}
-
-/* FILTERS */
-
-.filters{
-  display:grid;
-  grid-template-columns:1.5fr 1fr 1fr auto;
-  gap:9px;
-  margin-bottom:13px;
-}
-
-input,
-textarea,
-select{
-  width:100%;
-  background:#03060d;
-  border:1px solid var(--line);
-  color:#fff;
-  border-radius:11px;
-  padding:11px 12px;
-  outline:none;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-  border-color:var(--cyan);
-  box-shadow:0 0 0 3px rgba(0,234,255,.05);
-}
-
-textarea{
-  min-height:75px;
-  resize:vertical;
-}
-
-.empty{
-  padding:35px 20px;
-  text-align:center;
-  color:var(--muted);
-  border:1px dashed var(--line);
-  border-radius:15px;
-  background:rgba(255,255,255,.01);
-}
-
-/* PLAN */
-
-.plan-top{
-  display:flex;
-  gap:10px;
-  margin-bottom:15px;
-}
-
-.checklist{
-  display:grid;
-  gap:9px;
-}
-
-.check{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:13px;
-  border:1px solid var(--line);
-  background:#080d17;
-  border-radius:13px;
-}
-
-.check input{
-  width:auto;
-  accent-color:var(--cyan);
-  transform:scale(1.15);
-}
-
-.check label{
-  flex:1;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.check.done{
-  background:#05080d;
-}
-
-.check.done label{
-  color:var(--muted);
-  text-decoration:line-through;
-}
-
-.delete-item{
-  border:0;
-  background:transparent;
-  color:var(--muted);
-}
-
-.delete-item:hover{
-  color:var(--red);
-}
-
-.plan-progress{
-  margin-bottom:15px;
-}
-
-.plan-progress-top{
-  display:flex;
-  justify-content:space-between;
-  font-size:11px;
-  color:var(--muted);
-  margin-bottom:7px;
-}
-
-/* MODAL */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-  background:rgba(0,0,0,.82);
-  backdrop-filter:blur(10px);
-}
-
-.modal.open{
-  display:flex;
-}
-
-.modal-box{
-  width:min(680px,100%);
-  max-height:90vh;
-  overflow:auto;
-  padding:23px;
-  border-radius:21px;
-  border:1px solid var(--line);
-  background:linear-gradient(180deg,#0a101c,#050810);
-  box-shadow:0 30px 100px rgba(0,0,0,.8);
-}
-
-.modal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.modal-head h2{
-  margin:0;
-  font-size:18px;
-}
-
-.close{
-  width:33px;
-  height:33px;
-  border:0;
-  border-radius:9px;
-  background:#121b2c;
-  color:var(--muted);
-}
-
-.close:hover{
-  background:var(--red);
-  color:#fff;
-}
-
-.form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-.form-section{
-  grid-column:1/-1;
-  color:var(--cyan);
-  font-size:10px;
-  font-weight:1000;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  border-bottom:1px solid var(--line);
-  padding-bottom:7px;
-  margin-top:5px;
-}
-
-.form-group label{
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  font-weight:900;
-  margin-bottom:5px;
-  text-transform:uppercase;
-}
-
-.full{
-  grid-column:1/-1;
-}
-
-.victory{
-  width:100%;
-  border:1px solid var(--line);
-  background:#0e1626;
-  color:#fff;
-  padding:13px;
-  border-radius:12px;
-  font-weight:1000;
-}
-
-.victory.active{
-  color:#02040a;
-  border-color:transparent;
-  background:linear-gradient(135deg,var(--green),var(--cyan));
-}
-
-.last-death-box{
-  grid-column:1/-1;
-  padding:15px;
-  border:1px solid #27213a;
-  background:#0b0a13;
-  border-radius:13px;
-}
-
-.last-death-box h4{
-  margin:0 0 4px;
-  color:var(--purple);
-  font-size:11px;
-  text-transform:uppercase;
-}
-
-.last-death-box p{
-  color:var(--muted);
-  font-size:10px;
-  margin:0 0 12px;
-}
-
-.form-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:9px;
-  margin-top:19px;
-}
-
-/* DAY SELECTOR */
-
-.day-selector-box{
-  width:min(850px,100%);
-  max-height:90vh;
-  overflow:hidden;
-  padding:22px;
-  border-radius:21px;
-  border:1px solid var(--line);
-  background:linear-gradient(180deg,#0a101c,#050810);
-  box-shadow:0 30px 100px rgba(0,0,0,.8);
-}
-
-.day-search{
-  margin-bottom:14px;
-}
-
-.day-buttons{
-  max-height:260px;
-  overflow-y:auto;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-  padding-right:5px;
-}
-
-.day-choice{
-  border:1px solid var(--line);
-  background:#080d17;
-  color:#fff;
-  border-radius:11px;
-  padding:12px 7px;
-  font-size:12px;
-  font-weight:900;
-  transition:.2s;
-}
-
-.day-choice:hover{
-  border-color:var(--cyan);
-  background:rgba(0,234,255,.08);
-}
-
-.day-choice.selected{
-  border-color:var(--cyan);
-  color:var(--cyan);
-  background:rgba(0,234,255,.1);
-}
-
-/* DAY STATS POPUP */
-
-.day-details-panel{
-  margin-top:16px;
-  border-top:1px solid var(--line);
-  padding-top:17px;
-  max-height:440px;
-  overflow-y:auto;
-  padding-right:4px;
-}
-
-.day-summary{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:9px;
-  margin-bottom:16px;
-}
-
-.day-stat{
-  padding:14px;
-  border-radius:13px;
-  border:1px solid var(--line);
-  background:#080d17;
-}
-
-.day-stat span{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  font-weight:1000;
-  text-transform:uppercase;
-}
-
-.day-stat b{
-  display:block;
-  margin-top:5px;
-  font-size:20px;
-}
-
-.day-games-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:9px;
-}
-
-.day-games-title h3{
-  margin:0;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-
-.day-games-title span{
-  color:var(--muted);
-  font-size:10px;
-}
-
-.day-game{
-  border:1px solid var(--line);
-  background:#080d17;
-  border-radius:14px;
-  padding:13px;
-  margin-bottom:8px;
-  transition:.2s;
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
 
-.day-game:hover{
-  border-color:#304261;
+@keyframes spinBorder {
+  to { --angle: 360deg; }
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: 7px;
+}
+
+.stat-value {
+  font-size: 29px;
+  font-weight: 950;
+  text-shadow:
+    0 0 10px rgba(0,246,255,.3);
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.plan-progress {
+  margin: 0 0 20px;
+  padding: 15px 17px;
+  border-radius: 15px;
+  background: rgba(5,9,17,.86);
+  border: 1px solid rgba(0,246,255,.15);
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 9px;
+}
+
+.progress-percent {
+  color: var(--cyan);
+  font-weight: 900;
+}
+
+.progress-track {
+  height: 9px;
+  border-radius: 20px;
+  background: #090e18;
+  border: 1px solid rgba(0,246,255,.13);
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--blue),
+    var(--purple),
+    var(--pink)
+  );
+  background-size: 200% 100%;
+  box-shadow:
+    0 0 10px var(--cyan),
+    0 0 25px var(--purple);
+  animation: progressFlow 3s linear infinite;
+  transition: width .45s ease;
+}
+
+@keyframes progressFlow {
+  to { background-position: 200% 0; }
+}
+
+/* =========================
+   GRID
+========================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 20px;
+}
+
+/* =========================
+   CRAZY NEON CARDS
+========================= */
+
+.card {
+  position: relative;
+  padding: 21px;
+  border-radius: 19px;
+  background: rgba(6,9,17,.90);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    transparent 55deg,
+    var(--cyan) 85deg,
+    transparent 115deg,
+    transparent 180deg,
+    var(--purple) 220deg,
+    var(--pink) 250deg,
+    transparent 285deg,
+    transparent 360deg
+  );
+  animation: spinBorder 5s linear infinite;
+  z-index: -2;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(11,17,29,.98),
+      rgba(3,6,12,.98)
+    );
+  z-index: -1;
+}
+
+.card {
+  box-shadow:
+    0 0 20px rgba(0,246,255,.06),
+    0 0 55px rgba(138,46,255,.04),
+    inset 0 0 35px rgba(0,246,255,.015);
+  transition: .3s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 28px rgba(0,246,255,.14),
+    0 0 65px rgba(138,46,255,.10),
+    inset 0 0 35px rgba(0,246,255,.025);
+}
+
+.card h2 {
+  margin: 0 0 17px;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+/* =========================
+   TRAINING
+========================= */
+
+.training-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.training-step {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  border-radius: 13px;
+  background: rgba(0,246,255,.035);
+  border: 1px solid rgba(0,246,255,.12);
+  transition: .25s;
+}
+
+.training-step:hover {
+  border-color: var(--cyan);
+  box-shadow:
+    0 0 20px rgba(0,246,255,.12),
+    inset 0 0 18px rgba(0,246,255,.03);
+  transform: translateX(3px);
+}
+
+.training-step.completed {
+  border-color: rgba(0,255,157,.55);
+  box-shadow:
+    0 0 20px rgba(0,255,157,.12);
 }
 
-.day-game.best-game{
-  border-color:rgba(0,245,155,.35);
+.checkbox {
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  border-radius: 7px;
+  border: 2px solid rgba(0,246,255,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  font-weight: 950;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.training-step.completed .checkbox {
+  color: #00150d;
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow:
+    0 0 15px rgba(0,255,157,.55);
+}
+
+.step-info {
+  flex: 1;
+}
+
+.step-title {
+  font-weight: 800;
+}
+
+.step-time {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.training-step.completed .step-title {
+  text-decoration: line-through;
+  color: #6f7e8e;
+}
+
+.reset-note {
+  color: #556174;
+  font-size: 11px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* =========================
+   SAVE GAME
+========================= */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  background: #03060d;
+  color: white;
+  border: 1px solid rgba(0,246,255,.18);
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+  transition: .2s;
+}
+
+input:focus {
+  border-color: var(--cyan);
+  box-shadow:
+    0 0 15px rgba(0,246,255,.2),
+    0 0 30px rgba(138,46,255,.08);
+}
+
+input::placeholder {
+  color: #4f5c70;
+}
+
+.focus-input {
+  margin-top: 10px;
+}
+
+.save-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid rgba(0,246,255,.45);
+  border-radius: 11px;
+  color: white;
+  font-weight: 950;
+  cursor: pointer;
   background:
     linear-gradient(
       90deg,
-      rgba(0,245,155,.08),
-      #080d17
+      #007b99,
+      #006dff,
+      #8b20ff,
+      #ed18c8
     );
+  background-size: 250% 100%;
+  box-shadow:
+    0 0 18px rgba(0,119,255,.25);
+  animation: buttonFlow 5s linear infinite;
+  transition: .2s;
 }
 
-.day-game.worst-game{
-  border-color:rgba(255,56,100,.35);
+@keyframes buttonFlow {
+  to { background-position: 250% 0; }
+}
+
+.save-btn:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 0 25px rgba(0,246,255,.4),
+    0 0 45px rgba(255,24,208,.18);
+}
+
+.save-btn:active {
+  transform: scale(.98);
+}
+
+/* =========================
+   PERSONAL RECORDS
+========================= */
+
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 14px;
+  border-radius: 11px;
+  background: rgba(0,246,255,.035);
+  border: 1px solid rgba(0,246,255,.09);
+}
+
+.record-name {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.record-value {
+  color: var(--cyan);
+  font-weight: 950;
+  text-shadow: 0 0 10px rgba(0,246,255,.4);
+}
+
+/* =========================
+   MATCH HISTORY
+========================= */
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 5px;
+}
+
+.history-title {
+  margin: 0 !important;
+}
+
+.match-count {
+  color: var(--cyan);
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.history-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 13px;
+}
+
+.bottom-day {
+  margin: 13px 0 15px;
+}
+
+.game-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.game-entry {
+  position: relative;
+  padding: 14px;
+  border-radius: 12px;
   background:
     linear-gradient(
-      90deg,
-      rgba(255,56,100,.07),
-      #080d17
+      100deg,
+      rgba(0,246,255,.045),
+      rgba(138,46,255,.045)
     );
+  border: 1px solid rgba(0,246,255,.13);
+  overflow: hidden;
 }
 
-.day-game-label{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:9px;
+.game-entry::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 70%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cyan),
+    transparent
+  );
+  box-shadow: 0 0 10px var(--cyan);
+  animation: scanLine 3.5s linear infinite;
 }
 
-.day-game-label b{
-  font-size:11px;
+@keyframes scanLine {
+  to { left: 140%; }
 }
 
-.day-game-label span{
-  font-size:9px;
-  color:var(--muted);
+.game-top {
+  display: grid;
+  grid-template-columns: 45px 1fr 1fr 1fr 1fr;
+  gap: 9px;
+  align-items: center;
 }
 
-.day-game-stats{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
+.game-number {
+  color: var(--purple);
+  font-weight: 950;
 }
 
-.day-game-stat{
-  font-size:11px;
-  font-weight:800;
+.game-stat {
+  color: #d8e2ec;
+  font-size: 12px;
 }
 
-.day-game-stat small{
-  color:var(--muted);
-  font-size:9px;
-  margin-right:3px;
+.game-stat strong {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
 }
 
-.day-game-focus{
-  margin-top:8px;
-  padding-top:8px;
-  border-top:1px solid rgba(255,255,255,.05);
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.45;
+.game-stat span {
+  color: white;
+  font-weight: 850;
 }
 
-.best-label{
-  color:var(--green);
+.focus-line {
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(0,246,255,.08);
+  font-size: 12px;
 }
 
-.worst-label{
-  color:var(--red);
+.focus-line strong {
+  color: var(--cyan);
 }
 
-.middle-label{
-  color:var(--cyan);
+.day-total {
+  margin-top: 16px;
+  padding: 15px;
+  border-radius: 13px;
+  background: rgba(0,246,255,.035);
+  border: 1px solid rgba(0,246,255,.13);
 }
 
-.day-empty{
-  padding:25px;
-  text-align:center;
-  color:var(--muted);
-  border:1px dashed var(--line);
-  border-radius:13px;
+.total-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
 
-/* DAY VIEW */
-
-.day-title-card{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:15px;
+.total-item {
+  text-align: center;
 }
 
-.day-title-card h2{
-  margin:0;
-  font-size:28px;
+.total-item small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
 }
 
-.day-title-card p{
-  color:var(--muted);
-  margin:5px 0 0;
-  font-size:12px;
+.total-item strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--cyan);
+  font-size: 18px;
 }
 
-.best-worst{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  margin-bottom:15px;
+/* =========================
+   CLEAR BUTTON
+========================= */
+
+.clear-wrap {
+  margin-top: 20px;
+  text-align: center;
 }
 
-.best-card,
-.worst-card{
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:17px;
-  background:#080d17;
+.clear-btn {
+  padding: 10px 15px;
+  border-radius: 9px;
+  color: #ff6c9c;
+  background: rgba(255,30,100,.05);
+  border: 1px solid rgba(255,30,100,.2);
+  cursor: pointer;
+  transition: .2s;
 }
 
-.best-card{
-  border-color:rgba(0,245,155,.25);
+.clear-btn:hover {
+  color: white;
+  background: rgba(255,30,100,.13);
+  border-color: #ff327b;
+  box-shadow: 0 0 18px rgba(255,30,100,.2);
 }
 
-.worst-card{
-  border-color:rgba(255,56,100,.25);
+/* =========================
+   POPUP
+========================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
 }
 
-.best-card h3,
-.worst-card h3{
-  margin:0 0 10px;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
+.modal.open {
+  display: flex;
 }
 
-.best-card h3{
-  color:var(--green);
+.modal-box {
+  position: relative;
+  width: min(760px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 24px;
+  border-radius: 20px;
+  background: #060a13;
+  border: 1px solid rgba(0,246,255,.35);
+  box-shadow:
+    0 0 35px rgba(0,246,255,.18),
+    0 0 90px rgba(138,46,255,.13);
 }
 
-.worst-card h3{
-  color:var(--red);
+.modal-box::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle),
+    transparent,
+    var(--cyan),
+    transparent 25%,
+    var(--pink),
+    transparent 50%,
+    var(--purple),
+    transparent 75%,
+    var(--cyan)
+  );
+  animation: spinBorder 4s linear infinite;
+  z-index: -1;
 }
 
-.game-highlight{
-  display:flex;
-  gap:12px;
-  align-items:center;
+.close-modal {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
 }
 
-.game-highlight-icon{
-  font-size:27px;
+.close-modal:hover {
+  color: var(--pink);
+  border-color: var(--pink);
+  box-shadow: 0 0 15px rgba(255,24,208,.35);
 }
 
-.game-highlight b{
-  display:block;
-  font-size:17px;
+.modal h2 {
+  margin: 0 45px 18px 0;
 }
 
-.game-highlight span{
-  color:var(--muted);
-  font-size:11px;
+.modal-day-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
 }
 
-/* RESPONSIVE */
+.modal-day-btn {
+  width: 100%;
+  text-align: left;
+  padding: 13px;
+  border-radius: 10px;
+  background: rgba(0,246,255,.04);
+  border: 1px solid rgba(0,246,255,.12);
+  color: white;
+  cursor: pointer;
+  transition: .2s;
+}
 
-@media(max-width:850px){
+.modal-day-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 18px rgba(0,246,255,.12);
+}
 
-  .dashboard-grid{
-    grid-template-columns:1fr;
+.modal-day-content {
+  margin-top: 15px;
+}
+
+.popup-match {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: rgba(0,246,255,.035);
+  border: 1px solid rgba(0,246,255,.1);
+}
+
+.popup-match strong {
+  color: var(--cyan);
+}
+
+.popup-summary {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(138,46,255,.07);
+  border: 1px solid rgba(138,46,255,.2);
+}
+
+.popup-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.popup-summary-item {
+  text-align: center;
+}
+
+.popup-summary-item small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.popup-summary-item strong {
+  display: block;
+  color: var(--cyan);
+  margin-top: 4px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 
-  .stats{
-    grid-template-columns:repeat(2,1fr);
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
   }
-
-  .filters{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .day-summary{
-    grid-template-columns:repeat(3,1fr);
-  }
-
 }
 
-@media(max-width:650px){
-
-  .app{
-    width:min(100% - 18px,1180px);
-    padding-top:12px;
+@media (max-width: 600px) {
+  .app {
+    padding: 18px 12px 50px;
   }
 
-  header{
-    align-items:flex-start;
+  header {
+    align-items: stretch;
+    flex-direction: column;
   }
 
-  .brand h1{
-    font-size:18px;
+  .grind-hub {
+    text-align: center;
   }
 
-  .header-actions .back{
-    display:none;
+  .stats {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .hero{
-    padding:22px;
+  .form-grid {
+    grid-template-columns: 1fr;
   }
 
-  .hero-title h2{
-    font-size:30px;
+  .game-top {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .tabs-row{
-    top:5px;
+  .game-number {
+    grid-column: 1 / -1;
   }
 
-  .stats{
-    gap:8px;
+  .total-grid,
+  .popup-summary-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .stat{
-    min-height:90px;
-    padding:13px;
+  .day-selector {
+    gap: 9px;
   }
 
-  .stat b{
-    font-size:23px;
+  .day-label {
+    min-width: 105px;
+  }
+}
+
+@media (max-width: 390px) {
+  .stats {
+    grid-template-columns: 1fr;
   }
 
-  .form-grid{
-    grid-template-columns:1fr;
+  .total-grid {
+    grid-template-columns: 1fr 1fr;
   }
-
-  .form-section,
-  .full,
-  .last-death-box{
-    grid-column:1;
-  }
-
-  .filters{
-    grid-template-columns:1fr;
-  }
-
-  .session-summary{
-    align-items:flex-start;
-  }
-
-  .session-time{
-    display:none;
-  }
-
-  .records{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .plan-top{
-    flex-direction:column;
-  }
-
-  .day-buttons{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .day-summary{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .best-worst{
-    grid-template-columns:1fr;
-  }
-
 }
 </style>
 </head>
@@ -1332,4237 +1063,1264 @@ textarea{
 
 <div class="app">
 
-<header>
-
-  <div class="brand">
-
-    <div class="logo">
-      R
+  <header>
+    <div class="title-area">
+      <h1>Fortnite Grind</h1>
+      <p>Train hard. Track everything. Get better.</p>
     </div>
 
-    <div>
-
-      <h1>
-        RELOAD GRIND
-      </h1>
-
-      <p>
-        Fortnite Reload Performance HQ
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <div class="header-actions">
-
-    <a
-      href="index.html"
-      class="btn back"
-    >
-      ← Menu
+    <a class="grind-hub" href="index.html">
+      Grind Hub
     </a>
+  </header>
 
-    <button
-      class="btn primary"
-      onclick="openSessionModal()"
-    >
-      ＋ New Match
-    </button>
+  <!-- TOP DAY -->
+  <div class="day-selector top-day">
+    <button class="day-arrow" id="topPrev" onclick="changeTopDay(-1)">←</button>
 
+    <div class="day-label" onclick="openDayPopup()" id="topDayLabel">
+      Day 1
+    </div>
+
+    <button class="day-arrow" id="topNext" onclick="changeTopDay(1)">+</button>
   </div>
 
-</header>
-
-
-<nav class="tabs-row">
-
-  <button
-    class="tab active"
-    data-view="dashboard"
-  >
-    Dashboard
-  </button>
-
-  <button
-    class="tab"
-    data-view="sessions"
-  >
-    Match History
-  </button>
-
-  <button
-    class="tab"
-    data-view="plan"
-  >
-    Training Plan
-  </button>
-
-</nav>
-
-
-<!-- =========================
-     DASHBOARD
-========================= -->
-
-<section
-  id="dashboard"
-  class="view active"
->
-
-  <div class="hero">
-
-    <div class="eyebrow">
-      ACTIVE TRAINING PROFILE
-    </div>
-
-    <div class="hero-title">
-
-      <button
-        class="day-button"
-        id="dayTitle"
-        onclick="openDaySelector()"
-      >
-        Day 1
-      </button>
-
-      <span
-        class="clock"
-        id="liveClock"
-      >
-        Loading...
-      </span>
-
-    </div>
-
-    <div
-      class="hero-sub"
-      id="daySub"
-    >
-      Build your plan, play your games, review your mistakes.
-    </div>
-
-    <div class="progress-wrap">
-
-      <div class="progress">
-
-        <div
-          class="bar"
-          id="dayProgress"
-        ></div>
-
-      </div>
-
-      <div class="progress-label">
-
-        <span id="progressText">
-          0% complete
-        </span>
-
-        <span id="progressCount">
-          0 / 0 tasks
-        </span>
-
-      </div>
-
-    </div>
-
-    <div
-      class="all-done"
-      id="allDone"
-    >
-      🔥 TRAINING PLAN COMPLETE — NICE WORK.
-    </div>
-
-  </div>
-
-
+  <!-- TOP STATS -->
   <div class="stats">
 
     <div class="stat">
-
-      <span>
-        GAMES
-      </span>
-
-      <b id="statSessions">
-        0
-      </b>
-
-      <small>
-        Matches today
-      </small>
-
+      <div class="stat-label">Matches Played</div>
+      <div class="stat-value" id="matchesPlayed">0</div>
     </div>
-
 
     <div class="stat">
-
-      <span>
-        AVG PLACEMENT
-      </span>
-
-      <b id="statPlacement">
-        —
-      </b>
-
-      <small>
-        Lower is better
-      </small>
-
+      <div class="stat-label">Career K/D</div>
+      <div class="stat-value" id="careerKD">0.00</div>
     </div>
-
 
     <div class="stat">
-
-      <span>
-        AVG KILLS
-      </span>
-
-      <b id="statKills">
-        —
-      </b>
-
-      <small>
-        Per match
-      </small>
-
+      <div class="stat-label">Avg. Kills / Match</div>
+      <div class="stat-value" id="avgKills">0.00</div>
     </div>
-
 
     <div class="stat">
-
-      <span>
-        WIN RATE
-      </span>
-
-      <b id="statWinRate">
-        0%
-      </b>
-
-      <small id="victoryCountText">
-        0 victories
-      </small>
-
+      <div class="stat-label">Avg. Placement</div>
+      <div class="stat-value" id="avgPlacement">0.00</div>
     </div>
 
   </div>
 
+  <!-- PLAN PROGRESS -->
+  <div class="plan-progress">
 
-  <div class="dashboard-grid">
-
-    <div class="card">
-
-      <div
-        class="section-head"
-        style="margin-top:0"
-      >
-
-        <h2>
-          Performance Trend
-        </h2>
-
-        <span>
-          Today's games
-        </span>
-
-      </div>
-
-      <div
-        class="trend"
-        id="trendChart"
-      ></div>
-
-      <div class="legend">
-
-        <span>
-          <i class="cyan"></i>
-          Kills
-        </span>
-
-        <span>
-          <i class="purple"></i>
-          Placement score
-        </span>
-
-      </div>
-
+    <div class="progress-top">
+      <span>Today's Plan Progress</span>
+      <span class="progress-percent" id="progressText">0%</span>
     </div>
 
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
 
-    <div class="card">
+  </div>
 
-      <div
-        class="section-head"
-        style="margin-top:0"
-      >
+  <div class="grid">
 
-        <h2>
-          Personal Records
-        </h2>
+    <!-- TRAINING -->
+    <section class="card">
 
-        <span>
-          Selected day
-        </span>
+      <h2>Today's Training Plan</h2>
 
-      </div>
+      <div class="training-plan">
 
-      <div class="records">
+        <div class="training-step" id="step1">
+          <div class="checkbox" onclick="completeStep(1)">✓</div>
 
-        <div class="record">
-
-          <div class="record-icon">
-            💥
+          <div class="step-info">
+            <div class="step-title">
+              Do my custom warmup routine
+            </div>
+            <div class="step-time">
+              15 min
+            </div>
           </div>
-
-          <label>
-            Most Kills
-          </label>
-
-          <b id="recordKills">
-            —
-          </b>
-
         </div>
 
+        <div class="training-step" id="step2">
+          <div class="checkbox" onclick="completeStep(2)">✓</div>
 
-        <div class="record">
-
-          <div class="record-icon">
-            🥇
+          <div class="step-info">
+            <div class="step-title">
+              Do 1v1
+            </div>
+            <div class="step-time">
+              5–10 min
+            </div>
           </div>
-
-          <label>
-            Best Placement
-          </label>
-
-          <b id="recordPlacement">
-            —
-          </b>
-
         </div>
 
+        <div class="training-step" id="step3">
+          <div class="checkbox" onclick="completeStep(3)">✓</div>
 
-        <div class="record">
-
-          <div class="record-icon">
-            🏆
+          <div class="step-info">
+            <div class="step-title">
+              Start doing ranked reload solos
+            </div>
+            <div class="step-time">
+              Ranked Reload Solos
+            </div>
           </div>
-
-          <label>
-            Victories
-          </label>
-
-          <b id="recordWins">
-            0
-          </b>
-
-        </div>
-
-
-        <div class="record">
-
-          <div class="record-icon">
-            💀
-          </div>
-
-          <label>
-            Total Deaths
-          </label>
-
-          <b id="recordDeaths">
-            0
-          </b>
-
         </div>
 
       </div>
 
-    </div>
-
-  </div>
-
-
-  <div class="dashboard-grid">
-
-    <div>
-
-      <div class="section-head">
-
-        <h2>
-          Latest Matches
-        </h2>
-
-        <span>
-          Selected day
-        </span>
-
+      <div class="reset-note">
+        Plan progress resets each day.
       </div>
 
-      <div
-        id="latestContainer"
-      ></div>
+    </section>
 
-    </div>
+    <!-- SAVE GAME -->
+    <section class="card">
 
+      <h2>Save Game</h2>
 
-    <div>
+      <div class="form-grid">
 
-      <div class="section-head">
+        <div class="input-group">
+          <label>Kills</label>
+          <input
+            id="gameKills"
+            type="number"
+            min="0"
+            placeholder="0"
+          >
+        </div>
 
-        <h2>
-          Achievements
-        </h2>
+        <div class="input-group">
+          <label>Deaths</label>
+          <input
+            id="gameDeaths"
+            type="number"
+            min="0"
+            max="3"
+            placeholder="0–3"
+          >
+        </div>
 
-        <span id="achievementCount">
-          0 / 7
-        </span>
-
-      </div>
-
-      <div class="card">
-
-        <div
-          class="achievement-list"
-          id="achievementList"
-        ></div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     HISTORY
-========================= -->
-
-<section
-  id="sessions"
-  class="view"
->
-
-  <div class="section-head">
-
-    <h2>
-      Match History
-    </h2>
-
-    <span>
-      Search and review your games
-    </span>
-
-  </div>
-
-
-  <div class="filters">
-
-    <input
-      id="searchInput"
-      placeholder="🔍 Search focus, notes, situation..."
-      oninput="renderHistory()"
-    >
-
-
-    <select
-      id="placementFilter"
-      onchange="renderHistory()"
-    >
-
-      <option value="all">
-        Any placement
-      </option>
-
-      <option value="win">
-        Victory
-      </option>
-
-      <option value="top5">
-        Top 5
-      </option>
-
-      <option value="top10">
-        Top 10
-      </option>
-
-    </select>
-
-
-    <select
-      id="dropFilter"
-      onchange="renderHistory()"
-    >
-
-      <option value="all">
-        Any drop rating
-      </option>
-
-      <option>
-        Excellent
-      </option>
-
-      <option>
-        Great
-      </option>
-
-      <option>
-        Good
-      </option>
-
-      <option>
-        Mid
-      </option>
-
-      <option>
-        Bad
-      </option>
-
-      <option>
-        Horrible
-      </option>
-
-    </select>
-
-
-    <button
-      class="btn danger"
-      onclick="clearAllSessions()"
-    >
-      Clear All
-    </button>
-
-  </div>
-
-
-  <div
-    id="sessionHistoryList"
-  ></div>
-
-</section>
-
-
-<!-- =========================
-     TRAINING PLAN
-========================= -->
-
-<section
-  id="plan"
-  class="view"
->
-
-  <div class="card">
-
-    <div class="eyebrow">
-      TRAINING SYSTEM
-    </div>
-
-    <h2
-      style="margin:6px 0 5px"
-    >
-      Daily Training Plan
-    </h2>
-
-    <p
-      style="
-        color:var(--muted);
-        font-size:13px
-      "
-    >
-      This plan resets automatically when a new day begins.
-    </p>
-
-
-    <div class="plan-progress">
-
-      <div class="plan-progress-top">
-
-        <span id="planProgressText">
-          0% complete
-        </span>
-
-        <span id="planProgressCount">
-          0 / 0
-        </span>
+        <div class="input-group">
+          <label>Placement</label>
+          <input
+            id="gamePlacement"
+            type="number"
+            min="1"
+            placeholder="1"
+          >
+        </div>
 
       </div>
-
-      <div class="progress">
-
-        <div
-          class="bar"
-          id="planProgressBar"
-        ></div>
-
-      </div>
-
-    </div>
-
-
-    <div class="plan-top">
 
       <input
-        id="newPlanItemInput"
-        placeholder="e.g. Practice right-hand peeks for 15 minutes"
-        onkeydown="if(event.key==='Enter') addCustomPlanItem()"
+        class="focus-input"
+        id="gameFocus"
+        type="text"
+        maxlength="120"
+        placeholder="Main focus for your next match..."
       >
 
-      <button
-        class="btn primary"
-        onclick="addCustomPlanItem()"
-      >
-        ＋ Add
+      <button class="save-btn" onclick="saveGame()">
+        SAVE MATCH
       </button>
 
-      <button
-        class="btn"
-        onclick="resetPlanChecklist()"
-      >
-        Reset
-      </button>
+    </section>
 
-    </div>
+    <!-- PERSONAL RECORDS -->
+    <section class="card">
 
+      <h2>Personal Match Records</h2>
 
-    <div
-      class="checklist"
-      id="checklistContainer"
-    ></div>
+      <div class="record-list">
+
+        <div class="record">
+          <span class="record-name">Most Kills</span>
+          <span class="record-value" id="mostKills">0</span>
+        </div>
+
+        <div class="record">
+          <span class="record-name">Total Wins</span>
+          <span class="record-value" id="totalWins">0</span>
+        </div>
+
+        <div class="record">
+          <span class="record-name">Best K/D</span>
+          <span class="record-value" id="bestKD">0.00</span>
+        </div>
+
+        <div class="record">
+          <span class="record-name">Best Placement</span>
+          <span class="record-value" id="bestPlacement">—</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- MATCH HISTORY -->
+    <section class="card">
+
+      <div class="history-header">
+
+        <h2 class="history-title">
+          Match History
+        </h2>
+
+        <div class="match-count" id="matchCount">
+          0 MATCHES
+        </div>
+
+      </div>
+
+      <div class="history-subtitle">
+        Most recent matches appear first.
+      </div>
+
+      <!-- BOTTOM DAY -->
+      <div class="day-selector bottom-day">
+
+        <button
+          class="day-arrow"
+          id="bottomPrev"
+          onclick="changeHistoryDay(-1)"
+        >
+          ←
+        </button>
+
+        <div class="day-label" id="historyDayLabel">
+          Day 1
+        </div>
+
+        <button
+          class="day-arrow"
+          id="bottomNext"
+          onclick="changeHistoryDay(1)"
+        >
+          +
+        </button>
+
+      </div>
+
+      <div class="game-list" id="gameList"></div>
+
+      <div class="day-total">
+
+        <div class="total-grid">
+
+          <div class="total-item">
+            <small>Total Kills</small>
+            <strong id="dayKills">0</strong>
+          </div>
+
+          <div class="total-item">
+            <small>Total Deaths</small>
+            <strong id="dayDeaths">0</strong>
+          </div>
+
+          <div class="total-item">
+            <small>Average K/D</small>
+            <strong id="dayKD">0.00</strong>
+          </div>
+
+          <div class="total-item">
+            <small>Avg. Placement</small>
+            <strong id="dayPlacement">0.00</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="clear-wrap">
+        <button class="clear-btn" onclick="clearAllStats()">
+          Clear All Stats
+        </button>
+      </div>
+
+    </section>
 
   </div>
 
-</section>
+</div>
 
+<!-- DAY POPUP -->
 
-<!-- =========================
-     NEW MATCH MODAL
-========================= -->
-
-<div
-  class="modal"
-  id="sessionModal"
->
+<div class="modal" id="dayModal">
 
   <div class="modal-box">
 
-    <div class="modal-head">
+    <button class="close-modal" onclick="closeDayPopup()">×</button>
 
-      <h2>
-        Log New Match
-      </h2>
+    <h2>Day History</h2>
 
-      <button
-        class="close"
-        onclick="closeSessionModal()"
-      >
-        ✕
-      </button>
+    <div class="modal-day-buttons" id="modalDayButtons"></div>
 
+    <div class="modal-day-content" id="modalDayContent">
+      Select a day.
     </div>
-
-
-    <form
-      id="sessionForm"
-      onsubmit="handleFormSubmission(event)"
-    >
-
-      <button
-        type="button"
-        id="victoryToggleBtn"
-        class="victory"
-        onclick="toggleVictoryFormState()"
-      >
-        🏆 This was a Victory
-      </button>
-
-
-      <div
-        class="form-grid"
-        style="margin-top:16px"
-      >
-
-        <div class="form-section">
-          Core Performance
-        </div>
-
-
-        <div
-          class="form-group"
-          id="formGroupPlacement"
-        >
-
-          <label>
-            Placement
-          </label>
-
-          <input
-            type="number"
-            id="mPlacement"
-            min="1"
-            max="150"
-            placeholder="6"
-          >
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            Kills
-          </label>
-
-          <input
-            type="number"
-            id="mKills"
-            min="0"
-            placeholder="3"
-            required
-          >
-
-        </div>
-
-
-        <div class="form-group full">
-
-          <label>
-            Landing / Drop Rating
-          </label>
-
-          <select id="mDropRating">
-
-            <option>
-              Excellent
-            </option>
-
-            <option>
-              Great
-            </option>
-
-            <option selected>
-              Good
-            </option>
-
-            <option>
-              Mid
-            </option>
-
-            <option>
-              Bad
-            </option>
-
-            <option>
-              Horrible
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div
-          class="last-death-box"
-          id="lastDeathBox"
-        >
-
-          <h4>
-            💀 Last Death Review
-          </h4>
-
-          <p>
-            You don't need to enter how many times you died.
-            Just record your final death of the match.
-          </p>
-
-
-          <div
-            style="
-              display:grid;
-              gap:10px
-            "
-          >
-
-            <div>
-
-              <label
-                style="
-                  display:block;
-                  color:var(--muted);
-                  font-size:10px;
-                  font-weight:900;
-                  margin-bottom:5px
-                "
-              >
-                Situation
-              </label>
-
-              <input
-                id="mDeathContext"
-                placeholder="1v2 reload fight"
-              >
-
-            </div>
-
-
-            <div>
-
-              <label
-                style="
-                  display:block;
-                  color:var(--muted);
-                  font-size:10px;
-                  font-weight:900;
-                  margin-bottom:5px
-                "
-              >
-                HOW did you die?
-              </label>
-
-              <textarea
-                id="mDeathHow"
-                placeholder="Missed shots, bad crosshair placement..."
-              ></textarea>
-
-            </div>
-
-
-            <div>
-
-              <label
-                style="
-                  display:block;
-                  color:var(--muted);
-                  font-size:10px;
-                  font-weight:900;
-                  margin-bottom:5px
-                "
-              >
-                WHY did you die?
-              </label>
-
-              <textarea
-                id="mDeathWhy"
-                placeholder="Bad decision, overextended, ignored zone..."
-              ></textarea>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="form-section">
-          Main Focus
-        </div>
-
-
-        <div class="form-group full">
-
-          <label
-            style="color:var(--cyan)"
-          >
-            🎯 What is ONE thing to improve?
-          </label>
-
-          <input
-            type="text"
-            id="mFocus"
-            placeholder="Optional — e.g. Stop wide swinging low ground fights"
-          >
-
-        </div>
-
-      </div>
-
-
-      <div class="form-actions">
-
-        <button
-          type="button"
-          class="btn"
-          onclick="closeSessionModal()"
-        >
-          Cancel
-        </button>
-
-        <button
-          class="btn primary"
-          type="submit"
-        >
-          Save Match
-        </button>
-
-      </div>
-
-    </form>
 
   </div>
 
 </div>
-
-
-<!-- =========================
-     DAY SELECTOR MODAL
-========================= -->
-
-<div
-  class="modal"
-  id="dayModal"
->
-
-  <div class="day-selector-box">
-
-    <div class="modal-head">
-
-      <div>
-
-        <h2>
-          Choose Training Day
-        </h2>
-
-        <p
-          style="
-            color:var(--muted);
-            font-size:11px;
-            margin:4px 0 0
-          "
-        >
-          Choose a day you have reached.
-        </p>
-
-      </div>
-
-      <button
-        class="close"
-        onclick="closeDaySelector()"
-      >
-        ✕
-      </button>
-
-    </div>
-
-
-    <input
-      class="day-search"
-      id="daySearchInput"
-      type="number"
-      min="1"
-      placeholder="Search day number..."
-      oninput="filterDayButtons()"
-    >
-
-
-    <div
-      class="day-buttons"
-      id="dayButtons"
-    ></div>
-
-
-    <!-- DAY STATS STAY INSIDE THE POPUP -->
-
-    <div
-      class="day-details-panel"
-      id="dayDetailsPanel"
-    ></div>
-
-  </div>
-
-</div>
-
 
 <script>
 
 /* =========================================================
-   DATA
+   STORAGE
 ========================================================= */
 
-const SESSION_KEY = "rg_sessions_v5";
-const PLAN_KEY = "rg_daily_plans_v5";
-const START_KEY = "rg_start_date_v5";
+const STORAGE_KEY = "fortnite_grind_long_term_v1";
 
-let sessions =
-  JSON.parse(
-    localStorage.getItem(SESSION_KEY)
-  ) || [];
+let topDay = 1;
+let historyDay = 1;
 
-let startDate =
-  localStorage.getItem(START_KEY);
+function todayKey() {
+  const d = new Date();
 
-if(!startDate){
+  return d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+}
 
-  startDate =
-    getDateKey(new Date());
+function createDay(number) {
+  return {
+    day: number,
+    date: todayKey(),
+    matches: [],
+    plan: {
+      1: false,
+      2: false,
+      3: false
+    }
+  };
+}
 
+function createData() {
+  return {
+    version: 1,
+    days: [createDay(1)]
+  };
+}
+
+function getData() {
+
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (!saved) {
+    const fresh = createData();
+    saveData(fresh);
+    return fresh;
+  }
+
+  try {
+
+    const data = JSON.parse(saved);
+
+    if (!data.days || !Array.isArray(data.days)) {
+      return createData();
+    }
+
+    return data;
+
+  } catch {
+
+    return createData();
+
+  }
+}
+
+function saveData(data) {
   localStorage.setItem(
-    START_KEY,
-    startDate
+    STORAGE_KEY,
+    JSON.stringify(data)
   );
-
 }
 
-let dailyPlans =
-  JSON.parse(
-    localStorage.getItem(PLAN_KEY)
-  ) || {};
-
-let isVictoryState = false;
-
-let viewedDay =
-  getCurrentTrainingDay();
-
-let lastKnownDate =
-  getDateKey(new Date());
-
-
-/* =========================================================
-   DATE FUNCTIONS
-========================================================= */
-
-function getDateKey(date){
-
-  const y =
-    date.getFullYear();
-
-  const m =
-    String(
-      date.getMonth() + 1
-    ).padStart(2,"0");
-
-  const d =
-    String(
-      date.getDate()
-    ).padStart(2,"0");
-
-  return `${y}-${m}-${d}`;
-
+function getDay(data, number) {
+  return data.days.find(day => day.day === number);
 }
 
+function maxDayNumber(data) {
 
-function getCurrentTrainingDay(){
-
-  const start =
-    new Date(
-      startDate + "T00:00:00"
-    );
-
-  const today =
-    new Date();
-
-  start.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  today.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  const difference =
-    Math.floor(
-      (today - start) / 86400000
-    );
+  if (!data.days.length) return 1;
 
   return Math.max(
-    1,
-    difference + 1
+    ...data.days.map(day => day.day)
   );
-
 }
-
-
-function getDateForDay(day){
-
-  const start =
-    new Date(
-      startDate + "T00:00:00"
-    );
-
-  start.setDate(
-    start.getDate() + (day - 1)
-  );
-
-  return getDateKey(start);
-
-}
-
-
-function getSessionsForDay(day){
-
-  const dateKey =
-    getDateForDay(day);
-
-  return sessions.filter(
-    s => s.dateKey === dateKey
-  );
-
-}
-
 
 /* =========================================================
-   GET DAYS THAT HAVE BEEN REACHED
+   TOP DAY NAVIGATION
 ========================================================= */
 
-function getReachedDays(){
+function changeTopDay(direction) {
 
-  /*
-    The current day always exists.
+  const data = getData();
+  const maxDay = maxDayNumber(data);
 
-    This means:
-    Day 1 appears immediately.
+  const next = topDay + direction;
 
-    At midnight:
-    getCurrentTrainingDay()
-    automatically becomes Day 2,
-    Day 3, etc.
-  */
+  if (next < 1) return;
 
-  const currentDay =
-    getCurrentTrainingDay();
+  if (next > maxDay) {
 
-  const days = [];
-
-  for(
-    let day = 1;
-    day <= currentDay;
-    day++
-  ){
-
-    days.push(day);
-
-  }
-
-  return days;
-
-}
-
-
-/* =========================================================
-   MIDNIGHT CHECK
-========================================================= */
-
-function checkForMidnight(){
-
-  const today =
-    getDateKey(new Date());
-
-  if(
-    today !== lastKnownDate
-  ){
-
-    lastKnownDate =
-      today;
-
-    const newDay =
-      getCurrentTrainingDay();
-
-    /*
-      Midnight creates the next training day
-      automatically.
-    */
-
-    ensurePlanExists(
-      newDay
-    );
-
-    /*
-      Move the dashboard to the new day.
-    */
-
-    viewedDay =
-      newDay;
-
-    renderAll();
-
-    /*
-      If the day popup was already open,
-      keep it open and refresh it.
-    */
-
-    const modal =
-      document.getElementById(
-        "dayModal"
-      );
-
-    if(
-      modal.classList.contains("open")
-    ){
-
-      renderDayButtons();
-
-      renderDayDetails();
-
+    if (direction === 1) {
+      createNextDay();
     }
 
-  }
-
-}
-
-
-setInterval(
-  checkForMidnight,
-  1000
-);
-
-
-/* =========================================================
-   CLOCK
-========================================================= */
-
-function updateClock(){
-
-  const el =
-    document.getElementById(
-      "liveClock"
-    );
-
-  try{
-
-    el.textContent =
-      new Intl.DateTimeFormat(
-        "en-US",
-        {
-          timeZone:"Asia/Bangkok",
-          hour:"numeric",
-          minute:"2-digit",
-          second:"2-digit",
-          hour12:true
-        }
-      ).format(
-        new Date()
-      );
-
-  }catch{
-
-    el.textContent =
-      new Date().toLocaleTimeString(
-        [],
-        {
-          hour:"numeric",
-          minute:"2-digit",
-          second:"2-digit",
-          hour12:true
-        }
-      );
-
-  }
-
-}
-
-
-setInterval(
-  updateClock,
-  1000
-);
-
-updateClock();
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-document
-  .querySelectorAll(".tab")
-  .forEach(btn => {
-
-    btn.addEventListener(
-      "click",
-      () => {
-
-        document
-          .querySelectorAll(".tab")
-          .forEach(
-            b =>
-              b.classList.remove(
-                "active"
-              )
-          );
-
-        document
-          .querySelectorAll(".view")
-          .forEach(
-            v =>
-              v.classList.remove(
-                "active"
-              )
-          );
-
-        btn.classList.add(
-          "active"
-        );
-
-        document
-          .getElementById(
-            btn.dataset.view
-          )
-          .classList.add(
-            "active"
-          );
-
-      }
-    );
-
-  });
-
-
-/* =========================================================
-   DAY SELECTOR
-========================================================= */
-
-function openDaySelector(){
-
-  const modal =
-    document.getElementById(
-      "dayModal"
-    );
-
-  modal.classList.add(
-    "open"
-  );
-
-  document.getElementById(
-    "daySearchInput"
-  ).value = "";
-
-  renderDayButtons();
-
-  renderDayDetails();
-
-  /*
-    Keep popup open.
-    Selecting another day does NOT close it.
-  */
-
-  setTimeout(
-    () => {
-
-      document
-        .getElementById(
-          "daySearchInput"
-        )
-        .focus();
-
-    },
-    100
-  );
-
-}
-
-
-function closeDaySelector(){
-
-  document
-    .getElementById(
-      "dayModal"
-    )
-    .classList.remove(
-      "open"
-    );
-
-}
-
-
-/* =========================================================
-   DAY BUTTONS
-========================================================= */
-
-function renderDayButtons(){
-
-  const container =
-    document.getElementById(
-      "dayButtons"
-    );
-
-  const days =
-    getReachedDays();
-
-  let html = "";
-
-  if(!days.length){
-
-    html = `
-      <div
-        style="
-          grid-column:1/-1;
-          padding:25px;
-          text-align:center;
-          color:var(--muted)
-        "
-      >
-        No training days available.
-      </div>
-    `;
-
-    container.innerHTML =
-      html;
-
-    return;
-
-  }
-
-
-  days.forEach(
-    day => {
-
-      html += `
-
-        <button
-          class="day-choice ${
-            day === viewedDay
-              ? "selected"
-              : ""
-          }"
-          onclick="selectDay(${day})"
-        >
-          Day ${day}
-        </button>
-
-      `;
-
-    }
-  );
-
-
-  container.innerHTML =
-    html;
-
-}
-
-
-/* =========================================================
-   DAY SEARCH
-========================================================= */
-
-function filterDayButtons(){
-
-  const input =
-    document.getElementById(
-      "daySearchInput"
-    );
-
-  const value =
-    input.value.trim();
-
-  const days =
-    getReachedDays();
-
-  const container =
-    document.getElementById(
-      "dayButtons"
-    );
-
-  if(!value){
-
-    renderDayButtons();
-
-    return;
-
-  }
-
-  const matchingDays =
-    days.filter(
-      day =>
-        String(day).includes(
-          value
-        )
-    );
-
-  if(!matchingDays.length){
-
-    container.innerHTML = `
-
-      <div
-        style="
-          grid-column:1/-1;
-          padding:25px;
-          text-align:center;
-          color:var(--muted)
-        "
-      >
-        No matching day.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    matchingDays
-      .map(
-        day => `
-
-          <button
-            class="day-choice ${
-              day === viewedDay
-                ? "selected"
-                : ""
-            }"
-            onclick="selectDay(${day})"
-          >
-            Day ${day}
-          </button>
-
-        `
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   SELECT DAY
-========================================================= */
-
-function selectDay(day){
-
-  const currentDay =
-    getCurrentTrainingDay();
-
-  /*
-    Safety check.
-    Future days cannot be selected.
-  */
-
-  if(day > currentDay){
-
-    return;
-
-  }
-
-  viewedDay =
-    day;
-
-  ensurePlanExists(
-    day
-  );
-
-  /*
-    IMPORTANT:
-    We DO NOT close the popup here.
-
-    This lets the user click Day 1,
-    Day 2, Day 3, etc. and immediately
-    see each day's stats while the
-    popup remains open.
-  */
-
-  renderDayButtons();
-
-  renderDayDetails();
-
-  renderAll();
-
-}
-
-
-/* =========================================================
-   DAY DETAILS
-========================================================= */
-
-function renderDayDetails(){
-
-  const container =
-    document.getElementById(
-      "dayDetailsPanel"
-    );
-
-  if(!container){
     return;
   }
 
-  const stats =
-    getDayStats(
-      viewedDay
-    );
+  topDay = next;
 
-  const daySessions =
-    stats.sessions;
-
-  /*
-    No games for this day.
-  */
-
-  if(!daySessions.length){
-
-    container.innerHTML = `
-
-      <div class="day-summary">
-
-        <div class="day-stat">
-          <span>Games</span>
-          <b>0</b>
-        </div>
-
-        <div class="day-stat">
-          <span>Total Kills</span>
-          <b>0</b>
-        </div>
-
-        <div class="day-stat">
-          <span>Total Deaths</span>
-          <b>0</b>
-        </div>
-
-        <div class="day-stat">
-          <span>Avg Placement</span>
-          <b>—</b>
-        </div>
-
-        <div class="day-stat">
-          <span>Victories</span>
-          <b>0</b>
-        </div>
-
-      </div>
-
-      <div class="day-empty">
-
-        <div
-          style="
-            font-size:25px;
-            margin-bottom:8px
-          "
-        >
-          🎮
-        </div>
-
-        <b>
-          Day ${viewedDay}
-        </b>
-
-        <br>
-
-        No games have been logged for this day yet.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  /*
-    Sort games from oldest to newest for
-    the visual day review.
-
-    The best game is displayed first.
-    The worst game is displayed last.
-    Everything else stays in the middle.
-  */
-
-  const sortedGames =
-    [...daySessions].sort(
-      (a,b) =>
-        (a.createdTimeMs || 0) -
-        (b.createdTimeMs || 0)
-    );
-
-
-  const bestGame =
-    sortedGames.reduce(
-      (best,current) => {
-
-        const bestKills =
-          Number(best.kills) || 0;
-
-        const currentKills =
-          Number(current.kills) || 0;
-
-        const bestPlacement =
-          Number(best.placement) || 150;
-
-        const currentPlacement =
-          Number(current.placement) || 150;
-
-        /*
-          Best game:
-          1. Better placement
-          2. More kills as tie breaker
-        */
-
-        if(
-          currentPlacement <
-          bestPlacement
-        ){
-
-          return current;
-
-        }
-
-        if(
-          currentPlacement ===
-          bestPlacement &&
-          currentKills >
-          bestKills
-        ){
-
-          return current;
-
-        }
-
-        return best;
-
-      }
-    );
-
-
-  const worstGame =
-    sortedGames.reduce(
-      (worst,current) => {
-
-        const worstPlacement =
-          Number(worst.placement) || 150;
-
-        const currentPlacement =
-          Number(current.placement) || 150;
-
-        const worstKills =
-          Number(worst.kills) || 0;
-
-        const currentKills =
-          Number(current.kills) || 0;
-
-        /*
-          Worst game:
-          1. Worse placement
-          2. Fewer kills as tie breaker
-        */
-
-        if(
-          currentPlacement >
-          worstPlacement
-        ){
-
-          return current;
-
-        }
-
-        if(
-          currentPlacement ===
-          worstPlacement &&
-          currentKills <
-          worstKills
-        ){
-
-          return current;
-
-        }
-
-        return worst;
-
-      }
-    );
-
-
-  /*
-    Calculate which games are actually
-    the best/worst so the same game doesn't
-    get two labels when there is only one game.
-  */
-
-  const bestId =
-    bestGame.id;
-
-  const worstId =
-    worstGame.id;
-
-
-  let gamesHTML = "";
-
-  /*
-    BEST GAME
-  */
-
-  gamesHTML +=
-    createDayGameHTML(
-      bestGame,
-      "best"
-    );
-
-
-  /*
-    MIDDLE GAMES
-
-    Every game except the selected best
-    and selected worst.
-  */
-
-  const middleGames =
-    sortedGames.filter(
-      game =>
-        game.id !== bestId &&
-        game.id !== worstId
-    );
-
-
-  middleGames.forEach(
-    game => {
-
-      gamesHTML +=
-        createDayGameHTML(
-          game,
-          "middle"
-        );
-
-    }
-  );
-
-
-  /*
-    WORST GAME
-
-    Only show separately if it isn't the
-    exact same match as the best game.
-  */
-
-  if(
-    worstId !== bestId
-  ){
-
-    gamesHTML +=
-      createDayGameHTML(
-        worstGame,
-        "worst"
-      );
-
-  }
-
-
-  container.innerHTML = `
-
-    <div class="day-summary">
-
-      <div class="day-stat">
-
-        <span>
-          Games
-        </span>
-
-        <b>
-          ${stats.games}
-        </b>
-
-      </div>
-
-
-      <div class="day-stat">
-
-        <span>
-          Total Kills
-        </span>
-
-        <b>
-          ${stats.totalKills}
-        </b>
-
-      </div>
-
-
-      <div class="day-stat">
-
-        <span>
-          Total Deaths
-        </span>
-
-        <b>
-          ${stats.totalDeaths}
-        </b>
-
-      </div>
-
-
-      <div class="day-stat">
-
-        <span>
-          Avg Placement
-        </span>
-
-        <b>
-          ${stats.avgPlacement}
-        </b>
-
-      </div>
-
-
-      <div class="day-stat">
-
-        <span>
-          Victories
-        </span>
-
-        <b>
-          ${stats.wins}
-        </b>
-
-      </div>
-
-    </div>
-
-
-    <div class="day-games-title">
-
-      <h3>
-        Day ${viewedDay} Game Review
-      </h3>
-
-      <span>
-        Best → Worst
-      </span>
-
-    </div>
-
-
-    <div>
-      ${gamesHTML}
-    </div>
-
-  `;
+  render();
 
 }
 
-
 /* =========================================================
-   DAY GAME HTML
+   HISTORY DAY NAVIGATION
+   ONLY CHANGES MATCH HISTORY
 ========================================================= */
 
-function createDayGameHTML(
-  game,
-  type
-){
+function changeHistoryDay(direction) {
 
-  const placement =
-    Number(game.placement) || 150;
+  const data = getData();
+  const maxDay = maxDayNumber(data);
 
-  const kills =
-    Number(game.kills) || 0;
+  const next = historyDay + direction;
 
-  const deaths =
-    Number(game.totalDeaths) || 0;
+  if (next < 1) return;
 
-  let label =
-    "MATCH";
+  if (next > maxDay) {
 
-  let labelClass =
-    "middle-label";
-
-  let icon =
-    "🎮";
-
-  if(type === "best"){
-
-    label =
-      "⭐ BEST GAME";
-
-    labelClass =
-      "best-label";
-
-    icon =
-      "🏆";
-
-  }
-
-  if(type === "worst"){
-
-    label =
-      "💀 WORST GAME";
-
-    labelClass =
-      "worst-label";
-
-    icon =
-      "💀";
-
-  }
-
-
-  const placementText =
-    placement === 1
-      ? "🏆 WIN"
-      : placement;
-
-
-  return `
-
-    <div
-      class="day-game ${
-        type === "best"
-          ? "best-game"
-          : type === "worst"
-            ? "worst-game"
-            : ""
-      }"
-    >
-
-      <div class="day-game-label">
-
-        <b class="${labelClass}">
-          ${icon} ${label}
-        </b>
-
-        <span>
-          ${game.timeString || ""}
-        </span>
-
-      </div>
-
-
-      <div class="day-game-stats">
-
-        <div class="day-game-stat">
-
-          <small>
-            PLACE
-          </small>
-
-          <span
-            style="
-              color:${
-                placement === 1
-                  ? "var(--green)"
-                  : "#fff"
-              }
-            "
-          >
-            ${placementText}
-          </span>
-
-        </div>
-
-
-        <div class="day-game-stat">
-
-          <small>
-            KILLS
-          </small>
-
-          <span
-            style="
-              color:var(--cyan)
-            "
-          >
-            ${kills}
-          </span>
-
-        </div>
-
-
-        <div class="day-game-stat">
-
-          <small>
-            DEATH
-          </small>
-
-          <span
-            style="
-              color:var(--red)
-            "
-          >
-            ${deaths}
-          </span>
-
-        </div>
-
-
-        ${
-          game.dropRating
-            ? `
-
-              <div class="day-game-stat">
-
-                <small>
-                  DROP
-                </small>
-
-                <span
-                  style="
-                    color:var(--yellow)
-                  "
-                >
-                  ${escapeHTML(
-                    game.dropRating
-                  )}
-                </span>
-
-              </div>
-
-            `
-            : ""
-        }
-
-      </div>
-
-
-      ${
-        game.primaryFocus
-          ? `
-
-            <div class="day-game-focus">
-
-              🎯
-
-              <b>
-                Focus:
-              </b>
-
-              ${escapeHTML(
-                game.primaryFocus
-              )}
-
-            </div>
-
-          `
-          : ""
-      }
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   DAILY PLAN
-========================================================= */
-
-function defaultPlan(){
-
-  return [
-
-    {
-      id:Date.now()+1,
-      text:"15 mins tracking and warm-up routines",
-      done:false
-    },
-
-    {
-      id:Date.now()+2,
-      text:"Practice right-hand peeks instead of wide swinging",
-      done:false
-    },
-
-    {
-      id:Date.now()+3,
-      text:"Check high-ground coverage during reloads",
-      done:false
+    if (direction === 1) {
+      createNextDay();
     }
 
-  ];
-
-}
-
-
-function ensurePlanExists(day){
-
-  const dateKey =
-    getDateForDay(day);
-
-  if(
-    !dailyPlans[dateKey]
-  ){
-
-    dailyPlans[dateKey] =
-      defaultPlan();
-
-    savePlans();
-
-  }
-
-}
-
-
-function savePlans(){
-
-  localStorage.setItem(
-    PLAN_KEY,
-    JSON.stringify(
-      dailyPlans
-    )
-  );
-
-}
-
-
-function getCurrentPlan(){
-
-  const dateKey =
-    getDateForDay(
-      viewedDay
-    );
-
-  ensurePlanExists(
-    viewedDay
-  );
-
-  return dailyPlans[
-    dateKey
-  ];
-
-}
-
-
-/* =========================================================
-   PLAN RENDER
-========================================================= */
-
-function renderPlan(){
-
-  const container =
-    document.getElementById(
-      "checklistContainer"
-    );
-
-  const plan =
-    getCurrentPlan();
-
-  if(!plan.length){
-
-    container.innerHTML = `
-
-      <div class="empty">
-        No training tasks yet. Add one above.
-      </div>
-
-    `;
-
-    updatePlanProgress();
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    plan.map(
-      item => `
-
-        <div
-          class="check ${
-            item.done
-              ? "done"
-              : ""
-          }"
-        >
-
-          <input
-            type="checkbox"
-            ${
-              item.done
-                ? "checked"
-                : ""
-            }
-            onchange="
-              togglePlanItemState(${item.id})
-            "
-          >
-
-          <label
-            onclick="
-              togglePlanItemState(${item.id})
-            "
-          >
-            ${escapeHTML(item.text)}
-          </label>
-
-          <button
-            class="delete-item"
-            onclick="
-              deletePlanChecklistItem(${item.id})
-            "
-          >
-            ✕
-          </button>
-
-        </div>
-
-      `
-    )
-    .join("");
-
-
-  updatePlanProgress();
-
-}
-
-
-function updatePlanProgress(){
-
-  const plan =
-    getCurrentPlan();
-
-  const total =
-    plan.length;
-
-  const done =
-    plan.filter(
-      i => i.done
-    ).length;
-
-  const pct =
-    total
-      ? Math.round(
-          done / total * 100
-        )
-      : 0;
-
-  document.getElementById(
-    "dayProgress"
-  ).style.width =
-    pct + "%";
-
-  document.getElementById(
-    "planProgressBar"
-  ).style.width =
-    pct + "%";
-
-  document.getElementById(
-    "progressText"
-  ).textContent =
-    pct + "% complete";
-
-  document.getElementById(
-    "progressCount"
-  ).textContent =
-    `${done} / ${total} tasks`;
-
-  document.getElementById(
-    "planProgressText"
-  ).textContent =
-    pct + "% complete";
-
-  document.getElementById(
-    "planProgressCount"
-  ).textContent =
-    `${done} / ${total}`;
-
-  document.getElementById(
-    "allDone"
-  ).style.display =
-    total > 0 &&
-    done === total
-      ? "block"
-      : "none";
-
-}
-
-
-function togglePlanItemState(id){
-
-  const dateKey =
-    getDateForDay(
-      viewedDay
-    );
-
-  dailyPlans[dateKey] =
-    dailyPlans[dateKey].map(
-      item =>
-        item.id === id
-          ? {
-              ...item,
-              done:!item.done
-            }
-          : item
-    );
-
-  savePlans();
-
-  renderAll();
-
-}
-
-
-function addCustomPlanItem(){
-
-  const input =
-    document.getElementById(
-      "newPlanItemInput"
-    );
-
-  const text =
-    input.value.trim();
-
-  if(!text){
     return;
   }
 
-  const dateKey =
-    getDateForDay(
-      viewedDay
-    );
+  historyDay = next;
 
-  ensurePlanExists(
-    viewedDay
+  renderHistoryOnly();
+
+}
+
+/* =========================================================
+   CREATE NEW DAY
+========================================================= */
+
+function createNextDay() {
+
+  const data = getData();
+
+  const nextNumber =
+    maxDayNumber(data) + 1;
+
+  data.days.push(
+    createDay(nextNumber)
   );
 
-  dailyPlans[dateKey].push({
+  saveData(data);
 
-    id:Date.now(),
+  topDay = nextNumber;
+  historyDay = nextNumber;
 
-    text,
-
-    done:false
-
-  });
-
-  input.value = "";
-
-  savePlans();
-
-  renderPlan();
+  render();
 
 }
-
-
-function deletePlanChecklistItem(id){
-
-  const dateKey =
-    getDateForDay(
-      viewedDay
-    );
-
-  dailyPlans[dateKey] =
-    dailyPlans[dateKey].filter(
-      i => i.id !== id
-    );
-
-  savePlans();
-
-  renderPlan();
-
-}
-
-
-function resetPlanChecklist(){
-
-  const dateKey =
-    getDateForDay(
-      viewedDay
-    );
-
-  dailyPlans[dateKey] =
-    dailyPlans[dateKey].map(
-      i => ({
-        ...i,
-        done:false
-      })
-    );
-
-  savePlans();
-
-  renderPlan();
-
-}
-
 
 /* =========================================================
-   SESSION MODAL
+   TRAINING CHECKLIST
 ========================================================= */
 
-function openSessionModal(){
+function completeStep(number) {
 
-  document
-    .getElementById(
-      "sessionModal"
-    )
-    .classList.add(
-      "open"
-    );
+  const data = getData();
 
-  isVictoryState =
-    false;
+  const day = getDay(data, topDay);
 
-  document
-    .getElementById(
-      "victoryToggleBtn"
-    )
-    .classList.remove(
-      "active"
-    );
+  if (!day) return;
 
-  document
-    .getElementById(
-      "formGroupPlacement"
-    )
-    .style.display =
-    "block";
+  day.plan[number] =
+    !day.plan[number];
 
-  document
-    .getElementById(
-      "lastDeathBox"
-    )
-    .style.display =
-    "block";
+  saveData(data);
+
+  render();
 
 }
-
-
-function closeSessionModal(){
-
-  document
-    .getElementById(
-      "sessionModal"
-    )
-    .classList.remove(
-      "open"
-    );
-
-  document
-    .getElementById(
-      "sessionForm"
-    )
-    .reset();
-
-  isVictoryState =
-    false;
-
-}
-
-
-/* =========================================================
-   VICTORY
-========================================================= */
-
-function toggleVictoryFormState(){
-
-  isVictoryState =
-    !isVictoryState;
-
-  const btn =
-    document.getElementById(
-      "victoryToggleBtn"
-    );
-
-  const placement =
-    document.getElementById(
-      "formGroupPlacement"
-    );
-
-  const lastDeath =
-    document.getElementById(
-      "lastDeathBox"
-    );
-
-  if(isVictoryState){
-
-    btn.classList.add(
-      "active"
-    );
-
-    placement.style.display =
-      "none";
-
-    lastDeath.style.display =
-      "none";
-
-  }else{
-
-    btn.classList.remove(
-      "active"
-    );
-
-    placement.style.display =
-      "block";
-
-    lastDeath.style.display =
-      "block";
-
-  }
-
-}
-
 
 /* =========================================================
    SAVE MATCH
 ========================================================= */
 
-function handleFormSubmission(
-  event
-){
-
-  event.preventDefault();
-
-  let placement =
-    1;
-
-  if(!isVictoryState){
-
-    const placementValue =
-      document.getElementById(
-        "mPlacement"
-      ).value;
-
-    placement =
-      placementValue
-        ? parseInt(
-            placementValue
-          )
-        : 150;
-
-  }
-
-
-  const killsValue =
-    document.getElementById(
-      "mKills"
-    ).value;
+function saveGame() {
 
   const kills =
-    killsValue
-      ? parseInt(
-          killsValue
-        )
-      : 0;
-
-
-  const dropRating =
-    document.getElementById(
-      "mDropRating"
-    ).value ||
-    "Good";
-
-
-  const focus =
-    document.getElementById(
-      "mFocus"
-    ).value.trim();
-
-
-  const deathContext =
-    document.getElementById(
-      "mDeathContext"
-    ).value.trim();
-
-
-  const deathHow =
-    document.getElementById(
-      "mDeathHow"
-    ).value.trim();
-
-
-  const deathWhy =
-    document.getElementById(
-      "mDeathWhy"
-    ).value.trim();
-
-
-  const deathDetails = [];
-
-
-  if(
-    !isVictoryState &&
-    (
-      deathContext ||
-      deathHow ||
-      deathWhy
-    )
-  ){
-
-    deathDetails.push({
-
-      context:
-        deathContext,
-
-      how:
-        deathHow,
-
-      why:
-        deathWhy
-
-    });
-
-  }
-
-
-  const now =
-    Date.now();
-
-  const date =
-    new Date(
-      now
+    Number(
+      document.getElementById("gameKills").value
     );
-
-
-  const record = {
-
-    id:
-      now,
-
-    createdTimeMs:
-      now,
-
-    dateKey:
-      getDateKey(
-        date
-      ),
-
-    trainingDay:
-      getTrainingDayFromDate(
-        getDateKey(
-          date
-        )
-      ),
-
-    dateString:
-      date.toLocaleDateString(),
-
-    timeString:
-      date.toLocaleTimeString(
-        [],
-        {
-          hour:"numeric",
-          minute:"2-digit",
-          second:"2-digit",
-          hour12:true
-        }
-      ),
-
-    placement,
-
-    kills,
-
-    totalDeaths:
-      isVictoryState
-        ? 0
-        : 1,
-
-    dropRating,
-
-    primaryFocus:
-      focus,
-
-    deathsDetail:
-      deathDetails
-
-  };
-
-
-  sessions.unshift(
-    record
-  );
-
-
-  localStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify(
-      sessions
-    )
-  );
-
-
-  viewedDay =
-    getCurrentTrainingDay();
-
-  closeSessionModal();
-
-  renderAll();
-
-}
-
-
-/* =========================================================
-   GET TRAINING DAY FROM DATE
-========================================================= */
-
-function getTrainingDayFromDate(
-  dateKey
-){
-
-  const start =
-    new Date(
-      startDate +
-      "T00:00:00"
-    );
-
-  const date =
-    new Date(
-      dateKey +
-      "T00:00:00"
-    );
-
-  start.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  date.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  const difference =
-    Math.floor(
-      (date - start) /
-      86400000
-    );
-
-  return Math.max(
-    1,
-    difference + 1
-  );
-
-}
-
-
-/* =========================================================
-   RELATIVE TIME
-========================================================= */
-
-function relativeTime(ms){
-
-  const minutes =
-    Math.floor(
-      (
-        Date.now() -
-        ms
-      ) / 60000
-    );
-
-  if(minutes < 1){
-
-    return "Just now";
-
-  }
-
-
-  if(minutes < 60){
-
-    return minutes + "m ago";
-
-  }
-
-
-  const hours =
-    Math.floor(
-      minutes / 60
-    );
-
-  if(hours < 24){
-
-    return hours + "h ago";
-
-  }
-
-
-  const days =
-    Math.floor(
-      hours / 24
-    );
-
-  return days + "d ago";
-
-}
-
-
-/* =========================================================
-   SESSION MARKUP
-========================================================= */
-
-function sessionMarkup(s){
 
   const deaths =
-    s.deathsDetail || [];
-
-
-  const deathHTML =
-    deaths.length
-
-      ? `
-
-        <div class="death-review">
-
-          <h4>
-            💀 Final Death Review
-          </h4>
-
-          ${
-            deaths[0].context
-              ? `
-
-                <div class="note">
-
-                  <b>
-                    Situation:
-                  </b>
-
-                  ${escapeHTML(
-                    deaths[0].context
-                  )}
-
-                </div>
-
-              `
-              : ""
-          }
-
-
-          ${
-            deaths[0].how
-              ? `
-
-                <div class="note how">
-
-                  <b>
-                    How:
-                  </b>
-
-                  ${escapeHTML(
-                    deaths[0].how
-                  )}
-
-                </div>
-
-              `
-              : ""
-          }
-
-
-          ${
-            deaths[0].why
-              ? `
-
-                <div class="note why">
-
-                  <b>
-                    Why:
-                  </b>
-
-                  ${escapeHTML(
-                    deaths[0].why
-                  )}
-
-                </div>
-
-              `
-              : ""
-          }
-
-        </div>
-
-      `
-
-      :
-
-      `
-
-        <div
-          class="note"
-          style="text-align:center"
-        >
-
-          ${
-            Number(
-              s.placement
-            ) === 1
-
-              ? "🏆 Victory — no death recorded."
-
-              : "No final death review recorded."
-
-          }
-
-        </div>
-
-      `;
-
-
-  return `
-
-    <div class="session-card">
-
-      <div
-        class="session-summary"
-        onclick="
-          this.parentElement.classList.toggle('expanded')
-        "
-      >
-
-        <div class="session-left">
-
-          <div class="match-number">
-
-            #${
-              sessions.indexOf(s) + 1
-            }
-
-          </div>
-
-
-          <div class="pill place-win">
-
-            <span>
-              PLACE
-            </span>
-
-            ${
-              Number(
-                s.placement
-              ) === 1
-
-                ? "🏆 WIN"
-
-                : s.placement || "—"
-
-            }
-
-          </div>
-
-
-          <div class="pill">
-
-            <span>
-              KILLS
-            </span>
-
-            ${s.kills ?? 0}
-
-          </div>
-
-
-          <div class="pill death">
-
-            <span>
-              FINAL DEATH
-            </span>
-
-            ${
-              Number(
-                s.placement
-              ) === 1
-
-                ? "—"
-
-                : "✓"
-
-            }
-
-          </div>
-
-
-          ${
-            s.dropRating
-
-              ? `
-
-                <div class="pill drop">
-
-                  <span>
-                    DROP
-                  </span>
-
-                  ${escapeHTML(
-                    s.dropRating
-                  )}
-
-                </div>
-
-              `
-
-              : ""
-
-          }
-
-        </div>
-
-
-        <div class="session-time">
-
-          <strong>
-            ${s.timeString}
-          </strong>
-
-          <br>
-
-          ${s.dateString}
-          ·
-          ${relativeTime(
-            s.createdTimeMs
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div class="session-details">
-
-        ${
-          s.primaryFocus
-
-            ? `
-
-              <div class="focus-box">
-
-                🎯
-
-                <b>
-                  Primary Focus:
-                </b>
-
-                ${escapeHTML(
-                  s.primaryFocus
-                )}
-
-              </div>
-
-            `
-
-            : ""
-
+    Number(
+      document.getElementById("gameDeaths").value
+    );
+
+  const placement =
+    Number(
+      document.getElementById("gamePlacement").value
+    );
+
+  const focus =
+    document.getElementById("gameFocus")
+      .value.trim();
+
+  if (!Number.isFinite(kills) || kills < 0) {
+    alert("Enter valid kills.");
+    return;
+  }
+
+  if (
+    !Number.isFinite(deaths) ||
+    deaths < 0 ||
+    deaths > 3
+  ) {
+    alert("Deaths must be between 0 and 3.");
+    return;
+  }
+
+  if (
+    !Number.isFinite(placement) ||
+    placement < 1
+  ) {
+    alert("Enter a valid placement.");
+    return;
+  }
+
+  if (!focus) {
+    alert(
+      "Choose 1 thing to focus on in the next match."
+    );
+    return;
+  }
+
+  const data = getData();
+
+  const day = getDay(data, topDay);
+
+  if (!day) return;
+
+  day.matches.push({
+
+    kills,
+    deaths,
+    placement,
+    focus,
+
+    time:
+      new Date().toLocaleTimeString(
+        [],
+        {
+          hour: "numeric",
+          minute: "2-digit"
         }
+      ),
 
+    date:
+      new Date().toLocaleDateString()
 
-        ${deathHTML}
+  });
 
+  saveData(data);
 
-        <div class="session-footer">
+  document.getElementById("gameKills").value = "";
+  document.getElementById("gameDeaths").value = "";
+  document.getElementById("gamePlacement").value = "";
+  document.getElementById("gameFocus").value = "";
 
-          <button
-            class="btn small danger"
-            onclick="
-              event.stopPropagation();
-              deleteSessionRecord(${s.id})
-            "
-          >
-            Delete Match
-          </button>
+  historyDay = topDay;
 
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
+  render();
 
 }
 
-
 /* =========================================================
-   ESCAPE HTML
+   STATS
 ========================================================= */
 
-function escapeHTML(
-  value
-){
+function calculateDayStats(day) {
 
-  return String(
-    value ?? ""
-  )
+  if (!day || !day.matches.length) {
 
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
+    return {
+      matches: 0,
+      kills: 0,
+      deaths: 0,
+      kd: 0,
+      avgKills: 0,
+      avgPlacement: 0
+    };
 
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
+  }
 
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
+  const matches = day.matches;
 
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-/* =========================================================
-   DAY STATS
-========================================================= */
-
-function getDayStats(
-  day
-){
-
-  const daySessions =
-    getSessionsForDay(
-      day
-    );
-
-
-  const games =
-    daySessions.length;
-
-
-  const totalKills =
-    daySessions.reduce(
-      (
-        total,
-        s
-      ) =>
-        total +
-        (
-          Number(
-            s.kills
-          ) || 0
-        ),
+  const kills =
+    matches.reduce(
+      (sum, game) => sum + game.kills,
       0
     );
 
-
-  const totalDeaths =
-    daySessions.reduce(
-      (
-        total,
-        s
-      ) =>
-        total +
-        (
-          Number(
-            s.totalDeaths
-          ) || 0
-        ),
+  const deaths =
+    matches.reduce(
+      (sum, game) => sum + game.deaths,
       0
     );
 
-
-  const wins =
-    daySessions.filter(
-      s =>
-        Number(
-          s.placement
-        ) === 1
-    ).length;
-
-
-  const placements =
-    daySessions
-      .map(
-        s =>
-          Number(
-            s.placement
-          )
-      )
-      .filter(
-        n =>
-          n > 0
-      );
-
-
-  const avgPlacement =
-    placements.length
-
-      ? (
-          placements.reduce(
-            (
-              a,
-              b
-            ) =>
-              a + b,
-            0
-          ) /
-          placements.length
-        ).toFixed(1)
-
-      : "—";
-
-
-  const avgKills =
-    games
-
-      ? (
-          totalKills /
-          games
-        ).toFixed(1)
-
-      : "—";
-
-
-  const best =
-    daySessions.length
-
-      ? daySessions.reduce(
-          (
-            best,
-            current
-          ) =>
-            (
-              Number(
-                current.kills
-              ) || 0
-            ) >
-            (
-              Number(
-                best.kills
-              ) || 0
-            )
-
-              ? current
-
-              : best
-        )
-
-      : null;
-
-
-  const worst =
-    daySessions.length
-
-      ? daySessions.reduce(
-          (
-            worst,
-            current
-          ) => {
-
-            const a =
-              Number(
-                worst.placement
-              ) || 150;
-
-            const b =
-              Number(
-                current.placement
-              ) || 150;
-
-            return b > a
-              ? current
-              : worst;
-
-          }
-        )
-
-      : null;
-
+  const placement =
+    matches.reduce(
+      (sum, game) => sum + game.placement,
+      0
+    );
 
   return {
 
-    games,
+    matches: matches.length,
 
-    totalKills,
+    kills,
 
-    totalDeaths,
+    deaths,
 
-    wins,
+    kd:
+      deaths === 0
+        ? kills
+        : kills / deaths,
 
-    avgPlacement,
+    avgKills:
+      kills / matches.length,
 
-    avgKills,
-
-    best,
-
-    worst,
-
-    sessions:
-      daySessions
+    avgPlacement:
+      placement / matches.length
 
   };
 
 }
 
-
 /* =========================================================
-   DASHBOARD STATS
+   CAREER / PERSONAL RECORDS
 ========================================================= */
 
-function renderStats(){
+function getCareerStats(data) {
 
-  const stats =
-    getDayStats(
-      viewedDay
+  const allMatches =
+    data.days.flatMap(
+      day => day.matches
     );
 
+  const kills =
+    allMatches.reduce(
+      (sum, game) => sum + game.kills,
+      0
+    );
 
-  document.getElementById(
-    "statSessions"
-  ).textContent =
-    stats.games;
+  const deaths =
+    allMatches.reduce(
+      (sum, game) => sum + game.deaths,
+      0
+    );
 
-
-  document.getElementById(
-    "statPlacement"
-  ).textContent =
-    stats.avgPlacement;
-
-
-  document.getElementById(
-    "statKills"
-  ).textContent =
-    stats.avgKills;
-
-
-  document.getElementById(
-    "statWinRate"
-  ).textContent =
-    stats.games
-
-      ? (
-          (
-            stats.wins /
-            stats.games
-          ) *
-          100
-        ).toFixed(1) + "%"
-
-      : "0%";
-
-
-  document.getElementById(
-    "victoryCountText"
-  ).textContent =
-    stats.wins +
-    " victories";
-
-
-  document.getElementById(
-    "recordKills"
-  ).textContent =
-    stats.games
-
+  const bestKills =
+    allMatches.length
       ? Math.max(
-          ...stats.sessions.map(
-            s =>
-              Number(
-                s.kills
-              ) || 0
+          ...allMatches.map(
+            game => game.kills
           )
         )
+      : 0;
 
-      : "—";
+  const bestKD =
+    allMatches.length
+      ? Math.max(
+          ...allMatches.map(game => {
 
+            if (game.deaths === 0) {
+              return game.kills;
+            }
 
-  document.getElementById(
-    "recordPlacement"
-  ).textContent =
-    stats.sessions.length
+            return game.kills / game.deaths;
 
+          })
+        )
+      : 0;
+
+  const bestPlacement =
+    allMatches.length
       ? Math.min(
-          ...stats.sessions.map(
-            s =>
-              Number(
-                s.placement
-              ) || 150
+          ...allMatches.map(
+            game => game.placement
           )
         )
+      : null;
 
-      : "—";
+  const wins =
+    allMatches.filter(
+      game => game.placement === 1
+    ).length;
 
+  return {
 
-  document.getElementById(
-    "recordWins"
-  ).textContent =
-    stats.wins;
+    matches: allMatches.length,
 
+    kills,
 
-  document.getElementById(
-    "recordDeaths"
-  ).textContent =
-    stats.totalDeaths;
+    deaths,
 
+    kd:
+      deaths === 0
+        ? kills
+        : kills / deaths,
 
-  document.getElementById(
-    "dayTitle"
-  ).textContent =
-    `Day ${viewedDay}`;
+    bestKills,
+    bestKD,
+    bestPlacement,
+    wins
 
-
-  document.getElementById(
-    "daySub"
-  ).textContent =
-    `Training Day ${viewedDay} · ${stats.games} match${
-      stats.games === 1
-        ? ""
-        : "es"
-    } logged.`;
+  };
 
 }
 
-
 /* =========================================================
-   TREND
+   RENDER EVERYTHING
 ========================================================= */
 
-function renderTrend(){
+function render() {
 
-  const chart =
-    document.getElementById(
-      "trendChart"
-    );
+  const data = getData();
 
+  const day =
+    getDay(data, topDay);
 
-  const recent =
-    getSessionsForDay(
-      viewedDay
-    )
-      .slice(
-        0,
-        10
-      )
-      .reverse();
+  if (!day) return;
 
+  const stats =
+    calculateDayStats(day);
 
-  if(!recent.length){
+  const career =
+    getCareerStats(data);
 
-    chart.innerHTML = `
+  document.getElementById(
+    "topDayLabel"
+  ).textContent =
+    "Day " + topDay;
 
-      <div
-        class="empty"
-        style="width:100%"
-      >
+  document.getElementById(
+    "historyDayLabel"
+  ).textContent =
+    "Day " + historyDay;
 
-        Play some games on Day
-        ${viewedDay}
-        to unlock your trend.
+  /* TOP STATS */
 
-      </div>
+  document.getElementById(
+    "matchesPlayed"
+  ).textContent =
+    stats.matches;
 
-    `;
+  document.getElementById(
+    "careerKD"
+  ).textContent =
+    career.kd.toFixed(2);
 
-    return;
+  document.getElementById(
+    "avgKills"
+  ).textContent =
+    stats.avgKills.toFixed(2);
+
+  document.getElementById(
+    "avgPlacement"
+  ).textContent =
+    stats.avgPlacement.toFixed(2);
+
+  /* PERSONAL RECORDS */
+
+  document.getElementById(
+    "mostKills"
+  ).textContent =
+    career.bestKills;
+
+  document.getElementById(
+    "totalWins"
+  ).textContent =
+    career.wins;
+
+  document.getElementById(
+    "bestKD"
+  ).textContent =
+    career.bestKD.toFixed(2);
+
+  document.getElementById(
+    "bestPlacement"
+  ).textContent =
+    career.bestPlacement === null
+      ? "—"
+      : "#" + career.bestPlacement;
+
+  /* PLAN */
+
+  let completed = 0;
+
+  for (let i = 1; i <= 3; i++) {
+
+    const element =
+      document.getElementById(
+        "step" + i
+      );
+
+    if (day.plan[i]) {
+
+      completed++;
+
+      element.classList.add(
+        "completed"
+      );
+
+    } else {
+
+      element.classList.remove(
+        "completed"
+      );
+
+    }
 
   }
 
-
-  const maxKills =
-    Math.max(
-      1,
-      ...recent.map(
-        s =>
-          Number(
-            s.kills
-          ) || 0
-      )
+  const percent =
+    Math.round(
+      completed / 3 * 100
     );
 
+  document.getElementById(
+    "progressFill"
+  ).style.width =
+    percent + "%";
 
-  chart.innerHTML =
-    recent
-      .map(
-        (
-          s,
-          i
-        ) => {
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    percent + "%";
 
-          const killHeight =
-            Math.max(
-              3,
-              (
-                (
-                  Number(
-                    s.kills
-                  ) || 0
-                ) /
-                maxKills
-              ) *
-              100
-            );
+  /* TOP ARROWS */
 
+  document.getElementById(
+    "topPrev"
+  ).style.visibility =
+    topDay === 1
+      ? "hidden"
+      : "visible";
 
-          const placement =
-            Number(
-              s.placement
-            ) || 1;
+  document.getElementById(
+    "topNext"
+  ).textContent =
+    topDay >= maxDayNumber(data)
+      ? "+"
+      : "→";
 
+  renderHistoryOnly();
 
-          const placeScore =
-            Math.max(
-              5,
-              100 -
-              (
-                placement /
-                150 *
-                100
-              )
-            );
+}
 
+/* =========================================================
+   RENDER MATCH HISTORY ONLY
+========================================================= */
 
-          return `
+function renderHistoryOnly() {
 
-            <div class="trend-col">
+  const data = getData();
 
-              <div
-                class="trend-bar kill"
-                style="
-                  height:${killHeight}%
-                "
-                title="
-                  ${s.kills || 0}
-                  kills
-                "
-              ></div>
+  const day =
+    getDay(data, historyDay);
 
+  if (!day) return;
 
-              <div
-                class="trend-bar place"
-                style="
-                  height:${placeScore}%
-                "
-                title="
-                  Placement
-                  ${placement}
-                "
-              ></div>
+  const stats =
+    calculateDayStats(day);
 
+  document.getElementById(
+    "historyDayLabel"
+  ).textContent =
+    "Day " + historyDay;
 
-              <span class="trend-label">
-                ${i + 1}
-              </span>
+  document.getElementById(
+    "matchCount"
+  ).textContent =
+    stats.matches +
+    (stats.matches === 1
+      ? " MATCH"
+      : " MATCHES");
 
+  document.getElementById(
+    "dayKills"
+  ).textContent =
+    stats.kills;
+
+  document.getElementById(
+    "dayDeaths"
+  ).textContent =
+    stats.deaths;
+
+  document.getElementById(
+    "dayKD"
+  ).textContent =
+    stats.kd.toFixed(2);
+
+  document.getElementById(
+    "dayPlacement"
+  ).textContent =
+    stats.avgPlacement.toFixed(2);
+
+  const list =
+    document.getElementById(
+      "gameList"
+    );
+
+  list.innerHTML = "";
+
+  if (!day.matches.length) {
+
+    list.innerHTML = `
+      <div class="empty-games">
+        No matches recorded for Day ${historyDay}.
+      </div>
+    `;
+
+  } else {
+
+    [...day.matches]
+      .reverse()
+      .forEach(
+        (game, reversedIndex) => {
+
+          const originalIndex =
+            day.matches.length -
+            reversedIndex;
+
+          const kd =
+            game.deaths === 0
+              ? game.kills
+              : game.kills /
+                game.deaths;
+
+          const entry =
+            document.createElement("div");
+
+          entry.className =
+            "game-entry";
+
+          entry.innerHTML = `
+
+            <div class="game-top">
+
+              <div class="game-number">
+                #${originalIndex}
+              </div>
+
+              <div class="game-stat">
+                <strong>Kills</strong>
+                <span>${escapeHTML(game.kills)}</span>
+              </div>
+
+              <div class="game-stat">
+                <strong>Deaths</strong>
+                <span>${escapeHTML(game.deaths)}</span>
+              </div>
+
+              <div class="game-stat">
+                <strong>K/D</strong>
+                <span>${kd.toFixed(2)}</span>
+              </div>
+
+              <div class="game-stat">
+                <strong>Placement</strong>
+                <span>#${escapeHTML(game.placement)}</span>
+              </div>
+
+            </div>
+
+            <div class="focus-line">
+              <strong>Main focus:</strong>
+              ${escapeHTML(game.focus)}
             </div>
 
           `;
 
+          list.appendChild(entry);
+
         }
-      )
-      .join("");
+      );
 
-}
+  }
 
-
-/* =========================================================
-   ACHIEVEMENTS
-========================================================= */
-
-function renderAchievements(){
-
-  const games =
-    sessions.length;
-
-
-  const wins =
-    sessions.filter(
-      s =>
-        Number(
-          s.placement
-        ) === 1
-    ).length;
-
-
-  const kills =
-    sessions.map(
-      s =>
-        Number(
-          s.kills
-        ) || 0
-    );
-
-
-  const achievements = [
-
-    [
-      "🎮",
-      "First Match",
-      "Log your first game",
-      games >= 1
-    ],
-
-    [
-      "🔥",
-      "Getting Started",
-      "Play 5 matches",
-      games >= 5
-    ],
-
-    [
-      "💥",
-      "Double Digits",
-      "Get 10+ kills",
-      kills.some(
-        k => k >= 10
-      )
-    ],
-
-    [
-      "🥇",
-      "Winner",
-      "Get your first Victory",
-      wins >= 1
-    ],
-
-    [
-      "🏆",
-      "Five Wins",
-      "Get 5 Victories",
-      wins >= 5
-    ],
-
-    [
-      "⚡",
-      "Grinder",
-      "Play 25 matches",
-      games >= 25
-    ],
-
-    [
-      "👑",
-      "Monster Game",
-      "Get 15+ kills",
-      kills.some(
-        k => k >= 15
-      )
-    ]
-
-  ];
-
-
-  const unlocked =
-    achievements.filter(
-      a =>
-        a[3]
-    ).length;
-
+  /* Bottom arrows */
 
   document.getElementById(
-    "achievementCount"
+    "bottomPrev"
+  ).style.visibility =
+    historyDay === 1
+      ? "hidden"
+      : "visible";
+
+  document.getElementById(
+    "bottomNext"
   ).textContent =
-    `${unlocked} / ${achievements.length}`;
-
-
-  document.getElementById(
-    "achievementList"
-  ).innerHTML =
-    achievements
-      .map(
-        a => `
-
-          <div
-            class="
-              achievement
-              ${
-                a[3]
-                  ? "unlocked"
-                  : ""
-              }
-            "
-          >
-
-            <div class="achievement-icon">
-              ${a[0]}
-            </div>
-
-
-            <div class="achievement-text">
-
-              <b>
-                ${a[1]}
-              </b>
-
-              <span>
-                ${a[2]}
-              </span>
-
-            </div>
-
-
-            <div>
-              ${
-                a[3]
-                  ? "✓"
-                  : "🔒"
-              }
-            </div>
-
-          </div>
-
-        `
-      )
-      .join("");
+    historyDay >= maxDayNumber(data)
+      ? "+"
+      : "→";
 
 }
 
-
 /* =========================================================
-   LATEST MATCHES
+   DAY POPUP
 ========================================================= */
 
-function renderLatest(){
+function openDayPopup() {
 
-  const container =
-    document.getElementById(
-      "latestContainer"
-    );
-
-
-  const daySessions =
-    getSessionsForDay(
-      viewedDay
-    );
-
-
-  if(!daySessions.length){
-
-    container.innerHTML = `
-
-      <div class="empty">
-
-        <div
-          style="
-            font-size:25px;
-            margin-bottom:7px
-          "
-        >
-          🎮
-        </div>
-
-        No matches logged on Day
-        ${viewedDay}.
-
-        <br>
-
-        <span
-          style="font-size:11px"
-        >
-          Hit <b>New Match</b>
-          after your next game.
-        </span>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    daySessions
-      .slice(
-        0,
-        5
-      )
-      .map(
-        s =>
-          sessionMarkup(
-            s
-          )
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   HISTORY
-========================================================= */
-
-function renderHistory(){
-
-  const search =
-    document
-      .getElementById(
-        "searchInput"
-      )
-      .value
-      .toLowerCase()
-      .trim();
-
-
-  const placement =
-    document
-      .getElementById(
-        "placementFilter"
-      )
-      .value;
-
-
-  const drop =
-    document
-      .getElementById(
-        "dropFilter"
-      )
-      .value;
-
-
-  const filtered =
-    sessions.filter(
-      s => {
-
-        const searchable =
-          [
-
-            s.primaryFocus,
-
-            s.dropRating,
-
-            s.dateString,
-
-            `day ${s.trainingDay}`,
-
-            ...(s.deathsDetail || [])
-              .flatMap(
-                d => [
-                  d.context,
-                  d.how,
-                  d.why
-                ]
-              )
-
-          ]
-
-            .join(" ")
-
-            .toLowerCase();
-
-
-        if(
-          search &&
-          !searchable.includes(
-            search
-          )
-        ){
-
-          return false;
-
-        }
-
-
-        if(
-          drop !== "all" &&
-          s.dropRating !== drop
-        ){
-
-          return false;
-
-        }
-
-
-        if(
-          placement === "win" &&
-          Number(
-            s.placement
-          ) !== 1
-        ){
-
-          return false;
-
-        }
-
-
-        if(
-          placement === "top5" &&
-          Number(
-            s.placement
-          ) > 5
-        ){
-
-          return false;
-
-        }
-
-
-        if(
-          placement === "top10" &&
-          Number(
-            s.placement
-          ) > 10
-        ){
-
-          return false;
-
-        }
-
-
-        return true;
-
-      }
-    );
-
-
-  const container =
-    document.getElementById(
-      "sessionHistoryList"
-    );
-
-
-  if(!filtered.length){
-
-    container.innerHTML = `
-
-      <div class="empty">
-        No matches found.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    filtered
-      .map(
-        s =>
-          sessionMarkup(
-            s
-          )
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   DELETE MATCH
-========================================================= */
-
-function deleteSessionRecord(
-  id
-){
-
-  if(
-    !confirm(
-      "Delete this match permanently?"
-    )
-  ){
-
-    return;
-
-  }
-
-
-  sessions =
-    sessions.filter(
-      s =>
-        s.id !== id
-    );
-
-
-  localStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify(
-      sessions
-    )
-  );
-
-
-  renderAll();
-
-}
-
-
-function clearAllSessions(){
-
-  if(!sessions.length){
-
-    return;
-
-  }
-
-
-  if(
-    !confirm(
-      "Delete ALL match history? This cannot be undone."
-    )
-  ){
-
-    return;
-
-  }
-
-
-  sessions = [];
-
-
-  localStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify(
-      sessions
-    )
-  );
-
-
-  renderAll();
-
-}
-
-
-/* =========================================================
-   DAY INFORMATION
-========================================================= */
-
-function renderDayInformation(){
-
-  const stats =
-    getDayStats(
-      viewedDay
-    );
-
-
-  document.getElementById(
-    "dayTitle"
-  ).textContent =
-    `Day ${viewedDay}`;
-
-
-  document.getElementById(
-    "daySub"
-  ).textContent =
-    `Training Day ${viewedDay} · ${stats.games} match${
-      stats.games === 1
-        ? ""
-        : "es"
-    } logged.`;
-
-}
-
-
-/* =========================================================
-   KEYBOARD / MODAL BEHAVIOR
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.key === "Escape"
-    ){
-
-      closeSessionModal();
-
-      closeDaySelector();
-
-    }
-
-  }
-);
-
-
-document
-  .getElementById(
-    "dayModal"
-  )
-  .addEventListener(
-    "click",
-    event => {
-
-      if(
-        event.target.id ===
-        "dayModal"
-      ){
-
-        closeDaySelector();
-
-      }
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "sessionModal"
-  )
-  .addEventListener(
-    "click",
-    event => {
-
-      if(
-        event.target.id ===
-        "sessionModal"
-      ){
-
-        closeSessionModal();
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   MAIN RENDER
-========================================================= */
-
-function renderAll(){
-
-  const actualDay =
-    getCurrentTrainingDay();
-
-  /*
-    Make sure today's plan exists.
-
-    This is what causes the new day to
-    automatically receive a new training plan
-    after midnight.
-  */
-
-  ensurePlanExists(
-    actualDay
-  );
-
-  renderDayInformation();
-
-  renderStats();
-
-  renderTrend();
-
-  renderAchievements();
-
-  renderLatest();
-
-  renderHistory();
-
-  renderPlan();
-
-  /*
-    If the day popup is currently open,
-    update its information too.
-  */
+  const data = getData();
 
   const modal =
     document.getElementById(
       "dayModal"
     );
 
-  if(
-    modal &&
-    modal.classList.contains(
-      "open"
-    )
-  ){
+  const buttons =
+    document.getElementById(
+      "modalDayButtons"
+    );
 
-    renderDayButtons();
+  buttons.innerHTML = "";
 
-    renderDayDetails();
+  data.days.forEach(day => {
 
-  }
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "modal-day-btn";
+
+    button.textContent =
+      "Day " +
+      day.day +
+      " — " +
+      day.matches.length +
+      (day.matches.length === 1
+        ? " match"
+        : " matches");
+
+    button.onclick = () =>
+      showPopupDay(day.day);
+
+    buttons.appendChild(button);
+
+  });
+
+  modal.classList.add("open");
 
 }
 
+function showPopupDay(number) {
+
+  const data = getData();
+
+  const day =
+    getDay(data, number);
+
+  if (!day) return;
+
+  const stats =
+    calculateDayStats(day);
+
+  const content =
+    document.getElementById(
+      "modalDayContent"
+    );
+
+  let html = `
+    <h3>Day ${number}</h3>
+  `;
+
+  if (!day.matches.length) {
+
+    html += `
+      <div class="popup-match">
+        No matches recorded.
+      </div>
+    `;
+
+  } else {
+
+    day.matches.forEach(
+      (game, index) => {
+
+        const kd =
+          game.deaths === 0
+            ? game.kills
+            : game.kills /
+              game.deaths;
+
+        html += `
+          <div class="popup-match">
+
+            <strong>Match ${index + 1}</strong>
+
+            &nbsp; • &nbsp;
+
+            ${game.kills} Kills
+
+            &nbsp; • &nbsp;
+
+            ${game.deaths} Deaths
+
+            &nbsp; • &nbsp;
+
+            ${kd.toFixed(2)} K/D
+
+            &nbsp; • &nbsp;
+
+            #${game.placement}
+
+            <br>
+
+            <small>
+              Main focus: ${escapeHTML(game.focus)}
+            </small>
+
+          </div>
+        `;
+
+      }
+    );
+
+  }
+
+  html += `
+    <div class="popup-summary">
+
+      <strong>Day ${number} Totals</strong>
+
+      <div class="popup-summary-grid">
+
+        <div class="popup-summary-item">
+          <small>Total Kills</small>
+          <strong>${stats.kills}</strong>
+        </div>
+
+        <div class="popup-summary-item">
+          <small>Total Deaths</small>
+          <strong>${stats.deaths}</strong>
+        </div>
+
+        <div class="popup-summary-item">
+          <small>Average K/D</small>
+          <strong>${stats.kd.toFixed(2)}</strong>
+        </div>
+
+        <div class="popup-summary-item">
+          <small>Avg. Placement</small>
+          <strong>${stats.avgPlacement.toFixed(2)}</strong>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+  content.innerHTML = html;
+
+}
+
+function closeDayPopup() {
+
+  document.getElementById(
+    "dayModal"
+  ).classList.remove("open");
+
+}
+
+/* =========================================================
+   CLEAR EVERYTHING
+========================================================= */
+
+function clearAllStats() {
+
+  const confirmed =
+    confirm(
+      "Are you sure you want to permanently delete ALL of your Fortnite Grind data?"
+    );
+
+  if (!confirmed) return;
+
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
+
+  topDay = 1;
+  historyDay = 1;
+
+  const fresh = createData();
+
+  saveData(fresh);
+
+  render();
+
+}
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    String(value);
+
+  return div.innerHTML;
+
+}
+
+/* =========================================================
+   CLOSE POPUP BY CLICKING OUTSIDE
+========================================================= */
+
+document
+  .getElementById("dayModal")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target === this
+      ) {
+        closeDayPopup();
+      }
+
+    }
+  );
 
 /* =========================================================
    START
 ========================================================= */
 
-ensurePlanExists(
-  getCurrentTrainingDay()
-);
-
-viewedDay =
-  getCurrentTrainingDay();
-
-renderAll();
+render();
 
 </script>
 
