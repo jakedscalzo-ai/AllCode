@@ -216,7 +216,7 @@
             color: #000;
         }
 
-        /* BACK TO NORMAL MODE BUTTON */
+        /* NORMAL MODE BUTTON */
         #normal-mode-button {
             position: fixed;
             bottom: 10px;
@@ -236,7 +236,7 @@
 
             display: none;
 
-            z-index: 9998;
+            z-index: 9999;
 
             box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
 
@@ -261,6 +261,7 @@
 
         /* MOBILE */
         @media (max-width: 600px) {
+
             header {
                 padding: 20px;
             }
@@ -272,6 +273,16 @@
             main {
                 padding: 35px 20px;
             }
+
+            #secret-area {
+                bottom: 10px;
+                right: 10px;
+            }
+
+            #normal-mode-button {
+                bottom: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
@@ -280,14 +291,23 @@
 
     <!-- HEADER -->
     <header>
-        <div class="logo">PROJECT HUB</div>
-        <div class="subtitle">By Jake Scalzo</div>
+
+        <div class="logo">
+            PROJECT HUB
+        </div>
+
+        <div class="subtitle">
+            By Jake Scalzo
+        </div>
+
     </header>
 
-    <!-- MAIN CONTENT -->
+
+    <!-- MAIN -->
     <main>
 
         <section class="hero">
+
             <h1>
                 My <span>Projects</span>
             </h1>
@@ -295,14 +315,19 @@
             <p>
                 A collection of all my coding projects in one place.
             </p>
+
         </section>
+
 
         <!-- PROJECTS -->
         <section class="projects">
 
-            <!-- PROJECT 01 -->
+
+            <!-- ARCADE -->
             <div class="project">
+
                 <div>
+
                     <div class="project-number">
                         PROJECT 01
                     </div>
@@ -314,6 +339,7 @@
                     <p>
                         A collection of html games
                     </p>
+
                 </div>
 
                 <a
@@ -322,24 +348,28 @@
                 >
                     OPEN ARCADE HUB
                 </a>
+
             </div>
 
 
-            <!-- PROJECT 02 -->
+            <!-- GRIND HUB -->
             <div class="project">
+
                 <div>
+
                     <div class="project-number">
                         PROJECT 02
                     </div>
 
-                    <h2>
+                    <h2 id="grind-title">
                         Grind Hub
                     </h2>
 
-                    <p>
+                    <p id="grind-description">
                         Stay organized, track your progress,
                         and keep the grind moving.
                     </p>
+
                 </div>
 
                 <a
@@ -349,39 +379,17 @@
                 >
                     OPEN GRIND HUB
                 </a>
+
             </div>
 
 
-            <!-- PROJECT 03 -->
+            <!-- MASSAGE -->
             <div class="project">
+
                 <div>
+
                     <div class="project-number">
                         PROJECT 03
-                    </div>
-
-                    <h2>
-                        My Grind Hub
-                    </h2>
-
-                    <p>
-                        My personal grind and progress tracker.
-                    </p>
-                </div>
-
-                <a
-                    class="project-button"
-                    href="MyGrindHub/index.html"
-                >
-                    OPEN MY GRIND HUB
-                </a>
-            </div>
-
-
-            <!-- PROJECT 04 -->
-            <div class="project">
-                <div>
-                    <div class="project-number">
-                        PROJECT 04
                     </div>
 
                     <h2>
@@ -391,6 +399,7 @@
                     <p>
                         My massage project.
                     </p>
+
                 </div>
 
                 <a
@@ -399,14 +408,17 @@
                 >
                     OPEN MASSAGE
                 </a>
+
             </div>
 
 
-            <!-- PROJECT 05 -->
+            <!-- NOTES -->
             <div class="project">
+
                 <div>
+
                     <div class="project-number">
-                        PROJECT 05
+                        PROJECT 04
                     </div>
 
                     <h2>
@@ -416,6 +428,7 @@
                     <p>
                         My notes and information hub.
                     </p>
+
                 </div>
 
                 <a
@@ -424,7 +437,9 @@
                 >
                     OPEN NOTES
                 </a>
+
             </div>
+
 
         </section>
 
@@ -443,65 +458,101 @@
     </div>
 
 
-    <!-- SECRET CODE AREA -->
+    <!-- SECRET CODE SPOT -->
     <div id="secret-area">
 
         <input
             type="password"
             id="secret-code"
             placeholder="Enter code"
+            autocomplete="off"
         >
 
-        <button id="code-button">
+        <button
+            id="code-button"
+            type="button"
+        >
             ENTER
         </button>
 
     </div>
 
 
-    <!-- BACK TO NORMAL MODE BUTTON -->
-    <button id="normal-mode-button">
+    <!-- NORMAL MODE BUTTON -->
+    <button
+        id="normal-mode-button"
+        type="button"
+    >
         BACK TO NORMAL MODE
     </button>
 
 
     <script>
 
-        // Get elements
-        const secretCode = document.getElementById("secret-code");
-        const codeButton = document.getElementById("code-button");
+        // ==========================================
+        // GET ELEMENTS
+        // ==========================================
 
-        const secretArea = document.getElementById("secret-area");
-        const normalModeButton = document.getElementById("normal-mode-button");
+        const secretCode =
+            document.getElementById("secret-code");
 
-        const modeMessage = document.getElementById("mode-message");
+        const codeButton =
+            document.getElementById("code-button");
 
-        const grindButton = document.getElementById("grind-button");
+        const secretArea =
+            document.getElementById("secret-area");
+
+        const normalModeButton =
+            document.getElementById("normal-mode-button");
+
+        const modeMessage =
+            document.getElementById("mode-message");
+
+        const grindButton =
+            document.getElementById("grind-button");
+
+        const grindTitle =
+            document.getElementById("grind-title");
+
+        const grindDescription =
+            document.getElementById("grind-description");
 
 
-        // Enter Jake Mode
+        // ==========================================
+        // ENTER JAKE MODE
+        // ==========================================
+
         function enterJakeMode() {
 
-            if (secretCode.value === "jjaakkeelol") {
+            const code = secretCode.value.trim();
 
-                // Turn on Jake Mode
-                document.body.classList.add("jake-mode");
+            if (code === "jjaakkeelol") {
 
-                // Change Grind Hub destination
+                // Change Grind Hub into My Grind Hub
                 grindButton.href = "MyGrindHub/index.html";
+                grindButton.textContent = "OPEN MY GRIND HUB";
 
-                // Hide code box
+                // Change title
+                grindTitle.textContent = "My Grind Hub";
+
+                // Change description
+                grindDescription.textContent =
+                    "Jake mode activated. Welcome to your private Grind Hub.";
+
+                // HIDE THE CODE SPOT
                 secretArea.style.display = "none";
 
-                // Show Back to Normal Mode button
+                // SHOW NORMAL MODE BUTTON
                 normalModeButton.style.display = "block";
 
                 // Show Jake Mode message
                 modeMessage.style.display = "block";
 
-                // Hide message after 2 seconds
+                // Hide Jake Mode message after 2 seconds
                 setTimeout(function() {
+
                     modeMessage.style.display = "none";
+
                 }, 2000);
 
                 // Clear code
@@ -511,45 +562,80 @@
 
                 // Wrong code
                 secretCode.value = "";
+
                 secretCode.placeholder = "Wrong code";
 
                 setTimeout(function() {
+
                     secretCode.placeholder = "Enter code";
+
                 }, 1500);
+
             }
+
         }
 
 
-        // ENTER button
-        codeButton.addEventListener("click", enterJakeMode);
+        // ==========================================
+        // ENTER BUTTON
+        // ==========================================
+
+        codeButton.addEventListener(
+            "click",
+            enterJakeMode
+        );
 
 
-        // Press ENTER while typing code
-        secretCode.addEventListener("keydown", function(event) {
+        // ==========================================
+        // ENTER KEY
+        // ==========================================
 
-            if (event.key === "Enter") {
-                enterJakeMode();
+        secretCode.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    enterJakeMode();
+
+                }
+
             }
+        );
 
-        });
 
+        // ==========================================
+        // BACK TO NORMAL MODE
+        // ==========================================
 
-        // Back to Normal Mode
-        normalModeButton.addEventListener("click", function() {
+        normalModeButton.addEventListener(
+            "click",
+            function() {
 
-            // Turn off Jake Mode
-            document.body.classList.remove("jake-mode");
+                // Change Grind Hub back
+                grindButton.href = "GrindHub/index.html";
+                grindButton.textContent = "OPEN GRIND HUB";
 
-            // Change Grind Hub back to normal
-            grindButton.href = "GrindHub/index.html";
+                // Change title back
+                grindTitle.textContent = "Grind Hub";
 
-            // Hide Back to Normal Mode
-            normalModeButton.style.display = "none";
+                // Change description back
+                grindDescription.textContent =
+                    "Stay organized, track your progress, and keep the grind moving.";
 
-            // Show code box again
-            secretArea.style.display = "flex";
+                // HIDE NORMAL MODE BUTTON
+                normalModeButton.style.display = "none";
 
-        });
+                // SHOW CODE SPOT AGAIN
+                secretArea.style.display = "flex";
+
+                // Put cursor back in code box
+                secretCode.focus();
+
+            }
+        );
 
     </script>
 
